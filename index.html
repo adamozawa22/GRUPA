@@ -164,6 +164,34 @@
         .member-card h3 { margin: 0 0 5px 0; font-size: 22px; font-weight: 600; }
         .member-card p { margin: 0; font-size: 14px; opacity: 0.7; }
 
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+            background-color: rgba(255,255,255,0.1);
+            cursor: pointer;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.05);
+            border-color: #8cbd8c;
+        }
+
+        /* LIGHTBOX - NOWE */
+        #lightbox { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        #lightbox img { max-width: 90%; max-height: 80%; border: 3px solid white; }
+        .lb-nav { position: absolute; color: white; font-size: 40px; cursor: pointer; padding: 20px; user-select: none; }
+        .lb-prev { left: 10px; } .lb-next { right: 10px; }
+
         @media (max-width: 768px) {
             body { flex-direction: column; padding: 15px; height: auto; overflow-y: auto; }
             .sidebar { width: 100%; padding-right: 0; margin-bottom: 20px; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; }
@@ -172,23 +200,32 @@
             .nav-link.active { background-color: rgba(255, 255, 255, 0.1); }
             .content { padding-left: 0; overflow-y: visible; }
             .metro-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); grid-auto-rows: 140px; }
-            .tile-wide { grid-column: span 1; }
+            .tile-wide { grid-column: span 1; } .tile-large { grid-column: span 1; grid-row: span 1; } .tile-tall { grid-row: span 1; }
             .tile-google form { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
+    <!-- LIGHTBOX -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <div class="lb-nav lb-prev" onclick="event.stopPropagation(); changeImage(-1)">&#10094;</div>
+        <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+        <div class="lb-nav lb-next" onclick="event.stopPropagation(); changeImage(1)">&#10095;</div>
+    </div>
+
     <div class="sidebar">
         <h1>genzie<br>hub</h1>
         <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
         <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">członkowie</div>
+        <div class="nav-link" onclick="switchPage(this, 'zdjecia')">zdjęcia</div>
+        <div class="nav-link" onclick="switchPage(this, 'spotkania')">spotkania</div>
+        <div class="nav-link" onclick="switchPage(this, 'informacje')">informacje</div>
     </div>
 
     <div class="content">
         <div id="home" class="page active">
             <div class="metro-grid">
-                <!-- Google -->
                 <div class="tile tile-wide tile-google">
                     <div class="google-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
                     <form action="https://www.google.com/search" method="GET" target="_blank">
@@ -196,50 +233,120 @@
                         <button type="submit">Szukaj</button>
                     </form>
                 </div>
-
-                <!-- Messenger -->
-                <a href="LINK_MESSENGER" target="_blank" style="text-decoration: none; color: inherit;">
-                    <div class="tile tile-wide bg-blue">
-                        <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER</div>
-                        <div style="font-size: 14px; opacity: 0.8;">Ostatnia wiadomość...</div>
-                    </div>
-                </a>
-
-                <!-- TikTok -->
-                <a href="LINK_TIKTOK" target="_blank" style="text-decoration: none; color: inherit;">
-                    <div class="tile tile-wide" style="background-color: #000;">
-                        <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
-                        <div style="font-size: 18px;">TikTok</div>
-                    </div>
-                </a>
-
-                <!-- Instagram -->
-                <a href="LINK_INSTAGRAM" target="_blank" style="text-decoration: none; color: inherit;">
-                    <div class="tile tile-wide bg-ig">
-                        <div style="font-size: 32px; margin-bottom: auto;">📸</div>
-                        <div style="font-size: 18px;">Instagram</div>
-                    </div>
-                </a>
+                <div class="tile bg-dark-green" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
+                    <div style="font-size: 32px; margin-bottom: auto;">👥</div>
+                    <div style="font-size: 18px;">Lista obecności</div>
+                </div>
+                <div class="tile bg-orange" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
+                    <div style="font-size: 32px; margin-bottom: auto;">📅</div>
+                    <div style="font-size: 18px;">Terminarz</div>
+                </div>
+                <div class="tile tile-wide bg-blue">
+                    <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER CHAT</div>
+                    <div style="font-size: 14px; opacity: 0.8;">Ostatnia wiadomość: przed chwilą...</div>
+                </div>
+                <div class="tile bg-purple">
+                    <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
+                    <div style="font-size: 18px;">Playlista</div>
+                </div>
+               <a href="https://www.instagram.com/melanz.onlinemess/" target="_blank" style="text-decoration: none; color: inherit;">
+                 <div class="tile bg-ig">
+                 <div style="font-size: 32px; margin-bottom: auto;">📸</div>
+               <div style="font-size: 18px;">Instagram</div>
+              </div>
+               </a>
+                <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
+                    <div style="font-size: 32px; margin-bottom: auto;">📸</div>
+                    <div style="font-size: 18px;">Galeria</div>
+                </div>
             </div>
         </div>
 
         <div id="kim-jestesmy" class="page page-content">
             <h2>Członkowie Grupy</h2>
+            <p>Lista osób z Messengera. </p>
             <div class="members-grid">
                 <div class="member-card">
+                    <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Martyna</h3>
                     <p>Rzetelny administrator</p>
                 </div>
+                <div class="member-card">
+                    <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                    <h3>Błazej</h3>
+                    <p>Fajny Emogej</p>
+                </div>
+                <div class="member-card">
+                    <img src="osoba3.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                    <h3>Antosia</h3>
+                    <p>Działaczka parti komunistycznej</p>
+                </div>
+                <div class="member-card">
+                    <img src="osoba4.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                    <h3>Adaś</h3>
+                    <p>Wszyscy zostaną ukarani za skurwysynstwo</p>
+                </div>
+                 <div class="member-card">
+                    <img src="osoba5.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                    <h3>Macica</h3>
+                    <p>Lubie mężczyzn</p>
+                </div>
             </div>
+        </div>
+
+        <div id="zdjecia" class="page page-content">
+            <h2>Galeria Zdjęć</h2>
+            <p>Najlepsze momenty i fotki ekipy.</p>
+            <div class="gallery-grid" id="gallery">
+                <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)">
+                <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1)">
+                <img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2)">
+                <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3)">
+            </div>
+        </div>
+
+        <div id="spotkania" class="page page-content">
+            <h2>Terminarz Spotkań</h2>
+            <p>Najbliższe wydarzenia i plany grupy:</p>
+            <ul>
+                <li><strong>15 Sierpnia:</strong> Wspólne wyjście</li>
+                <li><strong>Składki:</strong> do końca miesiąca</li>
+            </ul>
+        </div>
+
+        <div id="informacje" class="page page-content">
+            <h2>Informacje / Regulamin</h2>
+            <p>Wszystko, co musisz wiedzieć jako członek naszej społeczności na Messengerze.</p>
         </div>
     </div>
 
     <script>
-        function switchPage(el, pageId) {
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        function switchPage(clickedElement, pageId) {
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => link.classList.remove('active'));
+            clickedElement.classList.add('active');
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
+        }
+
+        // Logika lightboxa
+        let currentIdx = 0;
+        const images = document.querySelectorAll('#gallery img');
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+
+        function openLightbox(idx) {
+            currentIdx = idx;
+            lbImg.src = images[currentIdx].src;
+            lb.style.display = 'flex';
+        }
+
+        function closeLightbox() { lb.style.display = 'none'; }
+
+        function changeImage(step) {
+            currentIdx = (currentIdx + step + images.length) % images.length;
+            lbImg.src = images[currentIdx].src;
         }
     </script>
 </body>
