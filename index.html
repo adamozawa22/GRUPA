@@ -5,209 +5,250 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genzie Messenger Hub</title>
     <style>
+        /* Główne style - Kafelkowy styl Metro UI */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #2e3b2e; /* Ciemnozielone tło inspirowane tłem grafiki */
+            background-color: #2e3b2e; /* Ciemnozielone tło */
             color: white;
             margin: 0;
-            padding: 20px;
+            padding: 40px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
-        header {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-g {
-            background-color: white;
-            color: #2e3b2e;
-            font-weight: bold;
-            font-size: 24px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 5px;
-        }
-
-        .date-time {
-            text-align: right;
-            font-size: 24px;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            gap: 30px;
-        }
-
-        nav {
+        /* Lewe Menu (Nawigacja) */
+        .sidebar {
             width: 250px;
             display: flex;
             flex-direction: column;
             gap: 15px;
+            padding-right: 40px;
         }
 
-        nav a {
-            text-decoration: none;
-            color: white;
-            font-size: 22px;
+        .sidebar h1 {
             font-weight: 300;
-            text-transform: uppercase;
-            padding: 5px 0;
-            transition: 0.2s;
+            font-size: 40px;
+            margin: 0 0 30px 0;
+            line-height: 1;
         }
 
-        nav a:hover {
-            color: #8cbd8c; /* Jaśniejszy zielony przy najechaniu */
+        .nav-link {
+            cursor: pointer;
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.4);
+            transition: color 0.2s;
+            text-transform: lowercase;
+            user-select: none;
         }
 
-        .tiles-container {
-            flex-grow: 1;
+        .nav-link:hover { color: rgba(255, 255, 255, 0.8); }
+        .nav-link.active { color: white; font-weight: 600; }
+
+        /* Prawa strona - Obszar zawartości (Zakładki) */
+        .content {
+            flex: 1;
+            padding-left: 40px;
+            overflow-y: auto;
+        }
+
+        /* Ukrywanie zakładek - domyślnie niewidoczne */
+        .page { display: none; animation: fadeIn 0.4s ease-out; }
+        /* Klasa .active sprawia, że zakładka się wyświetla */
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Siatka Kafelków (Grid) */
+        .metro-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: minmax(150px, auto);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 160px));
+            grid-auto-rows: 160px;
+            gap: 10px;
         }
 
         .tile {
-            background-color: #79ac79; /* Podstawowy zielony kolor kafelków */
-            padding: 20px;
+            background-color: #8cbd8c;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s;
+            padding: 15px;
+            box-sizing: border-box;
+            color: white;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            text-decoration: none;
-            color: white;
-            transition: transform 0.1s;
+            justify-content: flex-end;
+            overflow: hidden;
         }
 
-        .tile:hover {
-            transform: scale(1.02);
-        }
-
-        /* Konkretne style kafelków */
+        .tile:hover { transform: scale(1.03); outline: 3px solid rgba(255,255,255,0.5); }
         .tile-large { grid-column: span 2; grid-row: span 2; }
         .tile-wide { grid-column: span 2; }
+
+        /* REALISTYCZNE ZDJĘCIE Z ZIELONYM FILTREM */
+        .tile-photo .photo-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
         
-        .tile-maps { background-color: white; color: #333; } /* Biały kafelek mapy */
-        .tile-genzie-photo { background-color: #79ac79; padding: 0; position: relative; overflow: hidden;}
-        .tile-genzie-photo img { width: 100%; height: 100%; object-fit: cover;}
-        .tile-genzie-photo .text-overlay {
-            position: absolute; bottom: 10px; left: 10px; right: 10px;
-            background: rgba(0,0,0,0.6); padding: 10px; text-align: center;
+        /* Ten element nakłada realistyczny zielony odcień na zdjęcie pod spodem */
+        .tile-photo .green-tint {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: #5a9c5a;
+            mix-blend-mode: multiply; /* Krok kluczowy do realizmu */
+            opacity: 0.9;
+            z-index: 2;
         }
 
-        .tile-google { background-color: #8cbd8c; }
-        .tile-google input {
-            width: 100%; border: none; padding: 10px;
-            background: rgba(255,255,255,0.8); color: #333;
-        }
-
-        .news-container {
-            width: 300px;
-            background-color: rgba(255,255,255,0.05);
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        .news-header {
-            text-transform: uppercase;
+        .tile-photo .tile-text {
+            position: relative;
+            z-index: 3;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 10px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
         }
 
-        .news-item {
-            margin-bottom: 15px;
-            font-size: 14px;
-            line-height: 1.4;
+        /* PRAWDZIWA WYSZUKIWARKA GOOGLE */
+        .tile-google {
+            background-color: white;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
         }
+        .google-logo { font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+        .google-logo span:nth-child(1) { color: #4285F4; }
+        .google-logo span:nth-child(2) { color: #EA4335; }
+        .google-logo span:nth-child(3) { color: #FBBC05; }
+        .google-logo span:nth-child(4) { color: #4285F4; }
+        .google-logo span:nth-child(5) { color: #34A853; }
+        .google-logo span:nth-child(6) { color: #EA4335; }
+
+        .tile-google form { width: 100%; display: flex; gap: 5px; }
+        .tile-google input {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #ddd;
+            outline: none;
+        }
+        .tile-google button {
+            background: #8cbd8c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        .tile-google button:hover { background: #5a9c5a; }
+
+        /* Zwykły tekst na stronach */
+        .page-content { max-width: 800px; font-size: 18px; line-height: 1.6; }
+        .page-content h2 { font-weight: 300; font-size: 36px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="user-info">
-            <span>Witaj Fan (Wyloguj)</span>
-            <div class="logo-g">G</div>
-        </div>
-        <div class="date-time">
-            Saturday<br>June 11<br>2011
-        </div>
-    </header>
-
-    <div class="main-container">
-        <nav>
-            <a href="index.html">GŁÓWNA</a>
-            <a href="kim-jestesmy.html">CZŁONKOWIE</a>
-            <a href="zdjecia.html">ZDJĘCIA</a>
-            <a href="spotkania.html">SPOTKANIA</a>
-            <a href="informacje.html">INFORMACJE</a>
-            <a href="wyloguj.html">WYLOGUJ</a>
-        </nav>
-
-        <div class="tiles-container">
-            <!-- Kafelek ze zdjęciem grupowym -->
-            <div class="tile tile-large tile-genzie-photo">
-                <img src="zdjecia/glowne.jpg" alt="Ekipa Genzie">
-                <div class="text-overlay">
-                    Genzie Hub - Twoje Centrum
-                </div>
-            </div>
-
-            <!-- Kafelek Google -->
-            <div class="tile tile-google">
-                <div style="font-size: 24px;">Google</div>
-                <input type="text" placeholder="Szukaj w Genzie...">
-            </div>
-
-            <!-- Kafelki dolnego rzędu -->
-            <a href="kim-jestesmy.html" class="tile">
-                <div style="font-size: 32px;">👥</div>
-                <div>Członkowie: 8 osób</div>
-            </a>
-            <a href="https://youtube.com" class="tile">
-                <div style="font-size: 32px;">▶️</div>
-                <div>Najnowsze filmy</div>
-            </a>
-            <a href="https://discord.com" class="tile">
-                <div style="font-size: 32px;">💬</div>
-                <div>Serwer Discord</div>
-            </a>
-            <a href="https://spotify.com" class="tile">
-                <div style="font-size: 32px;">🎧</div>
-                <div>Najnowszy Podcast</div>
-            </a>
-        </div>
-
-        <div class="news-container">
-            <div class="news-header">NOWOŚCI I CZŁONKOWIE</div>
-            <div class="news-item"><b>OSOBA !:</b> cdwdad</div>
-            <div class="news-item"><b>osoba:</b> Ndwrgrgtrgr</div>
-            <div class="news-item"><b>Friz:</b> Psdwdwdd?</div>
-            <div class="news-item"><b>osoba:</b> tahjemic</div>
-            <div class="news-item"><b>ela hawin:</b> 67idopiefa</div>
-            <div class="news-item"><b>pizfda</b> dawdwdw3</div>
-            <div class="news-item"><b> wuyds:</b> dwadads</div>
-            <div class="news-item"><b>Psdw:</b> Pdfaw</div>
-        </div>
+    <!-- LEWE MENU -->
+    <div class="sidebar">
+        <h1>genzie<br>hub</h1>
+        <!-- Funkcja switchPage() z JavaScriptu ukrywa/pokazuje odpowiednie sekcje -->
+        <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
+        <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">kim jesteśmy</div>
+        <div class="nav-link" onclick="switchPage(this, 'spotkania')">spotkania</div>
+        <div class="nav-link" onclick="switchPage(this, 'informacje')">informacje</div>
     </div>
 
+    <!-- PRAWA STRONA (ZAKŁADKI) -->
+    <div class="content">
+        
+        <!-- ZAKŁADKA 1: START (Domyślnie widoczna) -->
+        <div id="home" class="page active">
+            <div class="metro-grid">
+                
+                <!-- DUŻY KAFELEK ZE ZDJĘCIEM -->
+                <!-- Wrzuć plik glowne.jpg do tego samego folderu co plik index.html -->
+                <div class="tile tile-large tile-photo" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
+                    <img src="glowne.jpg" alt="Ekipa" class="photo-bg">
+                    <div class="green-tint"></div>
+                    <div class="tile-text">Genzie Team</div>
+                </div>
+
+                <!-- KAFELEK GOOGLE (Prawdziwe wyszukiwanie) -->
+                <div class="tile tile-wide tile-google">
+                    <div class="google-logo">
+                        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+                    </div>
+                    <!-- Formularz wysyłający zapytanie prosto do wyszukiwarki Google -->
+                    <form action="https://www.google.com/search" method="GET" target="_blank">
+                        <input type="text" name="q" placeholder="Szukaj w internecie..." required>
+                        <button type="submit">Szukaj</button>
+                    </form>
+                </div>
+
+                <!-- MAŁE KAFELKI -->
+                <div class="tile" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'spotkania')">
+                    <div style="font-size: 32px; margin-bottom: auto;">📅</div>
+                    <div style="font-size: 18px;">Następne Spotkanie</div>
+                </div>
+
+                <div class="tile" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'informacje')">
+                    <div style="font-size: 32px; margin-bottom: auto;">ℹ️</div>
+                    <div style="font-size: 18px;">Informacje</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ZAKŁADKA 2: KIM JESTEŚMY -->
+        <div id="kim-jestesmy" class="page page-content">
+            <h2>Kim Jesteśmy?</h2>
+            <p>Tutaj możesz wpisać informacje o członkach grupy na Messengerze. Możesz dodać tekst, opisy, a nawet kolejne kafelki ze zdjęciami poszczególnych osób, wklejając kod kafelka ze strony startowej.</p>
+        </div>
+
+        <!-- ZAKŁADKA 3: KIEDY NASTĘPNE SPOTKANIE -->
+        <div id="spotkania" class="page page-content">
+            <h2>Kiedy następne spotkanie</h2>
+            <p>Najbliższe wydarzenia i plany grupy:</p>
+            <ul>
+                <li><strong>15 Sierpnia:</strong> Wspólne wyjście</li>
+                <li><strong>Składki:</strong> do końca miesiąca</li>
+            </ul>
+        </div>
+
+        <!-- ZAKŁADKA 4: INFORMACJE -->
+        <div id="informacje" class="page page-content">
+            <h2>Informacje</h2>
+            <p>Regulamin grupy, najważniejsze linki i wszystko, co musisz wiedzieć jako członek naszej społeczności.</p>
+        </div>
+
+    </div>
+
+    <!-- SKRYPT JAVASCRIPT: Odpowiada za przełączanie stron bez przeładowywania pliku -->
+    <script>
+        function switchPage(clickedElement, pageId) {
+            // 1. Zdejmij podświetlenie ze wszystkich linków w menu
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => link.classList.remove('active'));
+            
+            // 2. Podświetl kliknięty link (lub przypisany w kodzie kafelka)
+            clickedElement.classList.add('active');
+
+            // 3. Ukryj wszystkie sekcje/zakładki
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // 4. Pokaż tylko tę sekcję, której ID podaliśmy (np. 'spotkania')
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
 </body>
 </html>
