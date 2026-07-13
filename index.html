@@ -8,7 +8,7 @@
         /* Główne style - Kafelkowy styl Metro UI */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #2e3b2e; /* Ciemnozielone tło */
+            background-color: #2e3b2e;
             color: white;
             margin: 0;
             padding: 40px;
@@ -89,11 +89,12 @@
         .tile-wide { grid-column: span 2; }
         .tile-tall { grid-row: span 2; }
 
-        /* INNE KOLORY KAFELKÓW (żeby nie było monotonnie) */
+        /* Kolory kafelków */
         .bg-dark-green { background-color: #5a9c5a; }
         .bg-blue { background-color: #2b5797; }
         .bg-purple { background-color: #603cba; }
         .bg-orange { background-color: #da532c; }
+        .bg-teal { background-color: #00aba9; }
 
         /* REALISTYCZNE ZDJĘCIE Z ZIELONYM FILTREM */
         .tile-photo .photo-bg {
@@ -187,7 +188,7 @@
             width: 150px;
             height: 150px;
             object-fit: cover;
-            border-radius: 50%; /* Okrągłe zdjęcia członków, opcjonalnie: zmień na 0% dla kwadratów */
+            border-radius: 50%;
             background-color: #5a9c5a;
             margin-bottom: 15px;
             border: 4px solid rgba(255, 255, 255, 0.2);
@@ -195,6 +196,29 @@
 
         .member-card h3 { margin: 0 0 5px 0; font-size: 22px; font-weight: 600; }
         .member-card p { margin: 0; font-size: 14px; opacity: 0.7; }
+
+        /* GALERIA ZDJĘĆ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.05);
+            border-color: #8cbd8c;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -202,8 +226,10 @@
     <!-- LEWE MENU -->
     <div class="sidebar">
         <h1>genzie<br>hub</h1>
+        <!-- Pamiętaj, że w JS indeksy liczymy od 0 (start=0, czlonkowie=1, zdjecia=2, spotkania=3, informacje=4) -->
         <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
         <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">członkowie</div>
+        <div class="nav-link" onclick="switchPage(this, 'zdjecia')">zdjęcia</div>
         <div class="nav-link" onclick="switchPage(this, 'spotkania')">spotkania</div>
         <div class="nav-link" onclick="switchPage(this, 'informacje')">informacje</div>
     </div>
@@ -211,13 +237,12 @@
     <!-- PRAWA STRONA (ZAKŁADKI) -->
     <div class="content">
         
-        <!-- ZAKŁADKA 1: START (Domyślnie widoczna) -->
+        <!-- ZAKŁADKA 1: START -->
         <div id="home" class="page active">
             <div class="metro-grid">
                 
-                <!-- GŁÓWNY KAFELEK ZE ZDJĘCIEM GRUPOWYM -->
+                <!-- GŁÓWNY KAFELEK ZE ZDJĘCIEM -->
                 <div class="tile tile-large tile-photo" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-                    <!-- Podmień 'glowne.jpg' na swoje zdjęcie -->
                     <img src="glowne.jpg" alt="Ekipa" class="photo-bg">
                     <div class="green-tint"></div>
                     <div class="tile-text">Ekipa</div>
@@ -240,7 +265,7 @@
                     <div style="font-size: 18px;">Lista obecności</div>
                 </div>
 
-                <div class="tile bg-orange" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'spotkania')">
+                <div class="tile bg-orange" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
                     <div style="font-size: 32px; margin-bottom: auto;">📅</div>
                     <div style="font-size: 18px;">Terminarz</div>
                 </div>
@@ -255,65 +280,52 @@
                     <div style="font-size: 18px;">Playlista</div>
                 </div>
 
-                <div class="tile tile-tall bg-dark-green" style="justify-content: flex-start; padding: 20px;">
-                    <div style="font-size: 20px; font-weight: bold; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 10px; margin-bottom: 10px;">Zadania</div>
-                    <div style="font-size: 14px; line-height: 2;">
-                        <input type="checkbox"> Zaplanować wyjazd<br>
-                        <input type="checkbox"> Zebrać składki<br>
-                        <input type="checkbox"> Zaktualizować foty
-                    </div>
+                <!-- Nowy kafelek galerii zastępujący "Zadania" -->
+                <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
+                    <div style="font-size: 32px; margin-bottom: auto;">📸</div>
+                    <div style="font-size: 18px;">Galeria</div>
                 </div>
 
             </div>
         </div>
 
-        <!-- ZAKŁADKA 2: CZŁONKOWIE (KIM JESTEŚMY) -->
+        <!-- ZAKŁADKA 2: CZŁONKOWIE -->
         <div id="kim-jestesmy" class="page page-content">
             <h2>Członkowie Grupy</h2>
             <p>Lista osób z Messengera. Tutaj możesz wstawić zdjęcia i opisać każdego z osobna.</p>
             
             <div class="members-grid">
-                
-                <!-- OSOBA 1 (Kopiuj ten blok, żeby dodać kolejne osoby) -->
+                <!-- Karty członków (jak poprzednio, możesz powielać i zmieniać src zdjęć) -->
                 <div class="member-card">
-                    <!-- Podmień 'osoba1.jpg' na właściwą nazwę pliku ze zdjęciem -->
                     <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Imię 1</h3>
                     <p>Opis, rola w grupie lub pseudonim.</p>
                 </div>
-
-                <!-- OSOBA 2 -->
                 <div class="member-card">
                     <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Imię 2</h3>
                     <p>Opis, rola w grupie lub pseudonim.</p>
                 </div>
-
-                <!-- OSOBA 3 -->
-                <div class="member-card">
-                    <img src="osoba3.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Imię 3</h3>
-                    <p>Opis, rola w grupie lub pseudonim.</p>
-                </div>
-
-                <!-- OSOBA 4 -->
-                <div class="member-card">
-                    <img src="osoba4.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Imię 4</h3>
-                    <p>Opis, rola w grupie lub pseudonim.</p>
-                </div>
-                
-                <!-- OSOBA 5 -->
-                <div class="member-card">
-                    <img src="osoba5.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Imię 5</h3>
-                    <p>Opis, rola w grupie lub pseudonim.</p>
-                </div>
-
             </div>
         </div>
 
-        <!-- ZAKŁADKA 3: SPOTKANIA -->
+        <!-- ZAKŁADKA 3: ZDJĘCIA (NOWA) -->
+        <div id="zdjecia" class="page page-content">
+            <h2>Galeria Zdjęć</h2>
+            <p>Najlepsze momenty i fotki ekipy. Podmień nazwy plików (np. galeria1.jpg), aby wyświetlić swoje obrazy.</p>
+            
+            <div class="gallery-grid">
+                <!-- Podmień src na swoje zdjęcia -->
+                <img src="galeria1.jpg" alt="Zdjęcie 1">
+                <img src="galeria2.jpg" alt="Zdjęcie 2">
+                <img src="galeria3.jpg" alt="Zdjęcie 3">
+                <img src="galeria4.jpg" alt="Zdjęcie 4">
+                <img src="galeria5.jpg" alt="Zdjęcie 5">
+                <img src="galeria6.jpg" alt="Zdjęcie 6">
+            </div>
+        </div>
+
+        <!-- ZAKŁADKA 4: SPOTKANIA -->
         <div id="spotkania" class="page page-content">
             <h2>Terminarz Spotkań</h2>
             <p>Najbliższe wydarzenia i plany grupy:</p>
@@ -323,7 +335,7 @@
             </ul>
         </div>
 
-        <!-- ZAKŁADKA 4: INFORMACJE -->
+        <!-- ZAKŁADKA 5: INFORMACJE -->
         <div id="informacje" class="page page-content">
             <h2>Informacje / Regulamin</h2>
             <p>Wszystko, co musisz wiedzieć jako członek naszej społeczności na Messengerze.</p>
