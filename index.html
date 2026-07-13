@@ -223,81 +223,53 @@
         <div class="nav-link" onclick="switchPage(this, 'informacje')">nasze konta</div>
     </div>
 
-    <div class="content">
-        <div id="home" class="page active">
-            <div class="metro-grid">
-                <div class="tile tile-wide tile-google">
-                    <div class="google-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
-                    <form action="https://www.google.com/search" method="GET" target="_blank">
-                        <input type="text" name="q" placeholder="Szukaj..." required>
-                        <button type="submit">Szukaj</button>
-                    </form>
-                </div>
-                <div class="tile bg-dark-green" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-                    <div style="font-size: 32px; margin-bottom: auto;">👥</div>
-                    <div style="font-size: 18px;">Lista obecności</div>
-                </div>
-                <div class="tile bg-orange" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
-                    <div style="font-size: 32px; margin-bottom: auto;">📅</div>
-                    <div style="font-size: 18px;">Terminarz</div>
-                </div>
-                <a href="https://www.instagram.com/melanz.onlinemess/l" class="tile bg-dark-green" style="text-decoration: none; color: white;">
-                    <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER CHAT</div>
-                    <div style="font-size: 14px; opacity: 0.8;">Ostatnia wiadomość: przed chwilą...</div>
-                </div>
-                <!-- Zamiast starego diva -->
-<a href="https://www.instagram.com/melanz.onlinemess/l" class="tile bg-dark-green" style="text-decoration: none; color: white;">
-    <div style="font-size: 32px; margin-bottom: auto;">📷</div>
-    <div style="font-size: 18px;">Instagram</div>
-  </div>
-                </div>
-                <!-- Zamiast starego diva -->
-<a href="https://www.instagram.com/melanz.onlinemess/l" class="tile bg-dark-green" style="text-decoration: none; color: white;">
-    <div style="font-size: 32px; margin-bottom: auto;">📷</div>
-    <div style="font-size: 18px;">tiktok</div>
-  </div>
-                <div class="tile bg-purple">
-                    <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
-                    <div style="font-size: 18px;">Playlista</div>
-                </div>
-                <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
-                    <div style="font-size: 32px; margin-bottom: auto;">📸</div>
-                    <div style="font-size: 18px;">Galeria</div>
-                </div>
-            </div>
-        </div>
+    <div class="metro-grid">
+    <div class="tile tile-wide tile-google">
+        <div class="google-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
+        <form action="https://www.google.com/search" method="GET" target="_blank">
+            <input type="text" name="q" placeholder="Szukaj..." required>
+            <button type="submit">Szukaj</button>
+        </form>
+    </div>
+    
+    <div class="tile bg-dark-green" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
+        <div style="font-size: 32px; margin-bottom: auto;">👥</div>
+        <div style="font-size: 18px;">Lista obecności</div>
+    </div>
+    
+    <div class="tile bg-orange" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
+        <div style="font-size: 32px; margin-bottom: auto;">📅</div>
+        <div style="font-size: 18px;">Terminarz</div>
+    </div>
 
-        <div id="kim-jestesmy" class="page page-content">
-            <h2>Członkowie Grupy</h2>
-            <p>Lista osób z Messengera. </p>
-            <div class="members-grid">
-                <div class="member-card">
-                    <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Martyna</h3>
-                    <p>Rzetelny administrator</p>
-                </div>
-                <div class="member-card">
-                    <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Błazej</h3>
-                    <p>Fajny Emogej</p>
-                </div>
-                <div class="member-card">
-                    <img src="osoba3.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Antosia</h3>
-                    <p>Działaczka parti komunistycznej</p>
-                </div>
-                <div class="member-card">
-                    <img src="osoba4.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Adaś</h3>
-                    <p>Wszyscy zostaną ukarani za skurwysynstwo</p>
-                </div>
-                 <div class="member-card">
-                    <img src="osoba5.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-                    <h3>Macica</h3>
-                    <p>Lubie mężczyzn</p>
-                </div>
-            </div>
-        </div>
+    <!-- Prawidłowy link do Messenger Chat -->
+    <a href="https://www.instagram.com/melanz.onlinemess/" class="tile bg-blue" style="text-decoration: none; color: white;">
+        <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER CHAT</div>
+        <div style="font-size: 14px; opacity: 0.8;">Ostatnia wiadomość: przed chwilą...</div>
+    </a>
+
+    <!-- Prawidłowy link do Instagrama -->
+    <a href="https://www.instagram.com/melanz.onlinemess/" class="tile bg-ig" style="text-decoration: none; color: white;">
+        <div style="font-size: 32px; margin-bottom: auto;">📷</div>
+        <div style="font-size: 18px;">Instagram</div>
+    </a>
+
+    <!-- Prawidłowy link do Tiktoka -->
+    <a href="https://www.tiktok.com/@twoj_profil" class="tile bg-dark-green" style="text-decoration: none; color: white;">
+        <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
+        <div style="font-size: 18px;">tiktok</div>
+    </a>
+
+    <div class="tile bg-purple">
+        <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
+        <div style="font-size: 18px;">Playlista</div>
+    </div>
+
+    <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
+        <div style="font-size: 32px; margin-bottom: auto;">📸</div>
+        <div style="font-size: 18px;">Galeria</div>
+    </div>
+</div>
 
         <div id="zdjecia" class="page page-content">
             <h2>Galeria Zdjęć</h2>
