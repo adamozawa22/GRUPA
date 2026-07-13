@@ -96,33 +96,6 @@
         .bg-orange { background-color: #da532c; }
         .bg-teal { background-color: #00aba9; }
 
-        /* REALISTYCZNE ZDJĘCIE Z ZIELONYM FILTREM */
-        .tile-photo .photo-bg {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-        
-        .tile-photo .green-tint {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: #5a9c5a;
-            mix-blend-mode: multiply; 
-            opacity: 0.9;
-            z-index: 2;
-        }
-
-        .tile-photo .tile-text {
-            position: relative;
-            z-index: 3;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
-        }
-
         /* WYSZUKIWARKA GOOGLE */
         .tile-google {
             background-color: white;
@@ -219,6 +192,67 @@
             border-color: #8cbd8c;
             cursor: pointer;
         }
+
+        /* -------------------------------------- */
+        /* OPTYMALIZACJA NA URZĄDZENIA MOBILNE    */
+        /* -------------------------------------- */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 15px;
+                height: auto;
+                overflow-y: auto; /* Zezwól na przewijanie całej strony */
+            }
+
+            .sidebar {
+                width: 100%;
+                padding-right: 0;
+                margin-bottom: 20px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .sidebar h1 {
+                width: 100%;
+                font-size: 32px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .nav-link {
+                font-size: 16px;
+                padding: 5px 10px;
+                border-radius: 5px;
+                flex-grow: 1;
+                text-align: center;
+            }
+
+            .nav-link.active {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .content {
+                padding-left: 0;
+                overflow-y: visible; /* Zawartość rośnie swobodnie */
+            }
+
+            .metro-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                grid-auto-rows: 140px;
+            }
+
+            /* Na małych ekranach resetujemy szerokie i wysokie kafelki */
+            .tile-wide { grid-column: span 1; }
+            .tile-large { grid-column: span 1; grid-row: span 1; }
+            .tile-tall { grid-row: span 1; }
+            
+            .tile-google form {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -226,7 +260,6 @@
     <!-- LEWE MENU -->
     <div class="sidebar">
         <h1>genzie<br>hub</h1>
-        <!-- Pamiętaj, że w JS indeksy liczymy od 0 (start=0, czlonkowie=1, zdjecia=2, spotkania=3, informacje=4) -->
         <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
         <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">członkowie</div>
         <div class="nav-link" onclick="switchPage(this, 'zdjecia')">zdjęcia</div>
@@ -240,13 +273,6 @@
         <!-- ZAKŁADKA 1: START -->
         <div id="home" class="page active">
             <div class="metro-grid">
-                
-                <!-- GŁÓWNY KAFELEK ZE ZDJĘCIEM -->
-                <div class="tile tile-large tile-photo" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-                    <img src="glowne.jpg" alt="Ekipa" class="photo-bg">
-                    <div class="green-tint"></div>
-                    <div class="tile-text">Ekipa</div>
-                </div>
 
                 <!-- GOOGLE -->
                 <div class="tile tile-wide tile-google">
@@ -280,7 +306,7 @@
                     <div style="font-size: 18px;">Playlista</div>
                 </div>
 
-                <!-- Nowy kafelek galerii zastępujący "Zadania" -->
+                <!-- Kafelek galerii -->
                 <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
                     <div style="font-size: 32px; margin-bottom: auto;">📸</div>
                     <div style="font-size: 18px;">Galeria</div>
@@ -295,7 +321,6 @@
             <p>Lista osób z Messengera. </p>
             
             <div class="members-grid">
-                <!-- Karty członków (jak poprzednio, możesz powielać i zmieniać src zdjęć) -->
                 <div class="member-card">
                     <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Imię 1</h3>
@@ -309,13 +334,12 @@
             </div>
         </div>
 
-        <!-- ZAKŁADKA 3: ZDJĘCIA (NOWA) -->
+        <!-- ZAKŁADKA 3: ZDJĘCIA -->
         <div id="zdjecia" class="page page-content">
             <h2>Galeria Zdjęć</h2>
             <p>Najlepsze momenty i fotki ekipy.</p>
             
             <div class="gallery-grid">
-                <!-- Podmień src na swoje zdjęcia -->
                 <img src="galeria1.jpg" alt="Zdjęcie 1">
                 <img src="galeria2.jpg" alt="Zdjęcie 2">
                 <img src="galeria3.jpg" alt="Zdjęcie 3">
