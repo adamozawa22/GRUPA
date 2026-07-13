@@ -92,6 +92,7 @@
         .bg-orange { background-color: #da532c; }
         .bg-teal { background-color: #00aba9; }
         .bg-ig { background-color: #833AB4; }
+        .bg-tiktok { background-color: #000000; }
 
         .tile-google {
             background-color: white;
@@ -186,7 +187,6 @@
             border-color: #8cbd8c;
         }
 
-        /* LIGHTBOX - NOWE */
         #lightbox { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
         #lightbox img { max-width: 90%; max-height: 80%; border: 3px solid white; }
         .lb-nav { position: absolute; color: white; font-size: 40px; cursor: pointer; padding: 20px; user-select: none; }
@@ -207,7 +207,6 @@
 </head>
 <body>
 
-    <!-- LIGHTBOX -->
     <div id="lightbox" onclick="closeLightbox()">
         <div class="lb-nav lb-prev" onclick="event.stopPropagation(); changeImage(-1)">&#10094;</div>
         <img id="lightbox-img" src="" onclick="event.stopPropagation()">
@@ -241,20 +240,24 @@
                     <div style="font-size: 32px; margin-bottom: auto;">📅</div>
                     <div style="font-size: 18px;">Terminarz</div>
                 </div>
-                <div class="tile tile-wide bg-blue">
-                    <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER CHAT</div>
-                    <div style="font-size: 14px; opacity: 0.8;">Ostatnia wiadomość: przed chwilą...</div>
-                </div>
-                <div class="tile bg-purple">
-                    <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
-                    <div style="font-size: 18px;">Playlista</div>
-                </div>
-               <a href="https://www.instagram.com/melanz.onlinemess/" target="_blank" style="text-decoration: none; color: inherit;">
-                 <div class="tile bg-ig">
-                 <div style="font-size: 32px; margin-bottom: auto;">📸</div>
-               <div style="font-size: 18px;">Instagram</div>
-              </div>
-               </a>
+                <a href="TWÓJ_LINK_DO_MESSENGERA" target="_blank" style="text-decoration: none; color: inherit;">
+                    <div class="tile tile-wide bg-blue">
+                        <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER CHAT</div>
+                        <div style="font-size: 14px; opacity: 0.8;">Kliknij, aby dołączyć!</div>
+                    </div>
+                </a>
+                <a href="TWÓJ_LINK_DO_TIKTOKA" target="_blank" style="text-decoration: none; color: inherit;">
+                    <div class="tile bg-tiktok">
+                        <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
+                        <div style="font-size: 18px;">TikTok</div>
+                    </div>
+                </a>
+                <a href="TWÓJ_LINK_DO_INSTAGRAMA" target="_blank" style="text-decoration: none; color: inherit;">
+                  <div class="tile bg-ig">
+                    <div style="font-size: 32px; margin-bottom: auto;">📸</div>
+                    <div style="font-size: 18px;">Instagram</div>
+                  </div>
+                </a>
                 <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
                     <div style="font-size: 32px; margin-bottom: auto;">📸</div>
                     <div style="font-size: 18px;">Galeria</div>
@@ -264,7 +267,6 @@
 
         <div id="kim-jestesmy" class="page page-content">
             <h2>Członkowie Grupy</h2>
-            <p>Lista osób z Messengera. </p>
             <div class="members-grid">
                 <div class="member-card">
                     <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
@@ -286,7 +288,7 @@
                     <h3>Adaś</h3>
                     <p>Wszyscy zostaną ukarani za skurwysynstwo</p>
                 </div>
-                 <div class="member-card">
+                <div class="member-card">
                     <img src="osoba5.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Macica</h3>
                     <p>Lubie mężczyzn</p>
@@ -296,7 +298,6 @@
 
         <div id="zdjecia" class="page page-content">
             <h2>Galeria Zdjęć</h2>
-            <p>Najlepsze momenty i fotki ekipy.</p>
             <div class="gallery-grid" id="gallery">
                 <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)">
                 <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1)">
@@ -307,7 +308,6 @@
 
         <div id="spotkania" class="page page-content">
             <h2>Terminarz Spotkań</h2>
-            <p>Najbliższe wydarzenia i plany grupy:</p>
             <ul>
                 <li><strong>15 Sierpnia:</strong> Wspólne wyjście</li>
                 <li><strong>Składki:</strong> do końca miesiąca</li>
@@ -330,7 +330,6 @@
             document.getElementById(pageId).classList.add('active');
         }
 
-        // Logika lightboxa
         let currentIdx = 0;
         const images = document.querySelectorAll('#gallery img');
         const lb = document.getElementById('lightbox');
