@@ -5,75 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genzie Messenger Hub</title>
     <style>
-        /* Główne style - Klasyczny iOS Skeuomorfizm (wzorowane na iOS widget library.jpg) */
+        /* Główne style - Kafelkowy styl Metro UI */
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==') repeat; /* Subtelna tekstura */
-            background-color: #6b737b;
-            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2e3b2e;
+            color: white;
             margin: 0;
             padding: 40px;
             display: flex;
             height: 100vh;
             box-sizing: border-box;
             overflow: hidden;
-            text-shadow: 0 -1px 1px rgba(0,0,0,0.8);
         }
 
-        /* Lewe Menu (Nawigacja przypominająca zgrupowaną listę iOS) */
+        /* Lewe Menu (Nawigacja) */
         .sidebar {
             width: 250px;
             display: flex;
             flex-direction: column;
-            gap: 0; /* Brak odstępów, żeby wyglądało jak jedna lista */
+            gap: 15px;
             padding-right: 40px;
         }
 
         .sidebar h1 {
-            font-weight: bold;
+            font-weight: 300;
             font-size: 40px;
             margin: 0 0 30px 0;
             line-height: 1;
-            text-align: center;
         }
 
         .nav-link {
             cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
-            color: #000;
-            background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
-            border: 1px solid #888;
-            border-bottom: none;
-            padding: 15px 20px;
-            text-transform: capitalize;
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.4);
+            transition: color 0.2s;
+            text-transform: lowercase;
             user-select: none;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,1);
         }
 
-        .nav-link:first-of-type {
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
-
-        .nav-link:last-of-type {
-            border-bottom: 1px solid #888;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
-
-        .nav-link:hover {
-            background: linear-gradient(to bottom, #f4f4f4 0%, #d4d4d4 100%);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(to bottom, #7bb5ef 0%, #4492e8 49%, #1575df 50%, #095bb9 100%);
-            color: #fff;
-            text-shadow: 0 -1px 1px rgba(0,0,0,0.6);
-            border-color: #053b75;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
-        }
+        .nav-link:hover { color: rgba(255, 255, 255, 0.8); }
+        .nav-link.active { color: white; font-weight: 600; }
 
         /* Prawa strona - Obszar zawartości (Zakładki) */
         .content {
@@ -86,90 +57,61 @@
         .page.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(20px); }
+            from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* Siatka Kafelków */
+        /* Siatka Kafelków (Grid na głównej) */
         .metro-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 160px));
             grid-auto-rows: 160px;
-            gap: 15px;
+            gap: 10px;
             max-width: 1000px;
         }
 
-        /* Klasyczne błyszczące kafelki-przyciski */
         .tile {
+            background-color: #8cbd8c;
             position: relative;
             cursor: pointer;
-            border-radius: 12px;
+            transition: transform 0.1s;
             padding: 15px;
             box-sizing: border-box;
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            border: 1px solid #111;
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 3px 6px rgba(0,0,0,0.4);
             overflow: hidden;
-            text-align: center;
-            align-items: center;
         }
 
-        .tile:hover {
-            opacity: 0.9;
-        }
-        
+        .tile:hover { transform: scale(1.03); outline: 3px solid rgba(255,255,255,0.5); }
         .tile-large { grid-column: span 2; grid-row: span 2; }
-        .tile-wide { grid-column: span 2; align-items: flex-start; text-align: left;}
+        .tile-wide { grid-column: span 2; }
         .tile-tall { grid-row: span 2; }
 
-        /* Kolory kafelków (wzorowane na iOS) */
-        .bg-dark-green { /* Zielony błyszczący */
-            background: linear-gradient(to bottom, #8ed058 0%, #5cb31c 49%, #479d0c 50%, #3e8809 100%);
-            border-color: #2a5a06;
-        }
-        .bg-blue { /* Niebieski błyszczący */
-            background: linear-gradient(to bottom, #7bb5ef 0%, #4492e8 49%, #1575df 50%, #095bb9 100%);
-            border-color: #053b75;
-        }
-        .bg-purple { /* Czarny błyszczący */
-            background: linear-gradient(to bottom, #777777 0%, #444444 49%, #222222 50%, #000000 100%);
-            border-color: #000;
-        }
-        .bg-orange { /* Czerwony/Pomarańczowy błyszczący */
-            background: linear-gradient(to bottom, #f37e7b 0%, #e2423d 49%, #d22621 50%, #bd1511 100%);
-            border-color: #6a0b08;
-        }
-        .bg-teal { /* Szaro-srebrny błyszczący */
-            background: linear-gradient(to bottom, #c6cfd8 0%, #9ba6b2 49%, #82909e 50%, #768392 100%);
-            color: #000;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.6);
-            border-color: #4a545e;
-        }
+        /* Kolory kafelków */
+        .bg-dark-green { background-color: #5a9c5a; }
+        .bg-blue { background-color: #2b5797; }
+        .bg-purple { background-color: #603cba; }
+        .bg-orange { background-color: #da532c; }
+        .bg-teal { background-color: #00aba9; }
 
-        /* REALISTYCZNE ZDJĘCIE (zaokrąglone rogi i ramka) */
-        .tile-photo {
-            border: 2px solid #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-            padding: 0;
-            background: #000;
-        }
+        /* REALISTYCZNE ZDJĘCIE Z ZIELONYM FILTREM */
         .tile-photo .photo-bg {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             object-fit: cover;
             z-index: 1;
-            border-radius: 10px;
         }
         
         .tile-photo .green-tint {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.8) 100%);
+            background-color: #5a9c5a;
+            mix-blend-mode: multiply; 
+            opacity: 0.9;
             z-index: 2;
         }
 
@@ -178,72 +120,46 @@
             z-index: 3;
             font-size: 24px;
             font-weight: bold;
-            padding: 15px;
-            align-self: flex-start;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
         }
 
-        /* WYSZUKIWARKA GOOGLE (Styl starego paska nawigacji iOS) */
+        /* WYSZUKIWARKA GOOGLE */
         .tile-google {
-            background: linear-gradient(to bottom, #b4bcc6 0%, #86929f 100%);
-            border: 1px solid #5a626a;
-            border-radius: 12px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 5px rgba(0,0,0,0.4);
+            background-color: white;
             color: #333;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 15px 20px;
+            align-items: flex-start;
         }
-        .google-logo { 
-            font-size: 24px; 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            text-shadow: 0 1px 0 #fff;
-        }
-        .google-logo span:nth-child(1) { color: #1575df; }
-        .google-logo span:nth-child(2) { color: #d22621; }
-        .google-logo span:nth-child(3) { color: #e6a000; }
-        .google-logo span:nth-child(4) { color: #1575df; }
-        .google-logo span:nth-child(5) { color: #479d0c; }
-        .google-logo span:nth-child(6) { color: #d22621; }
+        .google-logo { font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+        .google-logo span:nth-child(1) { color: #4285F4; }
+        .google-logo span:nth-child(2) { color: #EA4335; }
+        .google-logo span:nth-child(3) { color: #FBBC05; }
+        .google-logo span:nth-child(4) { color: #4285F4; }
+        .google-logo span:nth-child(5) { color: #34A853; }
+        .google-logo span:nth-child(6) { color: #EA4335; }
 
-        .tile-google form { width: 100%; display: flex; gap: 10px; }
+        .tile-google form { width: 100%; display: flex; gap: 5px; }
         .tile-google input {
             flex: 1;
-            padding: 8px 15px;
-            border: 1px solid #4a545e;
-            border-radius: 15px;
+            padding: 8px;
+            border: 2px solid #ddd;
             outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.6);
-            background: #fff;
-            font-size: 14px;
         }
         .tile-google button {
-            background: linear-gradient(to bottom, #7bb5ef 0%, #4492e8 49%, #1575df 50%, #095bb9 100%);
+            background: #8cbd8c;
             color: white;
-            font-weight: bold;
-            border: 1px solid #053b75;
-            border-radius: 6px;
-            padding: 8px 15px;
+            border: none;
+            padding: 8px 12px;
             cursor: pointer;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 3px rgba(0,0,0,0.4);
-            text-shadow: 0 -1px 1px rgba(0,0,0,0.6);
         }
 
         /* Zwykły tekst na stronach */
         .page-content { max-width: 1000px; font-size: 18px; line-height: 1.6; padding-bottom: 40px; }
-        .page-content h2 { 
-            font-weight: bold; 
-            font-size: 32px; 
-            border-bottom: 2px solid #555; 
-            padding-bottom: 10px; 
-            margin-top: 0; 
-            box-shadow: 0 1px 0 rgba(255,255,255,0.2); 
-            margin-bottom: 20px;
-        }
+        .page-content h2 { font-weight: 300; font-size: 36px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; margin-top: 0; }
 
-        /* WIDOK CZŁONKÓW GRUPY (Karty jak dawne widgety/powiadomienia) */
+        /* WIDOK CZŁONKÓW GRUPY */
         .members-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -252,38 +168,40 @@
         }
 
         .member-card {
-            background: linear-gradient(to bottom, #f4f5f7 0%, #d5d9df 100%);
+            background-color: rgba(255, 255, 255, 0.05);
             padding: 15px;
-            border: 1px solid #5a626a;
-            border-radius: 12px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 3px 6px rgba(0,0,0,0.4);
+            border: 2px solid transparent;
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            color: #333;
-            text-shadow: 0 1px 0 #fff;
+        }
+
+        .member-card:hover {
+            border-color: #8cbd8c;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
         }
 
         .member-card img {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
-            border-radius: 8px;
-            background-color: #000;
+            border-radius: 50%;
+            background-color: #5a9c5a;
             margin-bottom: 15px;
-            border: 3px solid #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+            border: 4px solid rgba(255, 255, 255, 0.2);
         }
 
-        .member-card h3 { margin: 0 0 5px 0; font-size: 22px; font-weight: bold; }
-        .member-card p { margin: 0; font-size: 14px; color: #555; }
+        .member-card h3 { margin: 0 0 5px 0; font-size: 22px; font-weight: 600; }
+        .member-card p { margin: 0; font-size: 14px; opacity: 0.7; }
 
-        /* GALERIA ZDJĘĆ (Klasyczne ramki ze zdjęciami) */
+        /* GALERIA ZDJĘĆ */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            gap: 15px;
             margin-top: 20px;
         }
 
@@ -291,14 +209,14 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
-            border: 5px solid #fff;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.6);
-            border-radius: 4px;
-            background-color: #222;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+            background-color: rgba(255,255,255,0.1);
         }
 
         .gallery-grid img:hover {
-            opacity: 0.8;
+            transform: scale(1.05);
+            border-color: #8cbd8c;
             cursor: pointer;
         }
     </style>
@@ -344,28 +262,28 @@
                 <!-- DODATKOWE KAFELKI -->
                 <div class="tile bg-dark-green" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
                     <div style="font-size: 32px; margin-bottom: auto;">👥</div>
-                    <div style="font-size: 18px; font-weight: bold;">Lista obecności</div>
+                    <div style="font-size: 18px;">Lista obecności</div>
                 </div>
 
                 <div class="tile bg-orange" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
                     <div style="font-size: 32px; margin-bottom: auto;">📅</div>
-                    <div style="font-size: 18px; font-weight: bold;">Terminarz</div>
+                    <div style="font-size: 18px;">Terminarz</div>
                 </div>
                 
                 <div class="tile tile-wide bg-blue">
-                    <div style="font-size: 20px; font-weight: bold; margin-bottom: 5px;">MESSENGER CHAT</div>
-                    <div style="font-size: 14px; opacity: 0.9;">Ostatnia wiadomość: przed chwilą...</div>
+                    <div style="font-size: 24px; margin-bottom: 5px;">MESSENGER CHAT</div>
+                    <div style="font-size: 14px; opacity: 0.8;">Ostatnia wiadomość: przed chwilą...</div>
                 </div>
 
                 <div class="tile bg-purple">
                     <div style="font-size: 32px; margin-bottom: auto;">🎵</div>
-                    <div style="font-size: 18px; font-weight: bold;">Playlista</div>
+                    <div style="font-size: 18px;">Playlista</div>
                 </div>
 
                 <!-- Nowy kafelek galerii zastępujący "Zadania" -->
                 <div class="tile bg-teal" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
                     <div style="font-size: 32px; margin-bottom: auto;">📸</div>
-                    <div style="font-size: 18px; font-weight: bold;">Galeria</div>
+                    <div style="font-size: 18px;">Galeria</div>
                 </div>
 
             </div>
@@ -379,12 +297,12 @@
             <div class="members-grid">
                 <!-- Karty członków (jak poprzednio, możesz powielać i zmieniać src zdjęć) -->
                 <div class="member-card">
-                    <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Crect%20width%3D%22140%22%20height%3D%22140%22%20fill%3D%22%23222%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                    <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Imię 1</h3>
                     <p>Opis, rola w grupie lub pseudonim.</p>
                 </div>
                 <div class="member-card">
-                    <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Crect%20width%3D%22140%22%20height%3D%22140%22%20fill%3D%22%23222%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+                    <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%235a9c5a%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
                     <h3>Imię 2</h3>
                     <p>Opis, rola w grupie lub pseudonim.</p>
                 </div>
