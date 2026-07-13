@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genzie | Strona Główna</title>
+    <style>
+        /* Stylizacja wyglądu */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: #007bff; }
+
+        main {
+            background: white;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 50px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="kim-jestesmy.html">Kim jesteśmy</a>
+        <a href="spotkania.html">Kiedy następne spotkanie</a>
+        <a href="informacje.html">Informacje</a>
+    </nav>
+
+    <main>
+        <h1>Witamy w świecie Genzie</h1>
+        <!-- Tutaj wstawisz swoje zdjęcie -->
+        <img src="zdjecia/glowne.jpg" alt="Ekipa Genzie" class="hero-img">
+        <p>To jest nasza przestrzeń. Witaj w oficjalnym centrum informacji o grupie.</p>
+    </main>
+
+</body>
+</html>
