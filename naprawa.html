@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Genzie Hub — w naprawie</title>
+<title>Genzie Hub</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&display=swap');
 
@@ -34,15 +34,13 @@
       linear-gradient(135deg, #fdeaff 0%, #d8f3ff 55%, #fff6d2 100%);
     background-attachment: fixed;
     min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding: 40px 20px;
+    padding: 22px 26px 60px;
     position:relative;
     overflow-x:hidden;
+    transition: background .6s ease, color .6s ease;
   }
 
+  /* floating sparkles */
   .sparkle{
     position:fixed;
     font-size:22px;
@@ -58,130 +56,358 @@
   .s5{ top:15%; left:94%; animation-delay:1.8s; }
   @keyframes bob{ 0%,100%{ transform: translateY(0) rotate(0deg);} 50%{ transform: translateY(-14px) rotate(12deg);} }
 
-  .wrap{
-    max-width: 620px;
-    width:100%;
-    text-align:center;
-    position:relative;
-    z-index:1;
+  /* ---------- MODE TOGGLE ---------- */
+  .mode-toggle{
+    position:fixed;
+    top:18px; right:18px; z-index:60;
+    width:46px; height:46px;
+    border-radius:50%;
+    border:3px solid var(--line);
+    background: var(--card);
+    box-shadow: 4px 4px 0 var(--line);
+    font-size:20px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease, background-color .5s ease, border-color .5s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
+  .mode-toggle:hover{ transform: translateY(-2px); box-shadow: 6px 6px 0 var(--line); }
+  .mode-toggle:active{ transform: translateY(0); box-shadow: 2px 2px 0 var(--line); }
+
+  /* ---------- TOP BAR ---------- */
+  .topbar{
+    position:sticky; top:16px; z-index:50;
+    max-width:1100px; margin: 0 auto 26px;
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 100px;
+    box-shadow: 6px 6px 0 var(--line);
+    padding: 10px 12px 10px 22px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-right: 62px;
+    opacity:1;
+    transform: translateY(0);
+    transition:
+      opacity .5s cubic-bezier(.65,0,.35,1),
+      transform .5s cubic-bezier(.65,0,.35,1),
+      background-color .5s ease,
+      border-color .5s ease,
+      box-shadow .4s ease;
+  }
+
+  /* pasek znika przy przewijaniu strony */
+  .topbar.collapsed{
+    opacity:0;
+    transform: translateY(-14px);
+    pointer-events:none;
+  }
+
 
   .logo{
     font-family:'Baloo 2', sans-serif;
     font-weight:800;
-    font-size:28px;
+    font-size:24px;
+    letter-spacing:0.5px;
     color: var(--purple);
     -webkit-text-stroke: 1.4px var(--line);
-    margin-bottom: 22px;
+    text-stroke: 1.4px var(--line);
+    display:flex; align-items:center; gap:8px;
+    white-space:nowrap;
   }
 
-  .banner{
-    background: var(--card);
-    border: 3px solid var(--line);
-    border-radius: 34px 34px 34px 10px;
-    box-shadow: 7px 7px 0 var(--line);
-    padding: 38px 30px 34px;
-    margin-bottom: 30px;
-    transform: rotate(-0.6deg);
-  }
+  .nav-pills{ display:flex; gap:8px; flex-wrap:wrap; }
 
-  .banner .emoji{
-    font-size: 52px;
-    display:inline-block;
-    animation: wrench 2.4s ease-in-out infinite;
-  }
-  @keyframes wrench{
-    0%,100%{ transform: rotate(-12deg); }
-    50%{ transform: rotate(12deg); }
-  }
-
-  .banner h1{
+  .nav-link{
+    cursor:pointer;
     font-family:'Baloo 2', sans-serif;
-    font-weight:800;
-    font-size: 26px;
-    margin: 14px 0 8px;
-    color: var(--ink);
-  }
-  .banner p{
     font-weight:600;
-    color: var(--muted);
-    margin:0;
-    font-size: 15px;
-    line-height:1.5;
-  }
-
-  .progress{
-    margin-top:20px;
-    height: 16px;
-    border: 2.5px solid var(--line);
-    border-radius: 100px;
-    background: #fff;
-    overflow:hidden;
-  }
-  .progress-bar{
-    height:100%;
-    width: 55%;
-    border-radius: 100px;
-    background: repeating-linear-gradient(45deg, var(--yellow), var(--yellow) 12px, var(--orange) 12px, var(--orange) 24px);
-    background-size: 34px 34px;
-    animation: stripes 1.2s linear infinite;
-  }
-  @keyframes stripes{ from{ background-position:0 0; } to{ background-position: 34px 0; } }
-
-  .socials-label{
-    font-family:'Baloo 2', sans-serif;
-    font-weight:700;
-    font-size:16px;
+    font-size:14.5px;
     color: var(--ink);
-    margin-bottom: 16px;
+    padding: 9px 18px;
+    border-radius: 100px;
+    border: 2.5px solid transparent;
+    background: transparent;
+    transition: all .18s ease;
+    user-select:none;
+    text-transform:lowercase;
+  }
+  .nav-link:hover{ background: rgba(140,82,255,0.1); }
+  .nav-link.active{
+    background: var(--yellow);
+    border-color: var(--line);
+    box-shadow: 3px 3px 0 var(--line);
+    transform: translateY(-1px);
   }
 
-  .tiles{
+  /* ---------- PAGE WRAP ---------- */
+  .page-wrap{ max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+  .page{ display:none; animation: pop .4s cubic-bezier(.2,.9,.3,1); }
+  .page.active{ display:block; }
+  @keyframes pop{ from{ opacity:0; transform: scale(.96) translateY(10px);} to{ opacity:1; transform:scale(1) translateY(0);} }
+
+  /* ---------- BENTO GRID ---------- */
+  .bento{
     display:grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 130px;
+    grid-auto-flow: dense;
     gap: 16px;
   }
 
   .tile{
     position:relative;
-    border-radius: 26px 26px 26px 10px;
+    border-radius: 28px 28px 28px 10px;
     border: 3px solid var(--line);
     box-shadow: 5px 5px 0 var(--line);
-    padding: 22px 12px;
-    display:flex; flex-direction:column; align-items:center; gap:8px;
+    padding: 18px;
+    display:flex; flex-direction:column; justify-content:flex-end;
     color: var(--ink);
     text-decoration:none;
     cursor:pointer;
     transition: transform .18s ease, box-shadow .18s ease;
+    overflow:hidden;
   }
-  .tile:nth-child(odd){ transform: rotate(-1.5deg); }
-  .tile:nth-child(even){ transform: rotate(1.5deg); border-radius: 10px 26px 26px 26px; }
+  .tile:nth-child(odd){ transform: rotate(-1.3deg); }
+  .tile:nth-child(even){ transform: rotate(1.1deg); border-radius: 10px 28px 28px 28px; }
   .tile:hover{
-    transform: rotate(0deg) translateY(-4px) scale(1.03);
+    transform: rotate(0deg) translateY(-4px) scale(1.02);
     box-shadow: 8px 8px 0 var(--line);
   }
 
-  .tile-ig{ background: linear-gradient(160deg, #833AB4, #C13584, #FD1D1D); color:#fff; }
-  .tile-tt{ background: var(--ink); color:#fff; }
-  .tile-msg{ background: var(--cyan); }
+  .tile-g2{ grid-column: span 1; background: var(--lime); }
+  .tile-g3{ grid-column: span 1; background: var(--orange); }
+  .tile-g4{ grid-column: span 2; grid-row: span 2; background: var(--pink); color:#fff; }
+  .tile-g5{ grid-column: span 1; grid-row: span 2; background: linear-gradient(160deg, #833AB4, #C13584, #FD1D1D); color:#fff; }
+  .tile-g6{ grid-column: span 1; background: var(--cyan); }
+  .tile-g7{ grid-column: span 1; background: var(--mint); }
+  .tile-g8{ grid-column: span 2; background: var(--purple); color:#fff; }
 
-  .tile .icon{ font-size:30px; }
-  .tile .label{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:14px; }
+  .tile .icon{ font-size:30px; margin-bottom:auto; }
+  .tile .label{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:18px; line-height:1.15; }
+  .tile .sub{ font-size:12.5px; font-weight:600; opacity:0.75; margin-top:3px; }
 
-  @media (max-width: 480px){
-    .tiles{ grid-template-columns: 1fr; }
-    .banner{ padding:30px 20px 26px; }
-    .banner h1{ font-size:22px; }
+  /* ---------- PAGE CONTENT CARD ---------- */
+  .page-content{
+    max-width:1100px;
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 34px 34px 34px 10px;
+    box-shadow: 7px 7px 0 var(--line);
+    padding: 34px 38px 42px;
+  }
+  .page-content h2{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800; font-size:30px; margin:0 0 6px 0; color: var(--purple);
+  }
+  .page-content > p{ color: var(--muted); font-weight:600; margin:0 0 24px 0; }
+  .page-content ul{ line-height:2; font-weight:600; }
+  .page-content li strong{ color: var(--pink); }
+
+  /* members */
+  .members-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:18px; }
+  .member-card{
+    background: #fff;
+    border: 2.5px solid var(--line);
+    border-radius: 24px 24px 24px 8px;
+    padding: 20px 14px;
+    text-align:center;
+    transition: transform .18s ease;
+  }
+  .member-card:nth-child(3n+1){ transform: rotate(-1deg); }
+  .member-card:nth-child(3n+2){ transform: rotate(1deg); }
+  .member-card:hover{ transform: translateY(-5px) rotate(0deg); }
+  .member-card img{
+    width:96px; height:96px; border-radius:50%; object-fit:cover;
+    border: 3px solid var(--line); margin-bottom:12px; background: var(--mint);
+  }
+  .member-card h3{ font-family:'Baloo 2', sans-serif; margin:0 0 3px 0; font-size:17px; }
+  .member-card p{ margin:0; font-size:12px; color: var(--muted); font-weight:600; }
+
+  /* gallery - polaroid style */
+  .gallery-grid{ display:flex; flex-wrap:wrap; gap:22px; padding-top:6px; }
+  .polaroid{
+    background:#fff; border:2.5px solid var(--line); border-radius:10px;
+    padding:10px 10px 26px; box-shadow: 4px 4px 0 var(--line);
+    width:220px; cursor:pointer; transition: transform .18s ease;
+  }
+  .polaroid:nth-child(odd){ transform: rotate(-2.5deg); }
+  .polaroid:nth-child(even){ transform: rotate(2.5deg); }
+  .polaroid:hover{ transform: rotate(0deg) scale(1.04); }
+  .polaroid img{ width:100%; height:170px; object-fit:cover; border-radius:4px; display:block; background: var(--mint); }
+
+  /* lightbox */
+  #lightbox{
+    display:none; position:fixed; inset:0; z-index:1000;
+    background: rgba(43,22,66,0.85);
+    align-items:center; justify-content:center;
+  }
+  #lightbox img{ max-width:88%; max-height:78%; border-radius:16px; border:4px solid #fff; }
+  .lb-nav{
+    position:absolute; color:#fff; font-size:36px; cursor:pointer;
+    padding:20px; user-select:none; background: var(--pink);
+    border-radius:50%; width:52px; height:52px; display:flex; align-items:center; justify-content:center;
+    border: 3px solid var(--line); line-height:0;
+  }
+  .lb-prev{ left:18px; } .lb-next{ right:18px; }
+
+  @media (max-width:768px){
+    body{ padding: 16px 14px 50px; }
+    .mode-toggle{ top:14px; right:14px; width:42px; height:42px; font-size:18px; }
+    .bento{ grid-template-columns: repeat(2,1fr); grid-auto-rows:130px; gap:12px; }
+    .tile-g4, .tile-g8{ grid-column: span 2; }
+    .tile-g4{ grid-row: span 2; }
+    .topbar{ border-radius:28px; flex-direction:column; align-items:stretch; margin-right:0; padding:12px; }
+    .logo{ justify-content:center; font-size:21px; }
+    .nav-pills{ justify-content:center; }
+    .nav-link{ padding:10px 14px; font-size:14px; }
+    .page-content{ padding:22px 18px 28px; border-radius:26px 26px 26px 8px; }
+    .gallery-grid{ gap:16px; justify-content:center; }
+    .polaroid{ width: 44%; min-width:150px; }
+  }
+
+  @media (max-width:480px){
+    .bento{ grid-template-columns: 1fr; grid-auto-rows:150px; gap:12px; }
+    .tile-g2,.tile-g3,.tile-g4,.tile-g5,.tile-g6,.tile-g7,.tile-g8{ grid-column: span 1; grid-row: span 1; }
+    .tile-g4{ min-height:170px; }
+    .tile .icon{ font-size:26px; }
+    .tile .label{ font-size:16.5px; }
     .sparkle{ display:none; }
+    .members-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap:12px; }
+    .polaroid{ width: 100%; flex: 1 1 100%; }
+    .lb-nav{ width:44px; height:44px; font-size:28px; }
   }
 
   @media (prefers-reduced-motion: reduce){
-    .sparkle, .banner .emoji, .progress-bar{ animation:none; }
-    .tile{ transition:none; }
+    .sparkle{ animation:none; }
+    .page{ animation:none; }
+    .tile, .member-card, .polaroid, .mode-toggle{ transition:none; }
   }
+
+  /* ---------- TRYB PROSTY: zupełnie inny, ciemny, bez kafelków i linków-pigułek ---------- */
+  body.normal-mode{
+    background:#050505 !important;
+    color:#d6d6d6;
+  }
+  body.normal-mode .sparkle{ display:none !important; }
+  body.normal-mode img{ filter: grayscale(1) contrast(1.05) brightness(.92); }
+
+  /* toggle button */
+  body.normal-mode .mode-toggle{
+    background:#0d0d0d !important;
+    border-color:#2b2b2b !important;
+    color:#eaeaea !important;
+    box-shadow:none !important;
+  }
+  body.normal-mode .mode-toggle:hover{ box-shadow:none !important; border-color:#555 !important; }
+
+  /* topbar - flat, no pill, no shadow */
+  body.normal-mode .topbar{
+    background:#050505 !important;
+    border:none !important;
+    border-bottom:1px solid #232323 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    padding:16px 22px !important;
+  }
+  body.normal-mode .topbar.collapsed{
+    background:#0a0a0a !important;
+    border:1px solid #262626 !important;
+    border-radius:50% !important;
+  }
+  body.normal-mode .logo{
+    color:#eee !important;
+    -webkit-text-stroke:0 !important;
+    text-stroke:0 !important;
+    font-weight:600 !important;
+  }
+
+  body.normal-mode .nav-pills{ gap:2px; }
+  body.normal-mode .nav-link{
+    color:#8f8f8f !important;
+    background:transparent !important;
+    border:none !important;
+    border-bottom:2px solid transparent !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    transform:none !important;
+    text-transform:none !important;
+  }
+  body.normal-mode .nav-link:hover{ color:#fff !important; background:transparent !important; }
+  body.normal-mode .nav-link.active{
+    color:#fff !important;
+    background:transparent !important;
+    border-bottom-color:#fff !important;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+
+  /* strona główna: bez kafelków - zwykła, płaska lista */
+  body.normal-mode .bento{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:0 !important;
+  }
+  body.normal-mode .tile{
+    background:transparent !important;
+    border:none !important;
+    border-bottom:1px solid #1c1c1c !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    transform:none !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    gap:14px;
+    padding:18px 4px !important;
+    min-height:auto !important;
+    color:#d6d6d6 !important;
+  }
+  body.normal-mode .tile:hover{
+    background:rgba(255,255,255,0.03) !important;
+    transform:none !important;
+    box-shadow:none !important;
+  }
+  body.normal-mode .tile .icon{ font-size:18px; margin:0; opacity:.6; }
+  body.normal-mode .tile .label{ font-weight:600; font-size:15px; color:#eaeaea; }
+  body.normal-mode .tile .sub{ opacity:.5; }
+
+  /* podstrony */
+  body.normal-mode .page-content{
+    background:transparent !important;
+    border:none !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    padding:26px 0 !important;
+  }
+  body.normal-mode .page-content h2{ color:#fff !important; font-weight:600; }
+  body.normal-mode .page-content > p{ color:#888 !important; }
+  body.normal-mode .page-content li strong{ color:#fff !important; }
+
+  body.normal-mode .member-card{
+    background:transparent !important; border:none !important;
+    border-bottom:1px solid #1c1c1c !important; border-radius:0 !important;
+    box-shadow:none !important; transform:none !important;
+  }
+  body.normal-mode .member-card:hover{ transform:none !important; background:rgba(255,255,255,0.03) !important; }
+  body.normal-mode .member-card img{ border-color:#333 !important; background:#111 !important; }
+  body.normal-mode .member-card p{ color:#777 !important; }
+
+  body.normal-mode .polaroid{
+    background:transparent !important; border:none !important;
+    border-bottom:1px solid #1c1c1c !important; border-radius:0 !important;
+    box-shadow:none !important; transform:none !important; padding:0 0 10px !important;
+  }
+  body.normal-mode .polaroid:hover{ transform:none !important; }
+
+  body.normal-mode #lightbox{ background:rgba(0,0,0,.95) !important; }
+  body.normal-mode .lb-nav{ background:transparent !important; border:1px solid #3a3a3a !important; color:#eee !important; }
 </style>
 </head>
 <body>
+
+  <button id="modeToggle" class="mode-toggle" type="button" aria-label="Włącz tryb prosty (czarno-biały)" title="Tryb prosty">🎨</button>
 
   <div class="sparkle s1">✨</div>
   <div class="sparkle s2">⭐</div>
@@ -189,35 +415,194 @@
   <div class="sparkle s4">✨</div>
   <div class="sparkle s5">⭐</div>
 
-  <div class="wrap">
+  <div id="lightbox" onclick="closeLightbox()">
+    <div class="lb-nav lb-prev" onclick="event.stopPropagation(); changeImage(-1)">&#10094;</div>
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+    <div class="lb-nav lb-next" onclick="event.stopPropagation(); changeImage(1)">&#10095;</div>
+  </div>
+
+  <div class="topbar" id="topbar">
     <div class="logo">🌈 genzie hub</div>
-
-    <div class="banner">
-      <div class="emoji">🛠️</div>
-      <h1>Strona w naprawie!</h1>
-      <p>Coś tu majstrujemy i już niedługo wszystko będzie działać jak trzeba. W międzyczasie znajdziesz nas tutaj 👇</p>
-      <div class="progress"><div class="progress-bar"></div></div>
-    </div>
-
-    <div class="socials-label">znajdź nas gdzie indziej</div>
-
-    <div class="tiles">
-      <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-ig" target="_blank" rel="noopener">
-        <div class="icon">📷</div>
-        <div class="label">Instagram</div>
-      </a>
-
-      <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-tt" target="_blank" rel="noopener">
-        <div class="icon">🎵</div>
-        <div class="label">TikTok</div>
-      </a>
-
-      <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-msg" target="_blank" rel="noopener">
-        <div class="icon">💬</div>
-        <div class="label">Messenger</div>
-      </a>
+    <div class="nav-pills" id="navPills">
+      <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
+      <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">członkowie</div>
+      <div class="nav-link" onclick="switchPage(this, 'zdjecia')">zdjęcia</div>
+      <div class="nav-link" onclick="switchPage(this, 'spotkania')">spotkania</div>
+      <div class="nav-link" onclick="switchPage(this, 'informacje')">nasze konta</div>
     </div>
   </div>
 
+  <div class="page-wrap">
+
+    <div id="home" class="page active">
+      <div class="bento">
+
+        <div class="tile tile-g2" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
+          <div class="icon">👥</div>
+          <div class="label">Lista obecności</div>
+        </div>
+
+        <div class="tile tile-g3" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
+          <div class="icon">📅</div>
+          <div class="label">Terminarz</div>
+        </div>
+
+        <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g4" target="_blank" rel="noopener">
+          <div class="icon">💬</div>
+          <div class="label">Messenger Chat</div>
+          <div class="sub">ostatnia wiadomość: przed chwilą...</div>
+        </a>
+
+        <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g5" target="_blank" rel="noopener">
+          <div class="icon">📷</div>
+          <div class="label">Instagram</div>
+        </a>
+
+        <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-g6" target="_blank" rel="noopener">
+          <div class="icon">🎵</div>
+          <div class="label">TikTok</div>
+        </a>
+
+        <div class="tile tile-g7">
+          <div class="icon">🎧</div>
+          <div class="label">Playlista</div>
+        </div>
+
+        <div class="tile tile-g8" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
+          <div class="icon">📸</div>
+          <div class="label">Galeria</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="kim-jestesmy" class="page page-content">
+      <h2>Członkowie grupy 💌</h2>
+      <p>Lista osób z Messengera.</p>
+      <div class="members-grid">
+        <div class="member-card">
+          <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <h3>Martyna</h3>
+          <p>Rzetelny administrator</p>
+        </div>
+        <div class="member-card">
+          <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <h3>Błażej</h3>
+          <p>Fajny Emogej</p>
+        </div>
+        <div class="member-card">
+          <img src="osoba3.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <h3>Antosia</h3>
+          <p>Działaczka partii komunistycznej</p>
+        </div>
+        <div class="member-card">
+          <img src="osoba4.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <h3>Adaś</h3>
+          <p>Ogarnia sprawy grupy</p>
+        </div>
+        <div class="member-card">
+          <img src="osoba5.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <h3>Macica</h3>
+          <p>Członkini ekipy</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="zdjecia" class="page page-content">
+      <h2>Galeria zdjęć 📸</h2>
+      <p>Najlepsze momenty i fotki ekipy.</p>
+      <div class="gallery-grid" id="gallery">
+        <div class="polaroid"><img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)"></div>
+        <div class="polaroid"><img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1)"></div>
+        <div class="polaroid"><img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2)"></div>
+        <div class="polaroid"><img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3)"></div>
+      </div>
+    </div>
+
+    <div id="spotkania" class="page page-content">
+      <h2>Terminarz spotkań 📅</h2>
+      <p>Najbliższe wydarzenia i plany grupy:</p>
+      <ul>
+        <li><strong>15 sierpnia:</strong> wspólne wyjście</li>
+        <li><strong>Składki:</strong> do końca miesiąca</li>
+      </ul>
+    </div>
+
+    <div id="informacje" class="page page-content">
+      <h2>Informacje ℹ️</h2>
+      <p>Wszystko, co musisz wiedzieć jako członek naszej społeczności na Messengerze.</p>
+    </div>
+
+  </div>
+
+  <script>
+    // Tryb prosty (czarno-biały, minimalistyczny) - zapamiętywany na tym komputerze
+    const modeBtn = document.getElementById('modeToggle');
+
+    function applyMode(isNormal) {
+      document.body.classList.toggle('normal-mode', isNormal);
+      if (isNormal) {
+        modeBtn.textContent = '🌈';
+        modeBtn.title = 'Wróć do kolorowego wyglądu';
+        modeBtn.setAttribute('aria-label', 'Wyłącz tryb prosty, wróć do kolorowego wyglądu');
+      } else {
+        modeBtn.textContent = '🎨';
+        modeBtn.title = 'Tryb prosty';
+        modeBtn.setAttribute('aria-label', 'Włącz tryb prosty (czarno-biały)');
+      }
+      try {
+        localStorage.setItem('genzieHubMode', isNormal ? 'normal' : 'colorful');
+      } catch (e) {
+        // brak dostępu do localStorage (np. tryb prywatny) - tryb i tak działa, po prostu się nie zapamięta
+      }
+    }
+
+    modeBtn.addEventListener('click', function () {
+      applyMode(!document.body.classList.contains('normal-mode'));
+    });
+
+    (function initMode() {
+      let saved = null;
+      try { saved = localStorage.getItem('genzieHubMode'); } catch (e) {}
+      applyMode(saved === 'normal');
+    })();
+
+    function switchPage(clickedElement, pageId) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      clickedElement.classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // ---- Pasek na górze: znika przy przewijaniu strony ----
+    const topbar = document.getElementById('topbar');
+    const SCROLL_THRESHOLD = 40;
+
+    function updateTopbarOnScroll(){
+      if (window.scrollY > SCROLL_THRESHOLD) {
+        topbar.classList.add('collapsed');
+      } else {
+        topbar.classList.remove('collapsed');
+      }
+    }
+    window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
+    updateTopbarOnScroll();
+
+    let currentIdx = 0;
+    const images = document.querySelectorAll('#gallery img');
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+
+    function openLightbox(idx) {
+      currentIdx = idx;
+      lbImg.src = images[currentIdx].src;
+      lb.style.display = 'flex';
+    }
+    function closeLightbox() { lb.style.display = 'none'; }
+    function changeImage(step) {
+      currentIdx = (currentIdx + step + images.length) % images.length;
+      lbImg.src = images[currentIdx].src;
+    }
+  </script>
 </body>
 </html>
