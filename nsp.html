@@ -414,79 +414,71 @@
       <h2>Galeria zdjęć 📸</h2>
       <p>Najlepsze momenty i fotki ekipy.</p>
 
-      <div class="cat-filters" id="catFilters">
-        <div class="cat-pill active" data-cat="1" onclick="filterGallery('all', this)">1 spotkanie</div>
-        <div class="cat-pill" data-cat="2" onclick="filterGallery('spotkania', this)">2 potkanie</div>
-        <div class="cat-pill" data-cat="3" onclick="filterGallery('memy', this)">3 spotkanie</div>
-      </div>
+     <div class="cat-filters" id="catFilters">
+  <div class="cat-pill active" data-cat="all" onclick="filterGallery('all', this)">Wszystkie</div>
+  <div class="cat-pill" data-cat="1" onclick="filterGallery('1', this)">1 spotkanie</div>
+  <div class="cat-pill" data-cat="2" onclick="filterGallery('2', this)">2 spotkanie</div>
+  <div class="cat-pill" data-cat="3" onclick="filterGallery('3', this)">3 spotkanie</div>
+</div>
 
-      <div class="gallery-grid" id="gallery">
-        <div class="polaroid" data-cat="1">
-          <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)">
-          <span class="tag">Koniec spotkania</span>
-        </div>
-        <div class="polaroid" data-cat="memy">
-          <img src="galeria2.jpg" alt="1" onclick="openLightbox(1)">
-          <span class="tag">Zdjęcie w sklepie w jakims chinskim sklepie</span>
-        </div>
-        <div class="polaroid" data-cat="imprezy">
-          <img src="galeria3.jpg" alt="1" onclick="openLightbox(2)">
-          <span class="tag">Kfc w złotych tarasach</span>
-        </div>
-        <div class="polaroid" data-cat="inne">
-          <img src="galeria4.jpg" alt="1" onclick="openLightbox(3)">
-          <span class="tag">Maciek wyjezdzą do łoniaków</span>
-        </div>
-        <div class="polaroid" data-cat="inne">
-          <img src="galeria5.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Maciek i Adaś</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria6.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Tajemniczy podryw</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria7.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Maciek się powiesił</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria8.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">błazej scza</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria9.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">stopy maćka</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria10.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">S8</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria11.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Maciek z antosią</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria12.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Maciek z sexshopem</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria13.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Rozmowy w tramwaju</span>
-        </div>
-         <div class="polaroid" data-cat="inne">
-          <img src="galeria14.jpg" alt="2" onclick="openLightbox(3)">
-          <span class="tag">Butelki kałcyjne</span>
-        </div>
-      </div>
-    </div>
-
-    <div id="spotkania" class="page page-content">
-      <h2>Terminarz spotkań 📅</h2>
-      <p>Najbliższe wydarzenia i plany grupy:</p>
-      <ul>
-        <li><strong>14 lipca:</strong> wspólne wyjście na nic nie robienie</li>
-      </ul>
-    </div>
+<div class="gallery-grid" id="gallery">
+  <div class="polaroid" data-cat="1">
+    <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)">
+    <span class="tag">Koniec spotkania</span>
+  </div>
+  <div class="polaroid" data-cat="1">
+    <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1)">
+    <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
+  </div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2)">
+    <span class="tag">Kfc w Złotych Tarasach</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3)">
+    <span class="tag">Maciek wyjeżdża do Łoniaków</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria5.jpg" alt="Zdjęcie 5" onclick="openLightbox(4)">
+    <span class="tag">Maciek i Adaś</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria6.jpg" alt="Zdjęcie 6" onclick="openLightbox(5)">
+    <span class="tag">Tajemniczy podryw</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria7.jpg" alt="Zdjęcie 7" onclick="openLightbox(6)">
+    <span class="tag">Maciek się powiesił</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria8.jpg" alt="Zdjęcie 8" onclick="openLightbox(7)">
+    <span class="tag">Błażej scza</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria9.jpg" alt="Zdjęcie 9" onclick="openLightbox(8)">
+    <span class="tag">Stopy Maćka</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria10.jpg" alt="Zdjęcie 10" onclick="openLightbox(9)">
+    <span class="tag">S8</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria11.jpg" alt="Zdjęcie 11" onclick="openLightbox(10)">
+    <span class="tag">Maciek z Antosią</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria12.jpg" alt="Zdjęcie 12" onclick="openLightbox(11)">
+    <span class="tag">Maciek z sexshopem</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria13.jpg" alt="Zdjęcie 13" onclick="openLightbox(12)">
+    <span class="tag">Rozmowy w tramwaju</span>
+  </div>
+  <div class="polaroid" data-cat="3">
+    <img src="galeria14.jpg" alt="Zdjęcie 14" onclick="openLightbox(13)">
+    <span class="tag">Butelki kałcyjne</span>
+  </div>
+</div>
 
     <div id="informacje" class="page page-content">
       <h2>Informacje ℹ️</h2>
