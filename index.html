@@ -1,152 +1,223 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genzie Hub — strona w naprawie</title>
-    <style>
-        * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genzie Hub — w naprawie</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&display=swap');
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #2e3b2e;
-            background-image:
-                radial-gradient(circle at 15% 20%, rgba(140, 189, 140, 0.12), transparent 45%),
-                radial-gradient(circle at 85% 80%, rgba(43, 87, 151, 0.15), transparent 45%);
-            color: white;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
+  :root{
+    --ink: #2b1642;
+    --muted: #6b5487;
+    --pink: #ff5fa8;
+    --purple: #8c52ff;
+    --cyan: #22d3ee;
+    --lime: #b6ff3c;
+    --orange: #ff9d4d;
+    --mint: #6df0c2;
+    --yellow: #ffe14d;
+    --line: #2b1642;
+    --card: #fffdf9;
+  }
 
-        .wrap {
-            max-width: 720px;
-            width: 100%;
-            text-align: center;
-        }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; min-height:100%; }
 
-        .gear {
-            font-size: 56px;
-            display: inline-block;
-            margin-bottom: 10px;
-            animation: spin 6s linear infinite;
-        }
+  body{
+    font-family:'Quicksand', sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 10% 8%, rgba(255,95,168,0.25), transparent 40%),
+      radial-gradient(circle at 90% 15%, rgba(140,82,255,0.22), transparent 42%),
+      radial-gradient(circle at 20% 90%, rgba(109,240,194,0.28), transparent 45%),
+      linear-gradient(135deg, #fdeaff 0%, #d8f3ff 55%, #fff6d2 100%);
+    background-attachment: fixed;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding: 40px 20px;
+    position:relative;
+    overflow-x:hidden;
+  }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+  .sparkle{
+    position:fixed;
+    font-size:22px;
+    opacity:0.55;
+    z-index:0;
+    animation: bob 6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .s1{ top:8%; left:4%; animation-delay:0s; }
+  .s2{ top:70%; left:92%; font-size:28px; animation-delay:1.2s; }
+  .s3{ top:40%; left:2%; animation-delay:2.4s; font-size:18px; }
+  .s4{ top:85%; left:8%; animation-delay:.6s; }
+  .s5{ top:15%; left:94%; animation-delay:1.8s; }
+  @keyframes bob{ 0%,100%{ transform: translateY(0) rotate(0deg);} 50%{ transform: translateY(-14px) rotate(12deg);} }
 
-        h1 {
-            font-weight: 300;
-            font-size: 44px;
-            margin: 0 0 8px 0;
-            letter-spacing: 1px;
-        }
+  .wrap{
+    max-width: 620px;
+    width:100%;
+    text-align:center;
+    position:relative;
+    z-index:1;
+  }
 
-        h1 b { font-weight: 700; }
+  .logo{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:28px;
+    color: var(--purple);
+    -webkit-text-stroke: 1.4px var(--line);
+    margin-bottom: 22px;
+  }
 
-        .subtitle {
-            font-size: 18px;
-            opacity: 0.75;
-            margin: 0 0 40px 0;
-            line-height: 1.5;
-        }
+  .banner{
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 34px 34px 34px 10px;
+    box-shadow: 7px 7px 0 var(--line);
+    padding: 38px 30px 34px;
+    margin-bottom: 30px;
+    transform: rotate(-0.6deg);
+  }
 
-        .bar-track {
-            height: 6px;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto 45px auto;
-            background: rgba(255,255,255,0.1);
-            overflow: hidden;
-            position: relative;
-        }
+  .banner .emoji{
+    font-size: 52px;
+    display:inline-block;
+    animation: wrench 2.4s ease-in-out infinite;
+  }
+  @keyframes wrench{
+    0%,100%{ transform: rotate(-12deg); }
+    50%{ transform: rotate(12deg); }
+  }
 
-        .bar-fill {
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 40%;
-            background: #8cbd8c;
-            animation: loading 1.8s ease-in-out infinite;
-        }
+  .banner h1{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size: 26px;
+    margin: 14px 0 8px;
+    color: var(--ink);
+  }
+  .banner p{
+    font-weight:600;
+    color: var(--muted);
+    margin:0;
+    font-size: 15px;
+    line-height:1.5;
+  }
 
-        @keyframes loading {
-            0%   { left: -40%; }
-            100% { left: 100%; }
-        }
+  .progress{
+    margin-top:20px;
+    height: 16px;
+    border: 2.5px solid var(--line);
+    border-radius: 100px;
+    background: #fff;
+    overflow:hidden;
+  }
+  .progress-bar{
+    height:100%;
+    width: 55%;
+    border-radius: 100px;
+    background: repeating-linear-gradient(45deg, var(--yellow), var(--yellow) 12px, var(--orange) 12px, var(--orange) 24px);
+    background-size: 34px 34px;
+    animation: stripes 1.2s linear infinite;
+  }
+  @keyframes stripes{ from{ background-position:0 0; } to{ background-position: 34px 0; } }
 
-        .tiles {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+  .socials-label{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
 
-        .tile {
-            width: 150px;
-            height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 16px;
-            text-decoration: none;
-            color: white;
-            transition: transform 0.15s, outline 0.15s;
-            outline: 0 solid transparent;
-        }
+  .tiles{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
 
-        .tile:hover {
-            transform: scale(1.04);
-            outline: 3px solid rgba(255,255,255,0.5);
-        }
+  .tile{
+    position:relative;
+    border-radius: 26px 26px 26px 10px;
+    border: 3px solid var(--line);
+    box-shadow: 5px 5px 0 var(--line);
+    padding: 22px 12px;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color: var(--ink);
+    text-decoration:none;
+    cursor:pointer;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .tile:nth-child(odd){ transform: rotate(-1.5deg); }
+  .tile:nth-child(even){ transform: rotate(1.5deg); border-radius: 10px 26px 26px 26px; }
+  .tile:hover{
+    transform: rotate(0deg) translateY(-4px) scale(1.03);
+    box-shadow: 8px 8px 0 var(--line);
+  }
 
-        .tile .icon { font-size: 30px; margin-bottom: auto; }
-        .tile .label { font-size: 15px; font-weight: 600; }
+  .tile-ig{ background: linear-gradient(160deg, #833AB4, #C13584, #FD1D1D); color:#fff; }
+  .tile-tt{ background: var(--ink); color:#fff; }
+  .tile-msg{ background: var(--cyan); }
 
-        .bg-messenger { background-color: #2b5797; }
-        .bg-instagram { background: linear-gradient(135deg, #833AB4, #C13584, #E1306C, #FD1D1D); }
-        .bg-tiktok { background-color: #101010; }
+  .tile .icon{ font-size:30px; }
+  .tile .label{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:14px; }
 
-        .footer-note {
-            margin-top: 45px;
-            font-size: 13px;
-            opacity: 0.4;
-        }
+  @media (max-width: 480px){
+    .tiles{ grid-template-columns: 1fr; }
+    .banner{ padding:30px 20px 26px; }
+    .banner h1{ font-size:22px; }
+    .sparkle{ display:none; }
+  }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 32px; }
-            .tile { width: 120px; height: 120px; padding: 12px; }
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce){
+    .sparkle, .banner .emoji, .progress-bar{ animation:none; }
+    .tile{ transition:none; }
+  }
+</style>
 </head>
 <body>
-    <div class="wrap">
-        <div class="gear">⚙️</div>
-        <h1>genzie <b>hub</b></h1>
-        <p class="subtitle">Strona jest właśnie naprawiana.<br>Wracamy wkrótce — w międzyczasie znajdziesz nas tutaj:</p>
 
-        <div class="bar-track"><div class="bar-fill"></div></div>
+  <div class="sparkle s1">✨</div>
+  <div class="sparkle s2">⭐</div>
+  <div class="sparkle s3">💫</div>
+  <div class="sparkle s4">✨</div>
+  <div class="sparkle s5">⭐</div>
 
-        <div class="tiles">
-            <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile bg-messenger" target="_blank" rel="noopener">
-                <div class="icon">💬</div>
-                <div class="label">Messenger</div>
-            </a>
-            <a href="https://www.instagram.com/melanz.onlinemess/" class="tile bg-instagram" target="_blank" rel="noopener">
-                <div class="icon">📷</div>
-                <div class="label">Instagram</div>
-            </a>
-            <a href="https://www.tiktok.com/@twoj_profil" class="tile bg-tiktok" target="_blank" rel="noopener">
-                <div class="icon">🎵</div>
-                <div class="label">TikTok</div>
-            </a>
-        </div>
+  <div class="wrap">
+    <div class="logo">🌈 genzie hub</div>
 
-        <p class="footer-note">© genzie hub — trwają prace konserwacyjne</p>
+    <div class="banner">
+      <div class="emoji">🛠️</div>
+      <h1>Strona w naprawie!</h1>
+      <p>Coś tu majstrujemy i już niedługo wszystko będzie działać jak trzeba. W międzyczasie znajdziesz nas tutaj 👇</p>
+      <div class="progress"><div class="progress-bar"></div></div>
     </div>
+
+    <div class="socials-label">znajdź nas gdzie indziej</div>
+
+    <div class="tiles">
+      <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-ig" target="_blank" rel="noopener">
+        <div class="icon">📷</div>
+        <div class="label">Instagram</div>
+      </a>
+
+      <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-tt" target="_blank" rel="noopener">
+        <div class="icon">🎵</div>
+        <div class="label">TikTok</div>
+      </a>
+
+      <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-msg" target="_blank" rel="noopener">
+        <div class="icon">💬</div>
+        <div class="label">Messenger</div>
+      </a>
+    </div>
+  </div>
+
 </body>
 </html>
