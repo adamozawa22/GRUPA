@@ -221,7 +221,7 @@
     background: linear-gradient(160deg, #fff, #fff2fa);
     border:2.5px solid var(--line); border-radius:10px;
     padding:10px 10px 26px; box-shadow: 4px 4px 0 var(--line);
-    width:220px; cursor:pointer; transition: transform .18s ease;
+    width:220px; cursor:pointer; transition: transform .18s ease, opacity .2s ease;
   }
   .polaroid:nth-child(4n+1){ transform: rotate(-2.5deg); }
   .polaroid:nth-child(4n+2){ transform: rotate(2.5deg); }
@@ -229,6 +229,35 @@
   .polaroid:nth-child(4n+4){ transform: rotate(1.5deg); }
   .polaroid:hover{ transform: rotate(0deg) scale(1.04); }
   .polaroid img{ width:100%; height:170px; object-fit:cover; border-radius:4px; display:block; background: var(--mint); }
+  .polaroid .tag{
+    display:block; text-align:center; margin-top:8px;
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:11.5px;
+    color: var(--purple); text-transform:lowercase; letter-spacing:0.3px;
+  }
+  .polaroid.hidden{ display:none; }
+
+  /* category filter pills */
+  .cat-filters{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:22px; }
+  .cat-pill{
+    cursor:pointer;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    color: var(--ink);
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 2.5px solid var(--line);
+    background: #fff;
+    transition: all .18s ease;
+    user-select:none;
+    text-transform:lowercase;
+  }
+  .cat-pill:hover{ transform: translateY(-2px); box-shadow: 3px 3px 0 var(--line); }
+  .cat-pill.active{
+    background: var(--mint);
+    box-shadow: 3px 3px 0 var(--line);
+    transform: translateY(-1px);
+  }
 
   /* lightbox */
   #lightbox{
@@ -384,11 +413,30 @@
     <div id="zdjecia" class="page page-content">
       <h2>Galeria zdjęć 📸</h2>
       <p>Najlepsze momenty i fotki ekipy.</p>
+
+      <div class="cat-filters" id="catFilters">
+        <div class="cat-pill active" data-cat="1" onclick="filterGallery('all', this)">1 spotkanie</div>
+        <div class="cat-pill" data-cat="2" onclick="filterGallery('spotkania', this)">2 potkanie</div>
+        <div class="cat-pill" data-cat="3" onclick="filterGallery('memy', this)">3 spotkanie</div>
+      </div>
+
       <div class="gallery-grid" id="gallery">
-        <div class="polaroid"><img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)"></div>
-        <div class="polaroid"><img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1)"></div>
-        <div class="polaroid"><img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2)"></div>
-        <div class="polaroid"><img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3)"></div>
+        <div class="polaroid" data-cat="1">
+          <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)">
+          <span class="tag">spotkania</span>
+        </div>
+        <div class="polaroid" data-cat="memy">
+          <img src="galeria2.jpg" alt="1" onclick="openLightbox(1)">
+          <span class="tag">memy</span>
+        </div>
+        <div class="polaroid" data-cat="imprezy">
+          <img src="galeria3.jpg" alt="1" onclick="openLightbox(2)">
+          <span class="tag">imprezy</span>
+        </div>
+        <div class="polaroid" data-cat="inne">
+          <img src="galeria4.jpg" alt="1" onclick="openLightbox(3)">
+          <span class="tag">inne</span>
+        </div>
       </div>
     </div>
 
@@ -428,6 +476,20 @@
     }
     window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
     updateTopbarOnScroll();
+
+    // ---- Filtrowanie galerii wg kategorii ----
+    function filterGallery(cat, pillEl) {
+      document.querySelectorAll('#catFilters .cat-pill').forEach(p => p.classList.remove('active'));
+      pillEl.classList.add('active');
+
+      document.querySelectorAll('#gallery .polaroid').forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
 
     let currentIdx = 0;
     const images = document.querySelectorAll('#gallery img');
