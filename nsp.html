@@ -160,13 +160,14 @@
 
   .tile-g2{ grid-column: span 1; background: linear-gradient(160deg, var(--lime), #6dff8a); }
   .tile-g3{ grid-column: span 1; background: linear-gradient(160deg, var(--orange), var(--yellow)); }
-  .tile-g4{ grid-column: span 2; grid-row: span 2; background: linear-gradient(150deg, var(--pink), #ff6ec7); color:#fff; }
+  .tile-g4{ grid-column: span 2; grid-row: span 2; background: linear-gradient(135deg, #00c2ff 0%, #7a2bff 55%, #ff2f9e 100%); color:#fff; }
   .tile-g5{ grid-column: span 1; grid-row: span 2; background: linear-gradient(160deg, #833AB4, #C13584, #FD1D1D, #ff9d4d); color:#fff; }
-  .tile-g6{ grid-column: span 1; background: linear-gradient(160deg, var(--cyan), #7de8ff); }
-  .tile-g7{ grid-column: span 1; background: linear-gradient(160deg, var(--mint), #9cffcf); }
+  .tile-g6{ grid-column: span 1; background: #050505; color:#fff; }
+  .tile-g7{ grid-column: span 1; background: linear-gradient(160deg, #1ED760, #17b355); color:#fff; }
   .tile-g8{ grid-column: span 2; background: linear-gradient(120deg, var(--purple), var(--pink)); color:#fff; }
 
-  .tile .icon{ font-size:30px; margin-bottom:auto; }
+  .tile .icon{ margin-bottom:auto; line-height:0; }
+  .tile .icon svg{ width:34px; height:34px; display:block; }
   .tile .label{ font-family:'Baloo 2', sans-serif; font-weight:700; font-size:18px; line-height:1.15; }
   .tile .sub{ font-size:12.5px; font-weight:600; opacity:0.85; margin-top:3px; }
 
@@ -310,38 +311,38 @@
       <div class="bento">
 
         <div class="tile tile-g2" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-          <div class="icon">👥</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3" fill="currentColor"/><circle cx="17" cy="9" r="2.4" fill="currentColor" opacity="0.55"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 14.5c2.5.3 4.5 2.4 4.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/></svg></div>
           <div class="label">Lista obecności</div>
         </div>
 
         <div class="tile tile-g3" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
-          <div class="icon">📅</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="6.5" y="13" width="3" height="3" rx="0.8" fill="currentColor"/><rect x="12" y="13" width="3" height="3" rx="0.8" fill="currentColor" opacity="0.6"/></svg></div>
           <div class="label">Terminarz</div>
         </div>
 
         <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g4" target="_blank" rel="noopener">
-          <div class="icon">💬</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.8 7.2V22l3.5-1.9c.9.2 1.8.4 2.7.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2z" fill="currentColor"/><path d="M6.7 13.6l3.7-3.9 2.4 2.3 3.9-3.9-3.9 5.7-2.4-2.3-3.7 4.1z" fill="#7a2bff"/></svg></div>
           <div class="label">Messenger Chat</div>
           <div class="sub">ostatnia wiadomość: przed chwilą...</div>
         </a>
 
         <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g5" target="_blank" rel="noopener">
-          <div class="icon">📷</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="6" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></div>
           <div class="label">Instagram</div>
         </a>
 
         <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-g6" target="_blank" rel="noopener">
-          <div class="icon">🎵</div>
+          <div class="icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 3c.4 2 1.9 3.4 3.9 3.6v2.7a6.4 6.4 0 0 1-3.9-1.3v6.6a5 5 0 1 1-4.3-4.9v2.8a2.3 2.3 0 1 0 1.6 2.2V3h2.7z" fill="#25F4EE" transform="translate(-0.6,-0.6)"/><path d="M13.5 3c.4 2 1.9 3.4 3.9 3.6v2.7a6.4 6.4 0 0 1-3.9-1.3v6.6a5 5 0 1 1-4.3-4.9v2.8a2.3 2.3 0 1 0 1.6 2.2V3h2.7z" fill="#FE2C55" transform="translate(0.6,0.6)" opacity="0.85"/><path d="M13.5 3c.4 2 1.9 3.4 3.9 3.6v2.7a6.4 6.4 0 0 1-3.9-1.3v6.6a5 5 0 1 1-4.3-4.9v2.8a2.3 2.3 0 1 0 1.6 2.2V3h2.7z" fill="#ffffff"/></svg></div>
           <div class="label">TikTok</div>
         </a>
 
         <div class="tile tile-g7">
-          <div class="icon">🎧</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 14v-2a8 8 0 0 1 16 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="14" width="4" height="6" rx="1.5" fill="currentColor"/><rect x="17" y="14" width="4" height="6" rx="1.5" fill="currentColor"/></svg></div>
           <div class="label">Playlista</div>
         </div>
 
         <div class="tile tile-g8" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
-          <div class="icon">📸</div>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="label">Galeria</div>
         </div>
 
@@ -395,7 +396,7 @@
       <h2>Terminarz spotkań 📅</h2>
       <p>Najbliższe wydarzenia i plany grupy:</p>
       <ul>
-        <li><strong>14 cipca:</strong> wspólne wyjście na nic nie robienie</li>
+        <li><strong>14 lipca:</strong> wspólne wyjście na nic nie robienie</li>
       </ul>
     </div>
 
