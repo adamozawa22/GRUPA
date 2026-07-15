@@ -218,7 +218,6 @@
   /* gallery - polaroid style */
   .gallery-grid{ display:flex; flex-wrap:wrap; gap:22px; padding-top:6px; }
   .polaroid{
-    position:relative;
     background: linear-gradient(160deg, #fff, #fff2fa);
     border:2.5px solid var(--line); border-radius:10px;
     padding:10px 10px 26px; box-shadow: 4px 4px 0 var(--line);
@@ -236,122 +235,6 @@
     color: var(--purple); text-transform:lowercase; letter-spacing:0.3px;
   }
   .polaroid.hidden{ display:none; }
-
-  /* --- blokada zdjęć kodem --- */
-  .polaroid.locked{ cursor:pointer; }
-  .polaroid.locked img{
-    filter: blur(var(--blur-amount, 6px)) saturate(1.1) brightness(1);
-    transition: filter .25s ease;
-  }
-  .lock-overlay{
-    position:absolute;
-    top:10px; left:10px; right:10px; height:170px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:8px;
-    border-radius:8px;
-    background: linear-gradient(160deg, rgba(122,43,255,0.35), rgba(255,47,158,0.35));
-    backdrop-filter: blur(1px);
-    color:#fff;
-    pointer-events:none;
-  }
-  .lock-overlay .lock-badge{
-    width:46px; height:46px;
-    display:flex; align-items:center; justify-content:center;
-    background: #fff;
-    color: var(--purple);
-    border: 2.5px solid var(--line);
-    border-radius: 50%;
-    font-size:20px;
-    box-shadow: 3px 3px 0 var(--line);
-  }
-  .lock-overlay .lock-text{
-    font-family:'Baloo 2', sans-serif;
-    font-weight:700;
-    font-size:12px;
-    text-transform:lowercase;
-    background: rgba(43,22,66,0.55);
-    padding:4px 12px;
-    border-radius:100px;
-    letter-spacing:0.3px;
-  }
-  .polaroid.unlocked .lock-overlay{ display:none; }
-  .polaroid.unlocked img{ filter:none !important; }
-  .polaroid.unlocked{ cursor:pointer; }
-
-  /* --- modal z hasłem --- */
-  #passModal{
-    display:none; position:fixed; inset:0; z-index:1100;
-    background: rgba(43,22,66,0.55);
-    align-items:center; justify-content:center;
-    padding:20px;
-  }
-  #passModal .modal-card{
-    background: linear-gradient(160deg, #fffdf9, #fff2ff);
-    border: 3px solid var(--line);
-    border-radius: 28px 28px 28px 10px;
-    box-shadow: 8px 8px 0 var(--line);
-    padding: 32px 30px 26px;
-    width:100%; max-width:340px;
-    text-align:center;
-    animation: pop .28s cubic-bezier(.2,.9,.3,1);
-  }
-  #passModal .modal-icon{
-    width:60px; height:60px; margin:0 auto 14px;
-    display:flex; align-items:center; justify-content:center;
-    background: linear-gradient(160deg, var(--pink), var(--purple));
-    border: 3px solid var(--line);
-    border-radius:50%;
-    font-size:26px;
-    box-shadow: 4px 4px 0 var(--line);
-  }
-  #passModal h3{
-    font-family:'Baloo 2', sans-serif;
-    font-weight:800; font-size:19px; margin:0 0 6px;
-    color: var(--ink);
-  }
-  #passModal p{
-    font-size:12.5px; color: var(--muted); font-weight:600; margin:0 0 18px;
-  }
-  #passModal input{
-    font-family:'Baloo 2', sans-serif;
-    font-weight:700;
-    text-align:center;
-    letter-spacing:4px;
-    font-size:20px;
-    border: 2.5px solid var(--line);
-    border-radius: 100px;
-    padding: 10px 16px;
-    width:100%;
-    outline:none;
-    margin-bottom:14px;
-  }
-  #passModal input:focus{ box-shadow: 0 0 0 3px rgba(255,47,158,0.25); }
-  #passModal .modal-actions{ display:flex; gap:10px; }
-  #passModal button{
-    flex:1;
-    cursor:pointer;
-    font-family:'Baloo 2', sans-serif;
-    font-weight:700;
-    font-size:13.5px;
-    padding: 10px 14px;
-    border-radius: 100px;
-    border: 2.5px solid var(--line);
-    transition: all .18s ease;
-  }
-  #passModal .btn-confirm{ background: var(--mint); color: var(--ink); }
-  #passModal .btn-cancel{ background: #fff; color: var(--ink); }
-  #passModal button:hover{ transform: translateY(-2px); box-shadow: 3px 3px 0 var(--line); }
-  #passModal .msg{
-    display:block; margin-top:12px; font-size:12.5px; font-weight:700; min-height:16px;
-  }
-  #passModal .msg.err{ color:#ff2f6e; }
-  #passModal .msg.ok{ color:#17b355; }
-  #passModal.shake .modal-card{ animation: shake .35s ease; }
-  @keyframes shake{
-    0%,100%{ transform: translateX(0); }
-    25%{ transform: translateX(-8px); }
-    75%{ transform: translateX(8px); }
-  }
 
   /* category filter pills */
   .cat-filters{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:22px; }
@@ -415,8 +298,6 @@
     .members-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap:12px; }
     .polaroid{ width: 100%; flex: 1 1 100%; }
     .lb-nav{ width:44px; height:44px; font-size:28px; }
-    .code-gate{ flex-direction:column; align-items:stretch; }
-    .code-gate input{ width:100%; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -435,20 +316,6 @@
   <div class="sparkle s5">⭐</div>
   <div class="sparkle s6">💖</div>
   <div class="sparkle s7">🌟</div>
-
-  <div id="passModal" onclick="if(event.target===this) closePassModal()">
-    <div class="modal-card">
-      <div class="modal-icon">🔒</div>
-      <h3>Zdjęcie zablokowane</h3>
-      <p>Podaj kod, żeby zobaczyć to zdjęcie</p>
-      <input type="text" id="passInput" placeholder="••••" maxlength="10" inputmode="numeric">
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closePassModal()">Anuluj</button>
-        <button class="btn-confirm" onclick="submitPassModal()">Odblokuj</button>
-      </div>
-      <span class="msg" id="passMsg"></span>
-    </div>
-  </div>
 
   <div id="lightbox" onclick="closeLightbox()">
     <div class="lb-nav lb-prev" onclick="event.stopPropagation(); changeImage(-1)">&#10094;</div>
@@ -556,73 +423,62 @@
 
 <div class="gallery-grid" id="gallery">
   <div class="polaroid" data-cat="1">
-    <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0, this)">
+    <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0)">
     <span class="tag">Koniec spotkania</span>
   </div>
   <div class="polaroid" data-cat="1">
-    <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1, this)">
+    <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1)">
     <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
   </div>
   <div class="polaroid" data-cat="1">
-    <img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2, this)">
+    <img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2)">
     <span class="tag">Kfc w Złotych Tarasach</span>
   </div>
   <div class="polaroid" data-cat="1">
-    <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3, this)">
+    <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3)">
     <span class="tag">Maciek wyjeżdża do Łoniaków</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria5.jpg" alt="Zdjęcie 5" onclick="openLightbox(4, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria5.jpg" alt="Zdjęcie 5" onclick="openLightbox(4)">
     <span class="tag">Maciek i Adaś</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria6.jpg" alt="Zdjęcie 6" onclick="openLightbox(5, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria6.jpg" alt="Zdjęcie 6" onclick="openLightbox(5)">
     <span class="tag">Tajemniczy podryw</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria7.jpg" alt="Zdjęcie 7" onclick="openLightbox(6, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria7.jpg" alt="Zdjęcie 7" onclick="openLightbox(6)">
     <span class="tag">Maciek się powiesił</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria8.jpg" alt="Zdjęcie 8" onclick="openLightbox(7, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria8.jpg" alt="Zdjęcie 8" onclick="openLightbox(7)">
     <span class="tag">Błażej scza</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria9.jpg" alt="Zdjęcie 9" onclick="openLightbox(8, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria9.jpg" alt="Zdjęcie 9" onclick="openLightbox(8)">
     <span class="tag">Stopy Maćka</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria10.jpg" alt="Zdjęcie 10" onclick="openLightbox(9, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria10.jpg" alt="Zdjęcie 10" onclick="openLightbox(9)">
     <span class="tag">S8</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria11.jpg" alt="Zdjęcie 11" onclick="openLightbox(10, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria11.jpg" alt="Zdjęcie 11" onclick="openLightbox(10)">
     <span class="tag">Maciek z Antosią</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria12.jpg" alt="Zdjęcie 12" onclick="openLightbox(11, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria12.jpg" alt="Zdjęcie 12" onclick="openLightbox(11)">
     <span class="tag">Maciek z sexshopem</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria13.jpg" alt="Zdjęcie 13" onclick="openLightbox(12, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria13.jpg" alt="Zdjęcie 13" onclick="openLightbox(12)">
     <span class="tag">Rozmowy w tramwaju</span>
   </div>
-  <div class="polaroid locked" data-cat="2">
-    <img src="galeria14.jpg" alt="Zdjęcie 14" onclick="openLightbox(13, this)">
-    <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
+  <div class="polaroid" data-cat="2">
+    <img src="galeria14.jpg" alt="Zdjęcie 14" onclick="openLightbox(13)">
     <span class="tag">Butelki kałcyjne</span>
   </div>
 </div>
-    </div>
 
     <div id="informacje" class="page page-content">
       <h2>Informacje ℹ️</h2>
@@ -667,87 +523,12 @@
       });
     }
 
-    // ---- Blokada zdjęć kodem ----
-    const GALLERY_CODE = "4556"; // zwykła stała, widoczna w kodzie - bez ukrywania
-
-    // ====== USTAWIENIA BLURA (łatwe do zmiany) ======
-    const BLUR_AMOUNT_PX = 6; // im wyższa liczba, tym mocniejsze rozmycie (np. 2 = ledwo widać, 20 = prawie nic nie widać)
-    document.documentElement.style.setProperty('--blur-amount', BLUR_AMOUNT_PX + 'px');
-
-    // Czy dane zdjęcie ma być zablokowane blurem? 'y' = tak, 'n' = nie
-    const BLUR_SETTINGS = {
-      "galeria5.jpg":  "y",
-      "galeria6.jpg":  "y",
-      "galeria7.jpg":  "y",
-      "galeria8.jpg":  "y",
-      "galeria9.jpg":  "y",
-      "galeria10.jpg": "y",
-      "galeria11.jpg": "y",
-      "galeria12.jpg": "y",
-      "galeria13.jpg": "y",
-      "galeria14.jpg": "y"
-    };
-
-    // stosuje ustawienia BLUR_SETTINGS do zdjęć w galerii
-    document.querySelectorAll('#gallery .polaroid').forEach(card => {
-      const img = card.querySelector('img');
-      const filename = img.getAttribute('src');
-      const shouldBlur = BLUR_SETTINGS[filename] === 'y';
-      card.classList.toggle('locked', shouldBlur);
-    });
-
-    const passModal = document.getElementById('passModal');
-    const passInput = document.getElementById('passInput');
-    const passMsg = document.getElementById('passMsg');
-    let pendingUnlock = null; // { polaroid, idx }
-
-    function openPassModal(polaroid, idx){
-      pendingUnlock = { polaroid, idx };
-      passInput.value = "";
-      passMsg.textContent = "";
-      passMsg.className = "msg";
-      passModal.style.display = 'flex';
-      setTimeout(() => passInput.focus(), 50);
-    }
-    function closePassModal(){
-      passModal.style.display = 'none';
-      pendingUnlock = null;
-    }
-    function submitPassModal(){
-      if (!pendingUnlock) return;
-      if (passInput.value.trim() === GALLERY_CODE) {
-        pendingUnlock.polaroid.classList.add('unlocked');
-        passMsg.textContent = "odblokowano ✅";
-        passMsg.className = "msg ok";
-        const idx = pendingUnlock.idx;
-        setTimeout(() => {
-          closePassModal();
-          openLightbox(idx, pendingUnlock ? pendingUnlock.polaroid.querySelector('img') : null, true);
-        }, 450);
-      } else {
-        passMsg.textContent = "zły kod, spróbuj ponownie ❌";
-        passMsg.className = "msg err";
-        passModal.classList.add('shake');
-        setTimeout(() => passModal.classList.remove('shake'), 350);
-      }
-    }
-    passInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') submitPassModal();
-    });
-
     let currentIdx = 0;
     const images = document.querySelectorAll('#gallery img');
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
 
-    function openLightbox(idx, imgEl, skipLockCheck) {
-      if (!skipLockCheck) {
-        const polaroid = imgEl.closest('.polaroid');
-        if (polaroid.classList.contains('locked') && !polaroid.classList.contains('unlocked')) {
-          openPassModal(polaroid, idx);
-          return;
-        }
-      }
+    function openLightbox(idx) {
       currentIdx = idx;
       lbImg.src = images[currentIdx].src;
       lb.style.display = 'flex';
