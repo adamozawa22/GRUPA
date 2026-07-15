@@ -244,10 +244,7 @@
     transition: filter .25s ease;
   }
   .polaroid.locked.mode-blur img{
-    filter: blur(6px) saturate(1.1) brightness(1);
-  }
-  .polaroid.locked.mode-black img{
-    filter: brightness(0);
+    filter: blur(var(--blur-amount, 6px)) saturate(1.1) brightness(1);
   }
   .lock-overlay{
     position:absolute;
@@ -577,52 +574,52 @@
     <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3, this)">
     <span class="tag">Maciek wyjeżdża do Łoniaków</span>
   </div>
-  <div class="polaroid locked mode-blur" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria5.jpg" alt="Zdjęcie 5" onclick="openLightbox(4, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Maciek i Adaś</span>
   </div>
-  <div class="polaroid locked mode-black" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria6.jpg" alt="Zdjęcie 6" onclick="openLightbox(5, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Tajemniczy podryw</span>
   </div>
-  <div class="polaroid locked mode-blur" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria7.jpg" alt="Zdjęcie 7" onclick="openLightbox(6, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Maciek się powiesił</span>
   </div>
-  <div class="polaroid locked mode-black" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria8.jpg" alt="Zdjęcie 8" onclick="openLightbox(7, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Błażej scza</span>
   </div>
-  <div class="polaroid locked mode-blur" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria9.jpg" alt="Zdjęcie 9" onclick="openLightbox(8, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Stopy Maćka</span>
   </div>
-  <div class="polaroid locked mode-black" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria10.jpg" alt="Zdjęcie 10" onclick="openLightbox(9, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">S8</span>
   </div>
-  <div class="polaroid locked mode-blur" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria11.jpg" alt="Zdjęcie 11" onclick="openLightbox(10, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Maciek z Antosią</span>
   </div>
-  <div class="polaroid locked mode-black" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria12.jpg" alt="Zdjęcie 12" onclick="openLightbox(11, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Maciek z sexshopem</span>
   </div>
-  <div class="polaroid locked mode-blur" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria13.jpg" alt="Zdjęcie 13" onclick="openLightbox(12, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Rozmowy w tramwaju</span>
   </div>
-  <div class="polaroid locked mode-black" data-cat="2">
+  <div class="polaroid locked" data-cat="2">
     <img src="galeria14.jpg" alt="Zdjęcie 14" onclick="openLightbox(13, this)">
     <div class="lock-overlay"><span class="lock-badge">🔒</span><span class="lock-text">kliknij, by odblokować</span></div>
     <span class="tag">Butelki kałcyjne</span>
@@ -675,6 +672,37 @@
 
     // ---- Blokada zdjęć kodem ----
     const GALLERY_CODE = "4556"; // zwykła stała, widoczna w kodzie - bez ukrywania
+
+    // ====== USTAWIENIA BLURA (łatwe do zmiany) ======
+    const BLUR_AMOUNT_PX = 6; // im wyższa liczba, tym mocniejsze rozmycie (np. 2 = ledwo widać, 20 = prawie nic nie widać)
+    document.documentElement.style.setProperty('--blur-amount', BLUR_AMOUNT_PX + 'px');
+
+    // Czy dane zdjęcie ma być zablokowane blurem? 'y' = tak, 'n' = nie
+    const BLUR_SETTINGS = {
+      "galeria1.jpg":  "n",
+      "galeria2.jpg":  "y",
+      "galeria3.jpg":  "n",
+      "galeria4.jpg":  "y",
+      "galeria5.jpg":  "n",
+      "galeria6.jpg":  "n",
+      "galeria7.jpg":  "n",
+      "galeria8.jpg":  "y",
+      "galeria9.jpg":  "y",
+      "galeria10.jpg": "y",
+      "galeria11.jpg": "y",
+      "galeria12.jpg": "y",
+      "galeria13.jpg": "n",
+      "galeria14.jpg": "y"
+    };
+
+    // stosuje ustawienia BLUR_SETTINGS do zdjęć w galerii
+    document.querySelectorAll('#gallery .polaroid').forEach(card => {
+      const img = card.querySelector('img');
+      const filename = img.getAttribute('src');
+      const shouldBlur = BLUR_SETTINGS[filename] === 'y';
+      card.classList.toggle('locked', shouldBlur);
+      card.classList.toggle('mode-blur', shouldBlur);
+    });
 
     const passModal = document.getElementById('passModal');
     const passInput = document.getElementById('passInput');
