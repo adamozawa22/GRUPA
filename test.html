@@ -244,7 +244,7 @@
     transition: filter .25s ease;
   }
   .polaroid.locked.mode-blur img{
-    filter: blur(16px) saturate(0.6) brightness(0.9);
+    filter: blur(6px) saturate(1.1) brightness(1);
   }
   .polaroid.locked.mode-black img{
     filter: brightness(0);
@@ -258,6 +258,7 @@
     background: linear-gradient(160deg, rgba(122,43,255,0.35), rgba(255,47,158,0.35));
     backdrop-filter: blur(1px);
     color:#fff;
+    pointer-events:none;
   }
   .lock-overlay .lock-badge{
     width:46px; height:46px;
