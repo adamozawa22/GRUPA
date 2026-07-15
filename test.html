@@ -241,13 +241,14 @@
   .polaroid[data-blokada="y"] img{ filter: blur(14px) brightness(0.75); }
   .polaroid[data-blokada="y"].odblokowane img{ filter:none; }
   .lock-overlay{
+    display:none;
     position:absolute; top:10px; left:10px; right:10px; height:170px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    flex-direction:column; align-items:center; justify-content:center;
     gap:6px; pointer-events:none;
     font-family:'Baloo 2', sans-serif; font-weight:700; color:#fff;
     text-shadow: 0 0 6px rgba(0,0,0,0.6);
   }
-  .polaroid[data-blokada="y"].odblokowane .lock-overlay{ display:none; }
+  .polaroid[data-blokada="y"]:not(.odblokowane) .lock-overlay{ display:flex; }
   .lock-overlay .lock-icon{
     width:38px; height:38px; border-radius:50%;
     background: var(--pink); border:3px solid var(--line);
@@ -499,7 +500,7 @@
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Koniec spotkania</span>
   </div>
-  <div class="polaroid" data-cat="1" data-blokada="n">
+  <div class="polaroid" data-cat="1" data-blokada="y">
     <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
@@ -509,7 +510,7 @@
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Kfc w Złotych Tarasach</span>
   </div>
-  <div class="polaroid" data-cat="1" data-blokada="n">
+  <div class="polaroid" data-cat="1" data-blokada="y">
     <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek wyjeżdża do Łoniaków</span>
@@ -519,7 +520,7 @@
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek i Adaś</span>
   </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
+  <div class="polaroid" data-cat="2" data-blokada="y">
     <img src="galeria6.jpg" alt="Zdjęcie 6" onclick="openLightbox(5, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Tajemniczy podryw</span>
@@ -534,7 +535,7 @@
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Błażej scza</span>
   </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
+  <div class="polaroid" data-cat="2" data-blokada="y">
     <img src="galeria9.jpg" alt="Zdjęcie 9" onclick="openLightbox(8, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Stopy Maćka</span>
@@ -544,7 +545,7 @@
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">S8</span>
   </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
+  <div class="polaroid" data-cat="2" data-blokada="y">
     <img src="galeria11.jpg" alt="Zdjęcie 11" onclick="openLightbox(10, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek z Antosią</span>
