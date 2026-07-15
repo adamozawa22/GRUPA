@@ -240,11 +240,8 @@
   /* --- blokada zdjęć kodem --- */
   .polaroid.locked{ cursor:pointer; }
   .polaroid.locked img{
-    filter: blur(0);
-    transition: filter .25s ease;
-  }
-  .polaroid.locked.mode-blur img{
     filter: blur(var(--blur-amount, 6px)) saturate(1.1) brightness(1);
+    transition: filter .25s ease;
   }
   .lock-overlay{
     position:absolute;
@@ -679,19 +676,15 @@
 
     // Czy dane zdjęcie ma być zablokowane blurem? 'y' = tak, 'n' = nie
     const BLUR_SETTINGS = {
-      "galeria1.jpg":  "n",
-      "galeria2.jpg":  "y",
-      "galeria3.jpg":  "n",
-      "galeria4.jpg":  "y",
-      "galeria5.jpg":  "n",
-      "galeria6.jpg":  "n",
-      "galeria7.jpg":  "n",
+      "galeria5.jpg":  "y",
+      "galeria6.jpg":  "y",
+      "galeria7.jpg":  "y",
       "galeria8.jpg":  "y",
       "galeria9.jpg":  "y",
       "galeria10.jpg": "y",
       "galeria11.jpg": "y",
       "galeria12.jpg": "y",
-      "galeria13.jpg": "n",
+      "galeria13.jpg": "y",
       "galeria14.jpg": "y"
     };
 
@@ -701,7 +694,6 @@
       const filename = img.getAttribute('src');
       const shouldBlur = BLUR_SETTINGS[filename] === 'y';
       card.classList.toggle('locked', shouldBlur);
-      card.classList.toggle('mode-blur', shouldBlur);
     });
 
     const passModal = document.getElementById('passModal');
