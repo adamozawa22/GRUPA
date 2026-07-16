@@ -7,326 +7,250 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
 
-  /* ============ METRO TILE PALETTE ============ */
+  /* ============ METRO / RAINMETER PALETTE ============ */
   :root{
-    --bg: #101010;
-    --bg-2: #1a1a1a;
-    --ink: #ffffff;
-    --muted: #9c9c9c;
+    --ink:#ffffff;
+    --muted: rgba(255,255,255,0.72);
+    --gap: 4px;
 
-    --cobalt: #2D89EF;
-    --emerald: #00A300;
-    --magenta: #D80073;
-    --violet: #6A00FF;
-    --amber: #F09609;
-    --teal: #00ABA9;
-    --crimson: #E51400;
-    --lime: #A4C400;
-    --steel: #647687;
+    --cobalt:#2D89EF;
+    --emerald:#00A300;
+    --magenta:#D80073;
+    --violet:#6A00FF;
+    --amber:#F09609;
+    --teal:#00ABA9;
+    --crimson:#E51400;
+    --lime:#A4C400;
+    --steel:#647687;
 
-    --gap: 3px;
+    --accent: var(--magenta);
+    --accent2: var(--cobalt);
   }
+  body[data-theme="blue"]{ --accent: var(--cobalt); --accent2: var(--teal); }
+  body[data-theme="green"]{ --accent: var(--emerald); --accent2: var(--lime); }
+  body[data-theme="magenta"]{ --accent: var(--magenta); --accent2: var(--violet); }
 
   *{ box-sizing:border-box; }
   html,body{ margin:0; min-height:100%; }
 
   body{
-    font-family:'Segoe UI', 'Segoe UI Light', Arial, sans-serif;
+    font-family:'Segoe UI','Segoe UI Light',Arial,sans-serif;
     font-weight:400;
-    color: var(--ink);
-    background: var(--bg);
+    color:var(--ink);
+    background:#050505;
     min-height:100vh;
-    padding: 0 0 60px;
+    padding:0 0 54px; /* room for taskbar */
     position:relative;
   }
 
-  /* ---------- ZABEZPIECZENIE PRZED POBIERANIEM ZDJĘĆ ---------- */
   img{
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none; /* blokuje menu "zapisz zdjęcie" na iOS przy długim przytrzymaniu */
-    pointer-events: auto;
+    -webkit-user-drag:none; -moz-user-drag:none; user-drag:none;
+    -webkit-user-select:none; -moz-user-select:none; user-select:none;
+    -webkit-touch-callout:none;
   }
 
-  /* ---------- TOP BAR / PIVOT ---------- */
-  .topbar{
-    position:sticky; top:0; z-index:50;
-    background: var(--bg);
-    border-bottom: 1px solid #2a2a2a;
-    padding: 22px 34px 0;
-    display:flex; align-items:flex-end; justify-content:space-between;
-    gap:24px;
-    flex-wrap:wrap;
-    opacity:1;
-    transform: translateY(0);
-    transition: opacity .35s ease, transform .35s ease;
-  }
+  a{ color:inherit; text-decoration:none; }
 
-  .topbar.collapsed{
-    opacity:0;
-    transform: translateY(-16px);
-    pointer-events:none;
-  }
+  /* ============ BOARD (one per "desktop" / page) ============ */
+  .page{ display:none; }
+  .page.active{ display:block; animation:fadein .35s ease; }
+  @keyframes fadein{ from{opacity:0} to{opacity:1} }
 
-  .logo{
-    font-family:'Segoe UI Light','Segoe UI', sans-serif;
+  .board{ position:relative; min-height:100vh; overflow:hidden; }
+  .board-bg{
+    position:absolute; inset:0;
+    background-size:cover; background-position:center;
+    filter:saturate(1.15) contrast(1.02);
+  }
+  .board-bg::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(160deg, var(--accent) 0%, rgba(0,0,0,.55) 55%, rgba(0,0,0,.85) 100%);
+    mix-blend-mode:multiply;
+    opacity:.88;
+  }
+  .board-bg::before{
+    content:"";
+    position:absolute; inset:0;
+    background: radial-gradient(circle at 15% 10%, rgba(255,255,255,.10), transparent 45%);
+  }
+  .board-inner{ position:relative; z-index:2; max-width:1180px; margin:0 auto; padding:34px 26px 50px; }
+
+  /* ---------- hero row: icon cluster + giant headline ---------- */
+  .hero-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:22px; flex-wrap:wrap; margin-bottom:var(--gap); }
+  .icon-cluster{ display:grid; grid-template-columns:repeat(2,84px); grid-auto-rows:84px; gap:var(--gap); }
+  .micro-tile{
+    background:rgba(255,255,255,.14);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:filter .12s ease, transform .1s ease;
+  }
+  .micro-tile:hover{ filter:brightness(1.25); }
+  .micro-tile:active{ transform:scale(.95); }
+  .micro-tile svg{ width:34px; height:34px; }
+  .micro-tile.solid{ background:var(--accent2); }
+
+  .headline{ flex:1; min-width:260px; text-align:right; padding-top:6px; position:relative; }
+  .headline-word{
+    font-family:'Segoe UI Light','Segoe UI',sans-serif;
     font-weight:200;
-    font-size:30px;
-    letter-spacing:0.5px;
-    color: var(--ink);
-    display:flex; align-items:baseline; gap:8px;
-    white-space:nowrap;
-    padding-bottom:14px;
+    font-size:clamp(46px,8vw,92px);
+    line-height:.95;
     text-transform:lowercase;
+    letter-spacing:.5px;
   }
-  .logo::before{
-    content:"";
-    display:inline-block;
-    width:14px; height:14px;
-    background: var(--magenta);
-    margin-right:2px;
-  }
-
-  .nav-pills{ display:flex; gap:0; flex-wrap:wrap; }
-
-  .nav-link{
+  .headline-caret{
+    position:absolute; top:0; right:0;
+    width:34px; height:34px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.55);
+    display:flex; align-items:center; justify-content:center;
     cursor:pointer;
-    font-family:'Segoe UI', sans-serif;
-    font-weight:600;
-    font-size:16px;
-    color: var(--muted);
-    padding: 10px 18px 16px;
-    border:none;
-    background: transparent;
-    transition: color .15s ease;
-    user-select:none;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    position:relative;
   }
-  .nav-link:hover{ color:#d8d8d8; }
-  .nav-link.active{
-    color: var(--ink);
-  }
-  .nav-link.active::after{
-    content:"";
-    position:absolute; left:18px; right:18px; bottom:0;
-    height:3px;
-    background: var(--magenta);
-  }
+  .headline-caret svg{ width:16px; height:16px; }
+  .headline-sub{ font-size:13px; color:var(--muted); letter-spacing:.5px; margin-top:2px; }
 
-  /* ---------- PAGE WRAP ---------- */
-  .page-wrap{ max-width:1180px; margin:0 auto; position:relative; z-index:1; padding: 28px 30px 0; }
-  .page{ display:none; animation: pop .3s ease; }
-  .page.active{ display:block; }
-  @keyframes pop{ from{ opacity:0; } to{ opacity:1; } }
-
-  /* ---------- METRO TILE GRID ---------- */
-  .bento{
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 180px;
-    grid-auto-flow: dense;
-    gap: var(--gap);
-  }
-
-  .tile{
-    position:relative;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    padding: 20px;
+  /* ---------- stat / small tile row ---------- */
+  .stat-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:var(--gap); margin-bottom:var(--gap); }
+  .stat-tile{
+    background:var(--accent);
+    min-height:120px; padding:14px 16px; position:relative;
     display:flex; flex-direction:column; justify-content:flex-end;
-    color: #fff;
-    text-decoration:none;
-    cursor:pointer;
-    transition: transform .12s ease, filter .12s ease;
-    overflow:hidden;
+    font-family:'Segoe UI',sans-serif; font-weight:600; font-size:22px;
+    cursor:default; overflow:hidden;
   }
-  .tile:active{ transform: scale(.97); }
-  .tile:hover{ filter: brightness(1.08); }
+  .stat-tile .eyebrow{ font-size:12px; font-weight:600; opacity:.9; position:absolute; top:12px; left:16px; text-transform:lowercase; }
+  .stat-tile .big{ font-size:34px; font-weight:300; font-family:'Segoe UI Light','Segoe UI',sans-serif; }
+  .stat-tile .fine{ font-size:11px; font-weight:400; opacity:.85; }
+  .stat-tile.dark{ background:#0b0b0b; border:1px solid rgba(255,255,255,.08); }
+  .stat-tile.glass{ background:rgba(255,255,255,.14); }
 
-  .tile-g2{ grid-column: span 1; background: var(--emerald); }
-  .tile-g3{ grid-column: span 1; background: var(--amber); }
-  .tile-g4{ grid-column: span 2; grid-row: span 2; background: var(--cobalt); }
-  .tile-g5{ grid-column: span 1; grid-row: span 2; background: var(--magenta); }
-  .tile-g6{ grid-column: span 1; background: #050505; border: 1px solid #2a2a2a; }
-  .tile-g7{ grid-column: span 1; background: var(--emerald); }
-  .tile-g8{ grid-column: span 2; background: var(--violet); }
-
-  .tile .icon{ margin-bottom:auto; line-height:0; opacity:0.95; }
-  .tile .icon svg{ width:42px; height:42px; display:block; }
-  .tile .label{ font-family:'Segoe UI Semilight','Segoe UI', sans-serif; font-weight:600; font-size:21px; line-height:1.2; letter-spacing:0.2px; }
-  .tile .sub{ font-size:11.5px; font-weight:400; opacity:0.85; margin-top:3px; }
-
-  /* ---------- PAGE CONTENT CARD ---------- */
-  .page-content{
-    max-width:1180px;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 6px 4px 42px;
+  /* ---------- lists row: feeds / twitter style ---------- */
+  .lists-row{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); margin-bottom:var(--gap); }
+  .list-tile{ background:transparent; padding:16px 4px; }
+  .list-tile h4{ margin:0 0 10px; font-weight:600; font-size:15px; text-transform:lowercase; color:var(--ink); }
+  .list-tile ul{ margin:0; padding:0; list-style:none; }
+  .list-tile li{
+    font-size:11.5px; color:var(--muted); padding:5px 0;
+    border-top:1px solid rgba(255,255,255,.12);
+    line-height:1.4;
   }
-  .page-content h2{
-    font-family:'Segoe UI Light','Segoe UI', sans-serif;
-    font-weight:200; font-size:38px; margin:0 0 4px 0;
-    color: #fff;
-    text-transform:lowercase;
+  .list-tile li:first-child{ border-top:none; }
+  .list-tile li strong{ color:#fff; font-weight:600; }
+
+  /* ---------- wide photo band ---------- */
+  .photo-band{
+    height:200px; background-size:cover; background-position:center;
+    margin-bottom:var(--gap); position:relative; filter:saturate(1.05);
   }
-  .page-content > p{ color: var(--muted); font-weight:400; margin:0 0 26px 0; font-size:14px; }
-  .page-content ul{ line-height:2; font-weight:400; }
-  .page-content li strong{ color: var(--magenta); }
+  .photo-band::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,.35), transparent 60%); }
+
+  /* ---------- bottom utility row ---------- */
+  .bottom-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:var(--gap); margin-top:var(--gap); }
+  .util-tile{
+    min-height:120px; padding:14px 16px; display:flex; flex-direction:column; justify-content:flex-end;
+    background:#0b0b0b; border:1px solid rgba(255,255,255,.08); font-size:12px; cursor:default;
+  }
+  .util-tile.accent{ background:var(--accent); border:none; }
+  .util-tile .label{ font-weight:600; font-size:13px; text-transform:lowercase; }
+  .util-tile .value{ font-size:24px; font-weight:300; font-family:'Segoe UI Light','Segoe UI',sans-serif; }
+  .clock-tile{ background:var(--accent2); }
+  .clock-tile .city{ font-size:11px; text-transform:lowercase; opacity:.9; }
+  .clock-tile .time{ font-size:22px; font-weight:300; font-family:'Segoe UI Light','Segoe UI',sans-serif; }
+  .theme-tile{
+    background:linear-gradient(90deg,#111 0%,#444 40%,#999 70%,#fff 100%);
+    cursor:pointer; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.6);
+  }
+  .theme-tile:hover{ filter:brightness(1.1); }
+  .theme-tile .label{ text-shadow:0 1px 3px rgba(0,0,0,.7); }
+
+  /* ============ PAGE-SPECIFIC CONTENT TILES ============ */
+  .section-label{ font-size:12px; text-transform:lowercase; color:var(--muted); margin:26px 0 6px 2px; letter-spacing:.5px; }
 
   /* members */
-  .members-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: var(--gap); }
-  .member-card{
-    background: var(--bg-2);
-    border: none;
-    border-radius: 0;
-    padding: 22px 14px;
-    text-align:center;
-    transition: filter .12s ease;
-  }
-  .member-card:nth-child(6n+1){ background: var(--cobalt); }
-  .member-card:nth-child(6n+2){ background: var(--emerald); }
-  .member-card:nth-child(6n+3){ background: var(--magenta); }
-  .member-card:nth-child(6n+4){ background: var(--amber); }
-  .member-card:nth-child(6n+5){ background: var(--violet); }
-  .member-card:nth-child(6n+6){ background: var(--teal); }
-  .member-card:hover{ filter: brightness(1.1); }
-  .member-card img{
-    width:88px; height:88px; border-radius:0; object-fit:cover;
-    border: none; margin-bottom:14px; background: rgba(255,255,255,0.15);
-  }
-  .member-card h3{ font-family:'Segoe UI', sans-serif; font-weight:600; margin:0 0 4px 0; font-size:16px; color:#fff; text-transform:uppercase; letter-spacing:0.3px; }
-  .member-card p{ margin:0; font-size:12px; color: rgba(255,255,255,0.8); font-weight:400; }
+  .members-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:var(--gap); }
+  .member-card{ background:rgba(0,0,0,.55); padding:20px 14px; text-align:center; transition:filter .12s ease; }
+  .member-card:hover{ filter:brightness(1.15); }
+  .member-card img{ width:76px; height:76px; object-fit:cover; margin-bottom:12px; background:rgba(255,255,255,.15); }
+  .member-card h3{ margin:0 0 4px; font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+  .member-card p{ margin:0; font-size:11.5px; color:var(--muted); }
 
-  /* gallery - metro tile style, no polaroid tilt */
-  .gallery-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: var(--gap); padding-top:4px; }
-  .polaroid{
-    background: var(--bg-2);
-    border:none; border-radius:0;
-    padding:0; box-shadow:none;
-    cursor:pointer; transition: filter .12s ease, opacity .2s ease;
-    position:relative;
-  }
-  .polaroid:hover{ filter:brightness(1.1); }
-  .polaroid img{ width:100%; height:280px; object-fit:cover; display:block; background: var(--steel); }
-  .polaroid .tag{
-    display:block;
-    padding: 12px 14px 14px;
-    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:14px;
-    color: rgba(255,255,255,0.9); text-transform:lowercase; letter-spacing:0.2px;
-    background: rgba(0,0,0,0.6);
-  }
-  .polaroid.hidden{ display:none; }
-
-  /* blokada zdjęć kodem */
-  .polaroid[data-blokada="y"] img{ filter: blur(14px) brightness(0.6); }
+  /* gallery */
+  .gallery-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:var(--gap); }
+  .polaroid{ background:rgba(0,0,0,.55); cursor:pointer; position:relative; transition:filter .12s ease; }
+  .polaroid:hover{ filter:brightness(1.12); }
+  .polaroid img{ width:100%; height:220px; object-fit:cover; display:block; background:var(--steel); }
+  .polaroid .tag{ display:block; padding:10px 12px 12px; font-weight:600; font-size:12.5px; text-transform:lowercase; background:rgba(0,0,0,.55); color:rgba(255,255,255,.9); }
+  .polaroid[data-blokada="y"] img{ filter:blur(14px) brightness(.6); }
   .polaroid[data-blokada="y"].odblokowane img{ filter:none; }
-  .lock-overlay{
-    display:none;
-    position:absolute; top:0; left:0; right:0; height:280px;
-    flex-direction:column; align-items:center; justify-content:center;
-    gap:6px; pointer-events:none;
-    font-family:'Segoe UI', sans-serif; font-weight:600; color:#fff;
-    text-shadow:none;
-  }
+  .lock-overlay{ display:none; position:absolute; top:0; left:0; right:0; height:220px; flex-direction:column; align-items:center; justify-content:center; gap:6px; pointer-events:none; font-weight:600; color:#fff; }
   .polaroid[data-blokada="y"]:not(.odblokowane) .lock-overlay{ display:flex; }
-  .lock-overlay .lock-icon{
-    width:40px; height:40px; border-radius:0;
-    background: var(--magenta); border:none;
-    box-shadow:none;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .lock-overlay .lock-icon svg{ width:18px; height:18px; }
-  .lock-overlay span{ font-size:11px; text-transform:lowercase; letter-spacing:0.3px; }
+  .lock-overlay .lock-icon{ width:38px; height:38px; background:var(--accent); display:flex; align-items:center; justify-content:center; }
+  .lock-overlay .lock-icon svg{ width:16px; height:16px; }
+  .lock-overlay span{ font-size:10.5px; text-transform:lowercase; }
 
-  /* modal z kodem */
-  #kod-modal{
-    display:none; position:fixed; inset:0; z-index:1100;
-    background: rgba(0,0,0,0.85);
-    align-items:center; justify-content:center;
-  }
-  .kod-box{
-    background: var(--cobalt);
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 30px 30px 26px;
-    width: 260px;
-    text-align:center;
-  }
-  .kod-box h3{
-    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:19px; margin:0 0 4px 0;
-    color: #fff; text-transform:lowercase;
-  }
-  .kod-box p{ margin:0 0 16px 0; font-size:12.5px; color: rgba(255,255,255,0.85); font-weight:400; }
-  .kod-box input{
-    width:100%; text-align:center; letter-spacing:4px;
-    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:18px;
-    padding:10px 8px; border-radius:0;
-    border: none; margin-bottom:12px;
-    outline:none; box-sizing:border-box;
-    background:#fff; color:#101010;
-  }
-  .kod-box .kod-btns{ display:flex; gap: var(--gap); justify-content:center; }
-  .kod-box button{
-    cursor:pointer; font-family:'Segoe UI', sans-serif; font-weight:600; font-size:13.5px;
-    padding:10px 20px; border-radius:0; border:none;
-    transition: filter .12s ease;
-    text-transform:lowercase;
-  }
-  .kod-box .btn-ok{ background: #050505; color:#fff; box-shadow:none; }
+  /* meetings */
+  .meeting-tile{ background:var(--accent); padding:20px 22px; min-height:110px; display:flex; flex-direction:column; justify-content:center; }
+  .meeting-tile .day{ font-size:26px; font-weight:300; font-family:'Segoe UI Light','Segoe UI',sans-serif; }
+  .meeting-tile .time{ font-size:13px; opacity:.9; }
+
+  /* info */
+  .info-tile{ background:rgba(0,0,0,.55); padding:26px; font-size:14px; line-height:1.7; color:var(--muted); }
+  .info-tile strong{ color:#fff; }
+
+  /* ============ MODALS ============ */
+  #kod-modal{ display:none; position:fixed; inset:0; z-index:1100; background:rgba(0,0,0,.85); align-items:center; justify-content:center; }
+  .kod-box{ background:var(--accent); padding:30px 30px 26px; width:260px; text-align:center; }
+  .kod-box h3{ font-weight:600; font-size:19px; margin:0 0 4px; text-transform:lowercase; }
+  .kod-box p{ margin:0 0 16px; font-size:12.5px; color:rgba(255,255,255,.85); }
+  .kod-box input{ width:100%; text-align:center; letter-spacing:4px; font-weight:600; font-size:18px; padding:10px 8px; border:none; margin-bottom:12px; outline:none; background:#fff; color:#101010; }
+  .kod-box .kod-btns{ display:flex; gap:var(--gap); justify-content:center; }
+  .kod-box button{ cursor:pointer; font-weight:600; font-size:13.5px; padding:10px 20px; border:none; transition:filter .12s ease; text-transform:lowercase; }
+  .kod-box .btn-ok{ background:#050505; color:#fff; }
   .kod-box .btn-ok:hover{ filter:brightness(1.3); }
-  .kod-box .btn-anuluj{ background: rgba(255,255,255,0.25); color:#fff; }
-  .kod-box .btn-anuluj:hover{ filter:brightness(1.15); }
+  .kod-box .btn-anuluj{ background:rgba(255,255,255,.25); color:#fff; }
   .kod-box .kod-error{ font-size:11.5px; color:#ffd6d6; font-weight:600; margin-top:-6px; margin-bottom:10px; min-height:14px; }
 
-  /* lightbox */
-  #lightbox{
-    display:none; position:fixed; inset:0; z-index:1000;
-    background: rgba(0,0,0,0.92);
-    align-items:center; justify-content:center;
+  #lightbox{ display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.92); align-items:center; justify-content:center; }
+  #lightbox img{ max-width:88%; max-height:78%; }
+
+  /* ============ TASKBAR (Windows 7 style, fixed bottom) ============ */
+  .taskbar{
+    position:fixed; left:0; right:0; bottom:0; height:44px; z-index:900;
+    background: linear-gradient(180deg, rgba(20,20,24,.97), rgba(6,6,8,.99));
+    border-top:1px solid rgba(255,255,255,.08);
+    display:flex; align-items:center; gap:0; padding:0 6px;
   }
-  #lightbox img{ max-width:88%; max-height:78%; border-radius:0; border:none; }
+  .orb{
+    width:38px; height:38px; border-radius:50%; flex:0 0 auto; cursor:pointer;
+    background: radial-gradient(circle at 35% 30%, #6fd36f, #1a7d1a 70%);
+    box-shadow:0 0 8px rgba(80,220,80,.5);
+    margin-right:8px; transition:filter .12s ease;
+  }
+  .orb:hover{ filter:brightness(1.15); }
+  .taskbar-apps{ display:flex; gap:2px; flex:1; height:100%; align-items:center; }
+  .task-btn{
+    height:34px; padding:0 14px; display:flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,.05); cursor:pointer; font-size:12.5px; font-weight:600;
+    color:var(--muted); text-transform:lowercase; border-bottom:2px solid transparent; transition:background .12s ease,color .12s ease;
+    white-space:nowrap;
+  }
+  .task-btn svg{ width:16px; height:16px; flex:0 0 auto; }
+  .task-btn:hover{ background:rgba(255,255,255,.1); color:#fff; }
+  .task-btn.active{ background:rgba(255,255,255,.16); color:#fff; border-bottom:2px solid var(--accent); }
+  .tray{ display:flex; align-items:center; gap:14px; padding:0 14px; font-size:11.5px; color:var(--muted); flex:0 0 auto; }
+  .tray .clock{ text-align:right; line-height:1.25; }
+  .tray .clock .t{ font-size:12.5px; color:#fff; font-weight:600; }
 
   @media (max-width:768px){
-    .topbar{ padding: 16px 18px 0; flex-direction:column; align-items:stretch; }
-    .logo{ font-size:24px; padding-bottom:10px; }
-    .nav-pills{ overflow-x:auto; }
-    .nav-link{ padding:8px 12px 12px; font-size:13.5px; white-space:nowrap; }
-    .page-wrap{ padding: 20px 16px 0; }
-    .bento{ grid-template-columns: repeat(2,1fr); grid-auto-rows:130px; }
-    .tile-g4, .tile-g8{ grid-column: span 2; }
-    .tile-g4{ grid-row: span 2; }
-    .page-content h2{ font-size:28px; }
-  }
-
-  @media (max-width:480px){
-    .bento{ grid-template-columns: 1fr; grid-auto-rows:150px; }
-    .tile-g2,.tile-g3,.tile-g4,.tile-g5,.tile-g6,.tile-g7,.tile-g8{ grid-column: span 1; grid-row: span 1; }
-    .tile-g4{ min-height:170px; }
-    .tile .label{ font-size:16px; }
-    .members-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
-    .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .page{ animation:none; }
-    .tile, .member-card, .polaroid{ transition:none; }
+    .icon-cluster{ grid-template-columns:repeat(2,64px); grid-auto-rows:64px; }
+    .micro-tile svg{ width:26px; height:26px; }
+    .lists-row{ grid-template-columns:1fr; }
+    .board-inner{ padding:24px 16px 40px; }
+    .task-btn span.txt{ display:none; }
+    .task-btn{ padding:0 10px; }
   }
 </style>
 </head>
-<body oncontextmenu="return false" ondragstart="return false">
+<body oncontextmenu="return false" ondragstart="return false" data-theme="magenta">
 
   <div id="kod-modal">
     <div class="kod-box" onclick="event.stopPropagation()">
@@ -345,225 +269,318 @@
     <img id="lightbox-img" src="" onclick="event.stopPropagation()" oncontextmenu="return false" draggable="false">
   </div>
 
-  <div class="topbar" id="topbar">
-    <div class="logo">genzie hub</div>
-    <div class="nav-pills" id="navPills">
-      <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
-      <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">członkowie</div>
-      <div class="nav-link" onclick="switchPage(this, 'zdjecia')">zdjęcia</div>
-      <div class="nav-link" onclick="switchPage(this, 'spotkania')">spotkania</div>
-      <div class="nav-link" onclick="switchPage(this, 'informacje')">informacje</div>
-    </div>
-  </div>
-
   <div class="page-wrap">
 
+    <!-- ================= HOME ================= -->
     <div id="home" class="page active">
-      <div class="bento">
+      <div class="board">
+        <div class="board-bg" style="background-image:url('https://picsum.photos/seed/genziehome/1600/900')"></div>
+        <div class="board-inner">
 
-        <div class="tile tile-g2" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3" fill="currentColor"/><circle cx="17" cy="9" r="2.4" fill="currentColor" opacity="0.55"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 14.5c2.5.3 4.5 2.4 4.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/></svg></div>
-          <div class="label">Lista obecności</div>
+          <div class="hero-row">
+            <div class="icon-cluster">
+              <div class="micro-tile solid" onclick="switchPage('kim-jestesmy')" title="Członkowie">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" fill="#fff"/><circle cx="17" cy="9" r="2.4" fill="#fff" opacity=".55"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <a class="micro-tile" style="background:#25D366" href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" target="_blank" rel="noopener" title="Messenger">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.8 7.2V22l3.5-1.9c.9.2 1.8.4 2.7.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2z" fill="#fff"/></svg>
+              </a>
+              <a class="micro-tile" style="background:linear-gradient(45deg,#F09609,#D80073,#6A00FF)" href="https://www.instagram.com/melanz.onlinemess/" target="_blank" rel="noopener" title="Instagram">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="2"/></svg>
+              </a>
+              <div class="micro-tile" style="background:#050505" onclick="switchPage('zdjecia')" title="Galeria">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z" stroke="#fff" stroke-width="2"/><circle cx="12" cy="13" r="3.4" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+            </div>
+            <div class="headline">
+              <div class="headline-caret" onclick="switchPage('informacje')">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <div class="headline-word">genzie hub</div>
+              <div class="headline-sub" id="today-label">—</div>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-tile glass">
+              <div class="eyebrow">dziś</div>
+              <div class="big" id="stat-day">--</div>
+              <div class="fine" id="stat-month">--</div>
+            </div>
+            <div class="stat-tile dark">
+              <div class="eyebrow">nastrój ekipy</div>
+              <div class="big">😎</div>
+              <div class="fine">stabilnie chaotyczny</div>
+            </div>
+            <div class="stat-tile" style="background:var(--accent2)">
+              <div class="eyebrow">członków</div>
+              <div class="big">6</div>
+              <div class="fine">online: zawsze ktoś</div>
+            </div>
+            <a class="stat-tile dark" href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf" target="_blank" rel="noopener">
+              <div class="eyebrow">playlista</div>
+              <div class="big">♪</div>
+              <div class="fine">wspólny grający</div>
+            </a>
+          </div>
+
+          <div class="lists-row">
+            <div class="list-tile">
+              <h4>ostatnio na czacie</h4>
+              <ul>
+                <li><strong>Martyna:</strong> ogarnijcie się na poniedziałek</li>
+                <li><strong>Błażej:</strong> 😐😐😐</li>
+                <li><strong>Adaś:</strong> won do piekła (żartuję)</li>
+                <li><strong>Kaska:</strong> kto idzie do KFC</li>
+              </ul>
+            </div>
+            <div class="list-tile">
+              <h4>skróty</h4>
+              <ul>
+                <li onclick="switchPage('spotkania')" style="cursor:pointer"><strong>Terminarz</strong> — najbliższe spotkanie</li>
+                <li onclick="switchPage('zdjecia')" style="cursor:pointer"><strong>Galeria</strong> — nowe zdjęcia</li>
+                <li onclick="switchPage('kim-jestesmy')" style="cursor:pointer"><strong>Członkowie</strong> — kto jest kim</li>
+                <li><a href="https://www.tiktok.com/@twoj_profil" target="_blank" rel="noopener"><strong>TikTok</strong> — ekipa</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="photo-band" style="background-image:url('https://picsum.photos/seed/genziecapitol/1200/500')"></div>
+
+          <div class="bottom-row">
+            <div class="util-tile accent">
+              <div class="label">zdjęć w galerii</div>
+              <div class="value">14</div>
+            </div>
+            <div class="util-tile">
+              <div class="label">zablokowanych</div>
+              <div class="value">7</div>
+            </div>
+            <div class="clock-tile util-tile" data-tz="Europe/Warsaw"><div class="city">warszawa</div><div class="time">--:--</div></div>
+            <div class="clock-tile util-tile" data-tz="Europe/London"><div class="city">londyn</div><div class="time">--:--</div></div>
+            <div class="clock-tile util-tile" data-tz="Asia/Tokyo"><div class="city">tokio</div><div class="time">--:--</div></div>
+            <div class="util-tile theme-tile" onclick="cycleTheme()">
+              <div class="label">skin</div>
+              <div style="font-size:11px;opacity:.9">stuknij, by zmienić kolor</div>
+            </div>
+          </div>
+
         </div>
-
-        <div class="tile tile-g3" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="0" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="6.5" y="13" width="3" height="3" fill="currentColor"/><rect x="12" y="13" width="3" height="3" fill="currentColor" opacity="0.6"/></svg></div>
-          <div class="label">Terminarz</div>
-        </div>
-
-        <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g4" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.8 7.2V22l3.5-1.9c.9.2 1.8.4 2.7.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2z" fill="currentColor"/><path d="M6.7 13.6l3.7-3.9 2.4 2.3 3.9-3.9-3.9 5.7-2.4-2.3-3.7 4.1z" fill="#2D89EF"/></svg></div>
-          <div class="label">Messenger Chat</div>
-          <div class="sub">ostatnia wiadomość: przed chwilą...</div>
-        </a>
-
-        <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g5" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="0" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></div>
-          <div class="label">Instagram</div>
-        </a>
-
-        <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-g6" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 3c.4 2 1.9 3.4 3.9 3.6v2.7a6.4 6.4 0 0 1-3.9-1.3v6.6a5 5 0 1 1-4.3-4.9v2.8a2.3 2.3 0 1 0 1.6 2.2V3h2.7z" fill="#ffffff"/></svg></div>
-          <div class="label">TikTok</div>
-        </a>
-
-        <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="tile tile-g7" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M6.8 9.3c3.5-.9 7.4-.6 10.4 1.1" stroke="#00A300" stroke-width="1.5" stroke-linecap="round"/><path d="M7.4 12.6c2.9-.7 6.2-.5 8.8.9" stroke="#00A300" stroke-width="1.4" stroke-linecap="round"/><path d="M7.9 15.7c2.4-.5 5-.3 7 .9" stroke="#00A300" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-          <div class="label">Playlista</div>
-        </a>
-
-        <div class="tile tile-g8" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke="currentColor" stroke-width="2"/></svg></div>
-          <div class="label">Galeria</div>
-        </div>
-
       </div>
     </div>
 
-    <div id="kim-jestesmy" class="page page-content">
-      <h2>członkowie grupy</h2>
-      <p>Lista osób z Messengera.</p>
-      <div class="members-grid">
-        <div class="member-card">
-          <img src="osoba1.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-          <h3>Martyna</h3>
-          <p>Rzetelny administrator</p>
-        </div>
-        <div class="member-card">
-          <img src="osoba2.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-          <h3>Błażej</h3>
-          <p>Fajny Emogej</p>
-        </div>
-        <div class="member-card">
-          <img src="osoba3.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-          <h3>Antosia</h3>
-          <p>Działaczka partii komunistycznej</p>
-        </div>
-        <div class="member-card">
-          <img src="osoba4.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-          <h3>Adaś</h3>
-          <p>Won do piekła</p>
-        </div>
-        <div class="member-card">
-          <img src="osoba5.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-          <h3>Macica</h3>
-          <p>Lubi mężczyzn</p>
-        </div>
-        <div class="member-card">
-          <img src="osoba6.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
-          <h3>Kaska</h3>
-          <p>lubi nieogolone pachy</p>
+    <!-- ================= MEMBERS ================= -->
+    <div id="kim-jestesmy" class="page">
+      <div class="board">
+        <div class="board-bg" style="background-image:url('https://picsum.photos/seed/genziemembers/1600/900')"></div>
+        <div class="board-inner">
+          <div class="hero-row">
+            <div class="icon-cluster">
+              <div class="micro-tile solid" onclick="switchPage('home')" title="Start">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M5 10v10h14V10" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+            </div>
+            <div class="headline">
+              <div class="headline-word">członkowie</div>
+              <div class="headline-sub">lista osób z messengera</div>
+            </div>
+          </div>
+
+          <div class="section-label">skład ekipy</div>
+          <div class="members-grid">
+            <div class="member-card"><img src="osoba1.jpg" alt="Członek" draggable="false" onerror="this.src=fallbackAvatar()"><h3>Martyna</h3><p>Rzetelny administrator</p></div>
+            <div class="member-card"><img src="osoba2.jpg" alt="Członek" draggable="false" onerror="this.src=fallbackAvatar()"><h3>Błażej</h3><p>Fajny Emogej</p></div>
+            <div class="member-card"><img src="osoba3.jpg" alt="Członek" draggable="false" onerror="this.src=fallbackAvatar()"><h3>Antosia</h3><p>Działaczka partii komunistycznej</p></div>
+            <div class="member-card"><img src="osoba4.jpg" alt="Członek" draggable="false" onerror="this.src=fallbackAvatar()"><h3>Adaś</h3><p>Won do piekła</p></div>
+            <div class="member-card"><img src="osoba5.jpg" alt="Członek" draggable="false" onerror="this.src=fallbackAvatar()"><h3>Macica</h3><p>Lubi mężczyzn</p></div>
+            <div class="member-card"><img src="osoba6.jpg" alt="Członek" draggable="false" onerror="this.src=fallbackAvatar()"><h3>Kaska</h3><p>lubi nieogolone pachy</p></div>
+          </div>
+
+          <div class="photo-band" style="background-image:url('https://picsum.photos/seed/genzieparrot/1200/500')"></div>
         </div>
       </div>
     </div>
 
-    <div id="zdjecia" class="page page-content">
-      <h2>galeria zdjęć</h2>
-      <p>Najlepsze momenty i fotki ekipy.</p>
+    <!-- ================= GALLERY ================= -->
+    <div id="zdjecia" class="page">
+      <div class="board">
+        <div class="board-bg" style="background-image:url('https://picsum.photos/seed/genziegallery/1600/900')"></div>
+        <div class="board-inner">
+          <div class="hero-row">
+            <div class="icon-cluster">
+              <div class="micro-tile solid" onclick="switchPage('home')" title="Start">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M5 10v10h14V10" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+            </div>
+            <div class="headline">
+              <div class="headline-word">galeria</div>
+              <div class="headline-sub">najlepsze momenty ekipy</div>
+            </div>
+          </div>
 
-<div class="gallery-grid" id="gallery">
-  <div class="polaroid" data-cat="1" data-blokada="n">
-    <img src="galeria1.jpg" alt="Zdjęcie 1" draggable="false" onclick="openLightbox(0, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Koniec spotkania</span>
-  </div>
-  <div class="polaroid" data-cat="1" data-blokada="y">
-    <img src="galeria2.jpg" alt="Zdjęcie 2" draggable="false" onclick="openLightbox(1, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
-  </div>
-  <div class="polaroid" data-cat="1" data-blokada="n">
-    <img src="galeria3.jpg" alt="Zdjęcie 3" draggable="false" onclick="openLightbox(2, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Kfc w Złotych Tarasach</span>
-  </div>
-  <div class="polaroid" data-cat="1" data-blokada="y">
-    <img src="galeria4.jpg" alt="Zdjęcie 4" draggable="false" onclick="openLightbox(3, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek wyjeżdża do Łoniaków</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria5.jpg" alt="Zdjęcie 5" draggable="false" onclick="openLightbox(4, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek i Adaś</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria6.jpg" alt="Zdjęcie 6" draggable="false" onclick="openLightbox(5, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Tajemniczy podryw</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria7.jpg" alt="Zdjęcie 7" draggable="false" onclick="openLightbox(6, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek się powiesił</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria8.jpg" alt="Zdjęcie 8" draggable="false" onclick="openLightbox(7, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Błażej scza</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria9.jpg" alt="Zdjęcie 9" draggable="false" onclick="openLightbox(8, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Stopy Maćka</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria10.jpg" alt="Zdjęcie 10" draggable="false" onclick="openLightbox(9, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">S8</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria11.jpg" alt="Zdjęcie 11" draggable="false" onclick="openLightbox(10, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek z Antosią</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria12.jpg" alt="Zdjęcie 12" draggable="false" onclick="openLightbox(11, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek z sexshopem</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria13.jpg" alt="Zdjęcie 13" draggable="false" onclick="openLightbox(12, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Rozmowy w tramwaju</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria14.jpg" alt="Zdjęcie 14" draggable="false" onclick="openLightbox(13, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Butelki kałcyjne</span>
-  </div>
-</div>
+          <div class="section-label">zdjęcia</div>
+          <div class="gallery-grid" id="gallery">
+            <div class="polaroid" data-cat="1" data-blokada="n"><img src="galeria1.jpg" alt="Zdjęcie 1" draggable="false" onclick="openLightbox(0, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Koniec spotkania</span></div>
+            <div class="polaroid" data-cat="1" data-blokada="y"><img src="galeria2.jpg" alt="Zdjęcie 2" draggable="false" onclick="openLightbox(1, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span></div>
+            <div class="polaroid" data-cat="1" data-blokada="n"><img src="galeria3.jpg" alt="Zdjęcie 3" draggable="false" onclick="openLightbox(2, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Kfc w Złotych Tarasach</span></div>
+            <div class="polaroid" data-cat="1" data-blokada="y"><img src="galeria4.jpg" alt="Zdjęcie 4" draggable="false" onclick="openLightbox(3, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Maciek wyjeżdża do Łoniaków</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="n"><img src="galeria5.jpg" alt="Zdjęcie 5" draggable="false" onclick="openLightbox(4, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Maciek i Adaś</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="y"><img src="galeria6.jpg" alt="Zdjęcie 6" draggable="false" onclick="openLightbox(5, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Tajemniczy podryw</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="y"><img src="galeria7.jpg" alt="Zdjęcie 7" draggable="false" onclick="openLightbox(6, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Maciek się powiesił</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="n"><img src="galeria8.jpg" alt="Zdjęcie 8" draggable="false" onclick="openLightbox(7, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Błażej scza</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="y"><img src="galeria9.jpg" alt="Zdjęcie 9" draggable="false" onclick="openLightbox(8, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Stopy Maćka</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="n"><img src="galeria10.jpg" alt="Zdjęcie 10" draggable="false" onclick="openLightbox(9, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">S8</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="y"><img src="galeria11.jpg" alt="Zdjęcie 11" draggable="false" onclick="openLightbox(10, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Maciek z Antosią</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="y"><img src="galeria12.jpg" alt="Zdjęcie 12" draggable="false" onclick="openLightbox(11, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Maciek z sexshopem</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="n"><img src="galeria13.jpg" alt="Zdjęcie 13" draggable="false" onclick="openLightbox(12, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Rozmowy w tramwaju</span></div>
+            <div class="polaroid" data-cat="2" data-blokada="n"><img src="galeria14.jpg" alt="Zdjęcie 14" draggable="false" onclick="openLightbox(13, this.parentElement)"><div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div><span class="tag">Butelki kałcyjne</span></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="spotkania" class="page page-content">
-      <h2>spotkania</h2>
-      <p>Terminarz najbliższych spotkań ekipy.</p>
-      <ul>
-        <li><strong>Poniedziałek</strong> — godzina 13:00</li>
-      </ul>
+    <!-- ================= MEETINGS ================= -->
+    <div id="spotkania" class="page">
+      <div class="board">
+        <div class="board-bg" style="background-image:url('https://picsum.photos/seed/genziemeetings/1600/900')"></div>
+        <div class="board-inner">
+          <div class="hero-row">
+            <div class="icon-cluster">
+              <div class="micro-tile solid" onclick="switchPage('home')" title="Start">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M5 10v10h14V10" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+            </div>
+            <div class="headline">
+              <div class="headline-word">spotkania</div>
+              <div class="headline-sub">terminarz najbliższych spotkań ekipy</div>
+            </div>
+          </div>
+
+          <div class="section-label">najbliższy termin</div>
+          <div class="meeting-tile">
+            <div class="day">Poniedziałek</div>
+            <div class="time">godzina 13:00</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="informacje" class="page page-content">
-      <h2>informacje</h2>
-      <p>Naprawdę nie jesteśmy fanami grupy Genzie.</p>
+    <!-- ================= INFO ================= -->
+    <div id="informacje" class="page">
+      <div class="board">
+        <div class="board-bg" style="background-image:url('https://picsum.photos/seed/genzieinfo/1600/900')"></div>
+        <div class="board-inner">
+          <div class="hero-row">
+            <div class="icon-cluster">
+              <div class="micro-tile solid" onclick="switchPage('home')" title="Start">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M5 10v10h14V10" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+            </div>
+            <div class="headline">
+              <div class="headline-word">informacje</div>
+            </div>
+          </div>
+
+          <div class="info-tile">Naprawdę nie jesteśmy fanami grupy <strong>Genzie</strong>.</div>
+        </div>
+      </div>
     </div>
 
+  </div>
+
+  <!-- ============ TASKBAR ============ -->
+  <div class="taskbar">
+    <div class="orb" onclick="switchPage('home')" title="Start"></div>
+    <div class="taskbar-apps">
+      <div class="task-btn nav-btn active" data-page="home" onclick="switchPage('home')">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" fill="currentColor"/><rect x="14" y="3" width="7" height="7" fill="currentColor" opacity=".6"/><rect x="3" y="14" width="7" height="7" fill="currentColor" opacity=".6"/><rect x="14" y="14" width="7" height="7" fill="currentColor"/></svg>
+        <span class="txt">start</span>
+      </div>
+      <div class="task-btn nav-btn" data-page="kim-jestesmy" onclick="switchPage('kim-jestesmy')">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" fill="currentColor"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="txt">członkowie</span>
+      </div>
+      <div class="task-btn nav-btn" data-page="zdjecia" onclick="switchPage('zdjecia')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="txt">zdjęcia</span>
+      </div>
+      <div class="task-btn nav-btn" data-page="spotkania" onclick="switchPage('spotkania')">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="txt">spotkania</span>
+      </div>
+      <div class="task-btn nav-btn" data-page="informacje" onclick="switchPage('informacje')">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v.01M12 11v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span class="txt">informacje</span>
+      </div>
+    </div>
+    <div class="tray">
+      <span id="tray-day">poniedziałek</span>
+      <div class="clock">
+        <div class="t" id="tray-time">--:--</div>
+        <div id="tray-date">--.--.----</div>
+      </div>
+    </div>
   </div>
 
   <script>
-    function switchPage(clickedElement, pageId) {
-      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      clickedElement.classList.add('active');
+    function switchPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === pageId));
+      window.scrollTo({top:0, behavior:'instant'});
     }
 
-    // ---- Pasek na górze: znika przy przewijaniu strony ----
-    const topbar = document.getElementById('topbar');
-    const SCROLL_THRESHOLD = 40;
-
-    function updateTopbarOnScroll(){
-      if (window.scrollY > SCROLL_THRESHOLD) {
-        topbar.classList.add('collapsed');
-      } else {
-        topbar.classList.remove('collapsed');
-      }
+    function fallbackAvatar(){
+      return 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E';
     }
-    window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
-    updateTopbarOnScroll();
 
+    /* ---- theme cycler (mirrors the blue / green / magenta skins) ---- */
+    const themes = ['magenta','blue','green'];
+    function cycleTheme(){
+      const cur = document.body.dataset.theme;
+      const next = themes[(themes.indexOf(cur)+1) % themes.length];
+      document.body.dataset.theme = next;
+    }
+
+    /* ---- live clocks ---- */
+    const dniTyg = ['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
+    const miesiace = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+
+    function tick(){
+      const now = new Date();
+      document.getElementById('tray-time').textContent = now.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});
+      document.getElementById('tray-date').textContent = now.toLocaleDateString('pl-PL');
+      document.getElementById('tray-day').textContent = dniTyg[now.getDay()];
+
+      const todayLabel = document.getElementById('today-label');
+      if(todayLabel) todayLabel.textContent = dniTyg[now.getDay()] + ', ' + now.getDate() + ' ' + miesiace[now.getMonth()];
+      const sd = document.getElementById('stat-day'); if(sd) sd.textContent = now.getDate();
+      const sm = document.getElementById('stat-month'); if(sm) sm.textContent = miesiace[now.getMonth()];
+
+      document.querySelectorAll('.clock-tile[data-tz]').forEach(el=>{
+        const tz = el.dataset.tz;
+        const t = el.querySelector('.time');
+        if(t){
+          try{ t.textContent = now.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit',timeZone:tz}); }
+          catch(e){ t.textContent = '--:--'; }
+        }
+      });
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /* ---- lightbox / gallery lock (unchanged behaviour) ---- */
     let currentIdx = 0;
-    const images = document.querySelectorAll('#gallery img');
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
-
-    // ---- Blokada zdjęć kodem ----
     const KOD_BLOKADY = '4556';
     const kodModal = document.getElementById('kod-modal');
     const kodInput = document.getElementById('kod-input');
     const kodError = document.getElementById('kod-error');
     let oczekujacyPolaroid = null;
     let oczekujacyIdx = null;
+
+    function getGalleryImages(){ return document.querySelectorAll('#gallery img'); }
 
     function openLightbox(idx, polaroidEl) {
       if (polaroidEl && polaroidEl.dataset.blokada === 'y' && !polaroidEl.classList.contains('odblokowane')) {
@@ -576,6 +593,7 @@
         return;
       }
       currentIdx = idx;
+      const images = getGalleryImages();
       lbImg.src = images[currentIdx].src;
       lb.style.display = 'flex';
     }
@@ -591,7 +609,6 @@
         kodInput.focus();
       }
     }
-
     function zamknijKodModal() {
       kodModal.style.display = 'none';
       oczekujacyPolaroid = null;
@@ -599,24 +616,14 @@
     }
     function closeLightbox() { lb.style.display = 'none'; }
 
-    // ---- Dodatkowa blokada pobierania zdjęć ----
-    // Blokada menu kontekstowego (prawy przycisk myszy) na wszystkich obrazkach
     document.querySelectorAll('img').forEach(img => {
       img.setAttribute('draggable', 'false');
       img.addEventListener('contextmenu', e => e.preventDefault());
       img.addEventListener('dragstart', e => e.preventDefault());
     });
-
-    // Blokada globalna menu kontekstowego (zabezpieczenie na wypadek dynamicznie dodanych obrazków)
-    document.addEventListener('contextmenu', function(e){
-      if (e.target.tagName === 'IMG') e.preventDefault();
-    });
-
-    // Blokada skrótu Ctrl+S (zapis strony) i Ctrl+U (podgląd źródła) jako dodatkowe utrudnienie
+    document.addEventListener('contextmenu', function(e){ if (e.target.tagName === 'IMG') e.preventDefault(); });
     document.addEventListener('keydown', function(e){
-      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
-        e.preventDefault();
-      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) e.preventDefault();
     });
   </script>
 </body>
