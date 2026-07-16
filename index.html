@@ -40,6 +40,21 @@
     position:relative;
   }
 
+  /* ---------- ZABEZPIECZENIE PRZED POBIERANIEM ZDJĘĆ ---------- */
+  img{
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none; /* blokuje menu "zapisz zdjęcie" na iOS przy długim przytrzymaniu */
+    pointer-events: auto;
+  }
+
   /* ---------- TOP BAR / PIVOT ---------- */
   .topbar{
     position:sticky; top:0; z-index:50;
@@ -311,7 +326,7 @@
   }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false" ondragstart="return false">
 
   <div id="kod-modal">
     <div class="kod-box" onclick="event.stopPropagation()">
@@ -327,7 +342,7 @@
   </div>
 
   <div id="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()" oncontextmenu="return false" draggable="false">
   </div>
 
   <div class="topbar" id="topbar">
@@ -390,32 +405,32 @@
       <p>Lista osób z Messengera.</p>
       <div class="members-grid">
         <div class="member-card">
-          <img src="osoba1.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba1.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Martyna</h3>
           <p>Rzetelny administrator</p>
         </div>
         <div class="member-card">
-          <img src="osoba2.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba2.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Błażej</h3>
           <p>Fajny Emogej</p>
         </div>
         <div class="member-card">
-          <img src="osoba3.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba3.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Antosia</h3>
           <p>Działaczka partii komunistycznej</p>
         </div>
         <div class="member-card">
-          <img src="osoba4.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba4.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Adaś</h3>
           <p>Won do piekła</p>
         </div>
         <div class="member-card">
-          <img src="osoba5.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba5.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Macica</h3>
           <p>Lubi mężczyzn</p>
         </div>
         <div class="member-card">
-          <img src="osoba6.jpg" alt="Członek" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba6.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Kaska</h3>
           <p>lubi nieogolone pachy</p>
         </div>
@@ -428,72 +443,72 @@
 
 <div class="gallery-grid" id="gallery">
   <div class="polaroid" data-cat="1" data-blokada="n">
-    <img src="galeria1.jpg" alt="Zdjęcie 1" onclick="openLightbox(0, this.parentElement)">
+    <img src="galeria1.jpg" alt="Zdjęcie 1" draggable="false" onclick="openLightbox(0, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Koniec spotkania</span>
   </div>
   <div class="polaroid" data-cat="1" data-blokada="y">
-    <img src="galeria2.jpg" alt="Zdjęcie 2" onclick="openLightbox(1, this.parentElement)">
+    <img src="galeria2.jpg" alt="Zdjęcie 2" draggable="false" onclick="openLightbox(1, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
   </div>
   <div class="polaroid" data-cat="1" data-blokada="n">
-    <img src="galeria3.jpg" alt="Zdjęcie 3" onclick="openLightbox(2, this.parentElement)">
+    <img src="galeria3.jpg" alt="Zdjęcie 3" draggable="false" onclick="openLightbox(2, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Kfc w Złotych Tarasach</span>
   </div>
   <div class="polaroid" data-cat="1" data-blokada="y">
-    <img src="galeria4.jpg" alt="Zdjęcie 4" onclick="openLightbox(3, this.parentElement)">
+    <img src="galeria4.jpg" alt="Zdjęcie 4" draggable="false" onclick="openLightbox(3, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek wyjeżdża do Łoniaków</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria5.jpg" alt="Zdjęcie 5" onclick="openLightbox(4, this.parentElement)">
+    <img src="galeria5.jpg" alt="Zdjęcie 5" draggable="false" onclick="openLightbox(4, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek i Adaś</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria6.jpg" alt="Zdjęcie 6" onclick="openLightbox(5, this.parentElement)">
+    <img src="galeria6.jpg" alt="Zdjęcie 6" draggable="false" onclick="openLightbox(5, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Tajemniczy podryw</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria7.jpg" alt="Zdjęcie 7" onclick="openLightbox(6, this.parentElement)">
+    <img src="galeria7.jpg" alt="Zdjęcie 7" draggable="false" onclick="openLightbox(6, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek się powiesił</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria8.jpg" alt="Zdjęcie 8" onclick="openLightbox(7, this.parentElement)">
+    <img src="galeria8.jpg" alt="Zdjęcie 8" draggable="false" onclick="openLightbox(7, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Błażej scza</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria9.jpg" alt="Zdjęcie 9" onclick="openLightbox(8, this.parentElement)">
+    <img src="galeria9.jpg" alt="Zdjęcie 9" draggable="false" onclick="openLightbox(8, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Stopy Maćka</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria10.jpg" alt="Zdjęcie 10" onclick="openLightbox(9, this.parentElement)">
+    <img src="galeria10.jpg" alt="Zdjęcie 10" draggable="false" onclick="openLightbox(9, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">S8</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria11.jpg" alt="Zdjęcie 11" onclick="openLightbox(10, this.parentElement)">
+    <img src="galeria11.jpg" alt="Zdjęcie 11" draggable="false" onclick="openLightbox(10, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek z Antosią</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria12.jpg" alt="Zdjęcie 12" onclick="openLightbox(11, this.parentElement)">
+    <img src="galeria12.jpg" alt="Zdjęcie 12" draggable="false" onclick="openLightbox(11, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Maciek z sexshopem</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria13.jpg" alt="Zdjęcie 13" onclick="openLightbox(12, this.parentElement)">
+    <img src="galeria13.jpg" alt="Zdjęcie 13" draggable="false" onclick="openLightbox(12, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Rozmowy w tramwaju</span>
   </div>
   <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria14.jpg" alt="Zdjęcie 14" onclick="openLightbox(13, this.parentElement)">
+    <img src="galeria14.jpg" alt="Zdjęcie 14" draggable="false" onclick="openLightbox(13, this.parentElement)">
     <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
     <span class="tag">Butelki kałcyjne</span>
   </div>
@@ -583,6 +598,26 @@
       oczekujacyIdx = null;
     }
     function closeLightbox() { lb.style.display = 'none'; }
+
+    // ---- Dodatkowa blokada pobierania zdjęć ----
+    // Blokada menu kontekstowego (prawy przycisk myszy) na wszystkich obrazkach
+    document.querySelectorAll('img').forEach(img => {
+      img.setAttribute('draggable', 'false');
+      img.addEventListener('contextmenu', e => e.preventDefault());
+      img.addEventListener('dragstart', e => e.preventDefault());
+    });
+
+    // Blokada globalna menu kontekstowego (zabezpieczenie na wypadek dynamicznie dodanych obrazków)
+    document.addEventListener('contextmenu', function(e){
+      if (e.target.tagName === 'IMG') e.preventDefault();
+    });
+
+    // Blokada skrótu Ctrl+S (zapis strony) i Ctrl+U (podgląd źródła) jako dodatkowe utrudnienie
+    document.addEventListener('keydown', function(e){
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+      }
+    });
   </script>
 </body>
 </html>
