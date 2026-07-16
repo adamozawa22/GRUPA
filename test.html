@@ -3,334 +3,387 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Genzie Hub</title>
+<title>Genzie Hub ✨</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
 
-  /* ============ METRO TILE PALETTE ============ */
   :root{
-    --bg: #101010;
-    --bg-2: #1a1a1a;
-    --ink: #ffffff;
-    --muted: #9c9c9c;
-
-    --cobalt: #2D89EF;
-    --emerald: #00A300;
-    --magenta: #D80073;
-    --violet: #6A00FF;
-    --amber: #F09609;
-    --teal: #00ABA9;
-    --crimson: #E51400;
-    --lime: #A4C400;
-    --steel: #647687;
-
-    --gap: 3px;
+    --ink: #2b1642;
+    --muted: #6b5487;
+    --pink: #ff5fa8;
+    --purple: #8c52ff;
+    --cyan: #22d3ee;
+    --lime: #b6ff3c;
+    --orange: #ff9d4d;
+    --mint: #6df0c2;
+    --yellow: #ffe14d;
+    --line: #2b1642;
+    --card: #fffdf9;
+    --gap: 14px;
   }
 
   *{ box-sizing:border-box; }
   html,body{ margin:0; min-height:100%; }
 
   body{
-    font-family:'Segoe UI', 'Segoe UI Light', Arial, sans-serif;
-    font-weight:400;
+    font-family:'Quicksand', sans-serif;
+    font-weight:500;
     color: var(--ink);
-    background: var(--bg);
+    background:
+      radial-gradient(circle at 8% 12%, rgba(255,95,168,0.35), transparent 38%),
+      radial-gradient(circle at 92% 8%, rgba(140,82,255,0.3), transparent 40%),
+      radial-gradient(circle at 15% 88%, rgba(109,240,194,0.35), transparent 42%),
+      radial-gradient(circle at 85% 75%, rgba(255,225,77,0.3), transparent 38%),
+      linear-gradient(135deg, #fdeaff 0%, #d8f3ff 45%, #fff6d2 75%, #e8fff0 100%);
+    background-attachment: fixed;
     min-height:100vh;
     padding: 0 0 60px;
     position:relative;
+    overflow-x:hidden;
   }
 
-  /* ---------- ZABEZPIECZENIE PRZED POBIERANIEM ZDJĘĆ ---------- */
+  .sparkle{
+    position:fixed; font-size:22px; opacity:0.6; z-index:0;
+    animation: bob 5s ease-in-out infinite; pointer-events:none;
+  }
+  .s1{ top:6%; left:3%; }
+  .s2{ top:72%; left:93%; font-size:28px; animation-delay:1s; }
+  .s3{ top:38%; left:1%; font-size:18px; animation-delay:2s; }
+  .s4{ top:88%; left:6%; animation-delay:.5s; }
+  .s5{ top:14%; left:95%; animation-delay:1.5s; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(0);} 50%{ transform:translateY(-12px) rotate(10deg);} }
+
   img{
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none; /* blokuje menu "zapisz zdjęcie" na iOS przy długim przytrzymaniu */
-    pointer-events: auto;
+    -webkit-user-drag:none; user-drag:none;
+    -webkit-user-select:none; user-select:none;
+    -webkit-touch-callout:none;
   }
 
-  /* ---------- TOP BAR / PIVOT ---------- */
   .topbar{
-    position:sticky; top:0; z-index:50;
-    background: var(--bg);
-    border-bottom: 1px solid #2a2a2a;
-    padding: 22px 34px 0;
-    display:flex; align-items:flex-end; justify-content:space-between;
-    gap:24px;
-    flex-wrap:wrap;
-    opacity:1;
-    transform: translateY(0);
+    position:sticky; top:14px; z-index:50;
+    max-width:1180px; margin:0 auto;
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 100px;
+    box-shadow: 6px 6px 0 var(--line);
+    padding: 10px 14px 10px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px; flex-wrap:wrap;
+    opacity:1; transform:translateY(0);
     transition: opacity .35s ease, transform .35s ease;
   }
-
   .topbar.collapsed{
-    opacity:0;
-    transform: translateY(-16px);
+    opacity:0; transform:translateY(-20px);
     pointer-events:none;
   }
 
   .logo{
-    font-family:'Segoe UI Light','Segoe UI', sans-serif;
-    font-weight:200;
-    font-size:30px;
-    letter-spacing:0.5px;
-    color: var(--ink);
-    display:flex; align-items:baseline; gap:8px;
-    white-space:nowrap;
-    padding-bottom:14px;
-    text-transform:lowercase;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800; font-size:26px;
+    letter-spacing:0.3px;
+    color: var(--purple);
+    -webkit-text-stroke: 1.5px var(--line);
+    display:flex; align-items:center; gap:6px;
+    white-space:nowrap; text-transform:lowercase;
+    padding:4px 0;
   }
-  .logo::before{
-    content:"";
-    display:inline-block;
-    width:14px; height:14px;
-    background: var(--magenta);
-    margin-right:2px;
-  }
+  .logo::before{ content:"✦"; color:var(--pink); -webkit-text-stroke:0; font-size:20px; }
 
-  .nav-pills{ display:flex; gap:0; flex-wrap:wrap; }
+  .nav-pills{ display:flex; gap:6px; flex-wrap:wrap; }
 
   .nav-link{
     cursor:pointer;
-    font-family:'Segoe UI', sans-serif;
-    font-weight:600;
-    font-size:16px;
-    color: var(--muted);
-    padding: 10px 18px 16px;
-    border:none;
-    background: transparent;
-    transition: color .15s ease;
-    user-select:none;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    position:relative;
-  }
-  .nav-link:hover{ color:#d8d8d8; }
-  .nav-link.active{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600; font-size:14px;
     color: var(--ink);
+    padding: 9px 14px;
+    border-radius: 100px;
+    border: 2.5px solid transparent;
+    background: transparent;
+    transition: all .15s ease;
+    user-select:none;
+    text-transform:lowercase;
+    letter-spacing:0.3px;
+    display:flex; align-items:center; gap:6px;
   }
-  .nav-link.active::after{
-    content:"";
-    position:absolute; left:18px; right:18px; bottom:0;
-    height:3px;
-    background: var(--magenta);
+  .nav-link svg{ width:15px; height:15px; flex-shrink:0; opacity:0.75; }
+  .nav-link:hover{ background:rgba(140,82,255,0.12); }
+  .nav-link.active{
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    border-color: var(--line);
+    box-shadow: 3px 3px 0 var(--line);
+    transform: translateY(-1px);
   }
+  .nav-link.active svg{ opacity:1; }
 
-  /* ---------- PAGE WRAP ---------- */
-  .page-wrap{ max-width:1180px; margin:0 auto; position:relative; z-index:1; padding: 28px 30px 0; }
-  .page{ display:none; animation: pop .3s ease; }
+  .page-wrap{ max-width:1180px; margin:0 auto; position:relative; z-index:1; padding: 28px 26px 0; }
+  .page{ display:none; animation: pop .35s cubic-bezier(.2,.9,.3,1); }
   .page.active{ display:block; }
-  @keyframes pop{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes pop{ from{ opacity:0; transform:scale(.97) translateY(8px);} to{ opacity:1; transform:scale(1) translateY(0);} }
 
-  /* ---------- METRO TILE GRID ---------- */
   .bento{
     display:grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 180px;
+    grid-auto-rows: 170px;
     grid-auto-flow: dense;
     gap: var(--gap);
   }
 
   .tile{
     position:relative;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-    padding: 20px;
+    border-radius: 26px 26px 26px 8px;
+    border: 3px solid var(--line);
+    box-shadow: 5px 5px 0 var(--line);
+    padding: 18px;
     display:flex; flex-direction:column; justify-content:flex-end;
-    color: #fff;
+    color: var(--ink);
     text-decoration:none;
     cursor:pointer;
-    transition: transform .12s ease, filter .12s ease;
+    transition: transform .15s ease, box-shadow .15s ease;
     overflow:hidden;
   }
-  .tile:active{ transform: scale(.97); }
-  .tile:hover{ filter: brightness(1.08); }
+  .tile:nth-child(odd){ transform:rotate(-1.2deg); }
+  .tile:nth-child(even){ transform:rotate(1deg); border-radius:8px 26px 26px 26px; }
+  .tile:hover{
+    transform:rotate(0) translateY(-4px) scale(1.02);
+    box-shadow: 8px 8px 0 var(--line);
+  }
+  .tile:active{ transform:scale(.97); }
 
-  .tile-g2{ grid-column: span 1; background: var(--emerald); }
-  .tile-g3{ grid-column: span 1; background: var(--amber); }
-  .tile-g4{ grid-column: span 2; grid-row: span 2; background: var(--cobalt); }
-  .tile-g5{ grid-column: span 1; grid-row: span 2; background: var(--magenta); }
-  .tile-g6{ grid-column: span 1; background: #050505; border: 1px solid #2a2a2a; }
-  .tile-g7{ grid-column: span 1; background: var(--emerald); }
-  .tile-g8{ grid-column: span 2; background: var(--violet); }
+  .tile-g2{ grid-column:span 1; background:linear-gradient(145deg, var(--lime), #8ef542); }
+  .tile-g3{ grid-column:span 1; background:linear-gradient(145deg, var(--orange), #ffb86a); }
+  .tile-g4{ grid-column:span 2; grid-row:span 2; background:linear-gradient(160deg, var(--pink), #ff8ec4); color:#fff; }
+  .tile-g5{ grid-column:span 1; grid-row:span 2; background:linear-gradient(180deg, #833AB4, #C13584, #FD1D1D); color:#fff; }
+  .tile-g6{ grid-column:span 1; background:linear-gradient(145deg, #1a1a2e, #2d2d44); color:#fff; }
+  .tile-g7{ grid-column:span 1; background:linear-gradient(145deg, #1db954, var(--mint)); }
+  .tile-g8{ grid-column:span 2; background:linear-gradient(135deg, var(--purple), #b07cff); color:#fff; }
 
-  .tile .icon{ margin-bottom:auto; line-height:0; opacity:0.95; }
-  .tile .icon svg{ width:42px; height:42px; display:block; }
-  .tile .label{ font-family:'Segoe UI Semilight','Segoe UI', sans-serif; font-weight:600; font-size:21px; line-height:1.2; letter-spacing:0.2px; }
-  .tile .sub{ font-size:11.5px; font-weight:400; opacity:0.85; margin-top:3px; }
+  .tile .icon-wrap{
+    margin-bottom:auto;
+    width:48px; height:48px; border-radius:14px;
+    background:#fff;
+    border:2.5px solid var(--line);
+    box-shadow:3px 3px 0 var(--line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .tile .icon-wrap svg{ width:26px; height:26px; display:block; }
+  .tile-g4 .icon-wrap svg, .tile-g5 .icon-wrap svg, .tile-g6 .icon-wrap svg, .tile-g8 .icon-wrap svg{ color:var(--ink); }
+  .tile-g4 .icon-wrap, .tile-g5 .icon-wrap, .tile-g6 .icon-wrap, .tile-g8 .icon-wrap{
+    background:rgba(255,255,255,0.92);
+  }
+  .tile .label{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700; font-size:19px;
+    line-height:1.15; letter-spacing:0.2px;
+  }
+  .tile-g4 .label, .tile-g5 .label, .tile-g6 .label, .tile-g8 .label{ color:#fff; }
+  .tile .sub{ font-size:12px; font-weight:600; opacity:0.85; margin-top:4px; }
+  .tile-g4 .sub, .tile-g5 .sub, .tile-g6 .sub, .tile-g8 .sub{ color:rgba(255,255,255,0.9); }
 
-  /* ---------- PAGE CONTENT CARD ---------- */
   .page-content{
     max-width:1180px;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 6px 4px 42px;
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 32px 32px 32px 10px;
+    box-shadow: 7px 7px 0 var(--line);
+    padding: 32px 36px 40px;
   }
   .page-content h2{
-    font-family:'Segoe UI Light','Segoe UI', sans-serif;
-    font-weight:200; font-size:38px; margin:0 0 4px 0;
-    color: #fff;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800; font-size:34px; margin:0 0 6px 0;
+    color: var(--purple);
     text-transform:lowercase;
   }
-  .page-content > p{ color: var(--muted); font-weight:400; margin:0 0 26px 0; font-size:14px; }
-  .page-content ul{ line-height:2; font-weight:400; }
-  .page-content li strong{ color: var(--magenta); }
+  .page-content > p{ color:var(--muted); font-weight:600; margin:0 0 24px 0; font-size:14px; }
+  .page-content ul{ line-height:2; font-weight:600; }
+  .page-content li strong{ color:var(--pink); }
 
-  /* members */
-  .members-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: var(--gap); }
+  .members-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:var(--gap); }
   .member-card{
-    background: var(--bg-2);
-    border: none;
-    border-radius: 0;
-    padding: 22px 14px;
+    background:#fff;
+    border:2.5px solid var(--line);
+    border-radius:22px 22px 22px 8px;
+    padding:20px 14px;
     text-align:center;
-    transition: filter .12s ease;
+    transition:transform .15s ease;
+    box-shadow:4px 4px 0 var(--line);
   }
-  .member-card:nth-child(6n+1){ background: var(--cobalt); }
-  .member-card:nth-child(6n+2){ background: var(--emerald); }
-  .member-card:nth-child(6n+3){ background: var(--magenta); }
-  .member-card:nth-child(6n+4){ background: var(--amber); }
-  .member-card:nth-child(6n+5){ background: var(--violet); }
-  .member-card:nth-child(6n+6){ background: var(--teal); }
-  .member-card:hover{ filter: brightness(1.1); }
+  .member-card:nth-child(6n+1){ background:linear-gradient(160deg,#d4e8ff,#a8d4ff); transform:rotate(-1.5deg); }
+  .member-card:nth-child(6n+2){ background:linear-gradient(160deg,#d4ffd8,#9effa8); transform:rotate(1.2deg); }
+  .member-card:nth-child(6n+3){ background:linear-gradient(160deg,#ffd4f0,#ff9ed4); transform:rotate(-0.8deg); }
+  .member-card:nth-child(6n+4){ background:linear-gradient(160deg,#fff0c8,#ffd47a); transform:rotate(1.5deg); }
+  .member-card:nth-child(6n+5){ background:linear-gradient(160deg,#e8d4ff,#c9a0ff); transform:rotate(-1deg); }
+  .member-card:nth-child(6n+6){ background:linear-gradient(160deg,#c8fff5,#7ef0dc); transform:rotate(0.8deg); }
+  .member-card:hover{ transform:translateY(-5px) rotate(0)!important; }
   .member-card img{
-    width:88px; height:88px; border-radius:0; object-fit:cover;
-    border: none; margin-bottom:14px; background: rgba(255,255,255,0.15);
+    width:88px; height:88px; border-radius:50%; object-fit:cover;
+    border:3px solid var(--line); margin-bottom:12px;
+    background:var(--mint);
   }
-  .member-card h3{ font-family:'Segoe UI', sans-serif; font-weight:600; margin:0 0 4px 0; font-size:16px; color:#fff; text-transform:uppercase; letter-spacing:0.3px; }
-  .member-card p{ margin:0; font-size:12px; color: rgba(255,255,255,0.8); font-weight:400; }
+  .member-card h3{
+    font-family:'Baloo 2', sans-serif; font-weight:700;
+    margin:0 0 4px 0; font-size:16px;
+    text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .member-card p{ margin:0; font-size:12px; color:var(--muted); font-weight:600; }
 
-  /* gallery - metro tile style, no polaroid tilt */
-  .gallery-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: var(--gap); padding-top:4px; }
+  .gallery-grid{ display:flex; flex-wrap:wrap; gap:20px; padding-top:6px; }
   .polaroid{
-    background: var(--bg-2);
-    border:none; border-radius:0;
-    padding:0; box-shadow:none;
-    cursor:pointer; transition: filter .12s ease, opacity .2s ease;
+    background:#fff;
+    border:2.5px solid var(--line);
+    border-radius:10px;
+    padding:10px 10px 0;
+    box-shadow:4px 4px 0 var(--line);
+    width:calc(25% - 15px);
+    min-width:220px;
+    cursor:pointer;
+    transition:transform .15s ease;
     position:relative;
   }
-  .polaroid:hover{ filter:brightness(1.1); }
-  .polaroid img{ width:100%; height:280px; object-fit:cover; display:block; background: var(--steel); }
+  .polaroid:nth-child(odd){ transform:rotate(-2deg); }
+  .polaroid:nth-child(even){ transform:rotate(2deg); }
+  .polaroid:hover{ transform:rotate(0) scale(1.03); }
+  .polaroid img{
+    width:100%; height:200px; object-fit:cover;
+    border-radius:4px; display:block;
+    background:linear-gradient(135deg,var(--mint),var(--cyan));
+  }
   .polaroid .tag{
     display:block;
-    padding: 12px 14px 14px;
-    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:14px;
-    color: rgba(255,255,255,0.9); text-transform:lowercase; letter-spacing:0.2px;
-    background: rgba(0,0,0,0.6);
+    padding:10px 8px 14px;
+    font-family:'Baloo 2', sans-serif; font-weight:600; font-size:13px;
+    color:var(--ink); text-transform:lowercase;
+    letter-spacing:0.2px;
+    background:transparent;
   }
   .polaroid.hidden{ display:none; }
 
-  /* blokada zdjęć kodem */
-  .polaroid[data-blokada="y"] img{ filter: blur(14px) brightness(0.6); }
+  .polaroid[data-blokada="y"] img{ filter:blur(12px) brightness(0.85) saturate(0.5); }
   .polaroid[data-blokada="y"].odblokowane img{ filter:none; }
   .lock-overlay{
     display:none;
-    position:absolute; top:0; left:0; right:0; height:280px;
+    position:absolute; top:10px; left:10px; right:10px; height:200px;
     flex-direction:column; align-items:center; justify-content:center;
-    gap:6px; pointer-events:none;
-    font-family:'Segoe UI', sans-serif; font-weight:600; color:#fff;
-    text-shadow:none;
+    gap:8px; pointer-events:none;
+    font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--ink);
+    border-radius:4px;
+    background:rgba(255,253,249,0.55);
   }
   .polaroid[data-blokada="y"]:not(.odblokowane) .lock-overlay{ display:flex; }
   .lock-overlay .lock-icon{
-    width:40px; height:40px; border-radius:0;
-    background: var(--magenta); border:none;
-    box-shadow:none;
+    width:44px; height:44px; border-radius:50%;
+    background:linear-gradient(135deg,var(--pink),var(--purple));
+    border:2.5px solid var(--line);
+    box-shadow:3px 3px 0 var(--line);
     display:flex; align-items:center; justify-content:center;
   }
-  .lock-overlay .lock-icon svg{ width:18px; height:18px; }
+  .lock-overlay .lock-icon svg{ width:18px; height:18px; color:#fff; }
   .lock-overlay span{ font-size:11px; text-transform:lowercase; letter-spacing:0.3px; }
 
-  /* modal z kodem */
   #kod-modal{
     display:none; position:fixed; inset:0; z-index:1100;
-    background: rgba(0,0,0,0.85);
+    background:rgba(43,22,66,0.75);
     align-items:center; justify-content:center;
+    backdrop-filter:blur(4px);
   }
   .kod-box{
-    background: var(--cobalt);
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 30px 30px 26px;
-    width: 260px;
+    background:linear-gradient(160deg,#fff6d2,#fdeaff);
+    border:3px solid var(--line);
+    border-radius:28px 28px 28px 8px;
+    box-shadow:8px 8px 0 var(--line);
+    padding:28px 28px 24px;
+    width:280px;
     text-align:center;
   }
   .kod-box h3{
-    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:19px; margin:0 0 4px 0;
-    color: #fff; text-transform:lowercase;
+    font-family:'Baloo 2', sans-serif; font-weight:800; font-size:22px; margin:0 0 4px 0;
+    color:var(--purple); text-transform:lowercase;
+    display:flex; align-items:center; justify-content:center; gap:8px;
   }
-  .kod-box p{ margin:0 0 16px 0; font-size:12.5px; color: rgba(255,255,255,0.85); font-weight:400; }
+  .kod-box h3 svg{ width:20px; height:20px; color:var(--pink); }
+  .kod-box p{ margin:0 0 16px 0; font-size:13px; color:var(--muted); font-weight:600; }
   .kod-box input{
-    width:100%; text-align:center; letter-spacing:4px;
-    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:18px;
-    padding:10px 8px; border-radius:0;
-    border: none; margin-bottom:12px;
+    width:100%; text-align:center; letter-spacing:6px;
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:20px;
+    padding:10px 8px; border-radius:100px;
+    border:2.5px solid var(--line); margin-bottom:12px;
     outline:none; box-sizing:border-box;
-    background:#fff; color:#101010;
+    background:#fff; color:var(--ink);
   }
-  .kod-box .kod-btns{ display:flex; gap: var(--gap); justify-content:center; }
+  .kod-box .kod-btns{ display:flex; gap:8px; justify-content:center; }
   .kod-box button{
-    cursor:pointer; font-family:'Segoe UI', sans-serif; font-weight:600; font-size:13.5px;
-    padding:10px 20px; border-radius:0; border:none;
-    transition: filter .12s ease;
+    cursor:pointer; font-family:'Baloo 2', sans-serif; font-weight:700; font-size:14px;
+    padding:10px 20px; border-radius:100px;
+    border:2.5px solid var(--line);
+    transition:transform .12s ease;
     text-transform:lowercase;
   }
-  .kod-box .btn-ok{ background: #050505; color:#fff; box-shadow:none; }
-  .kod-box .btn-ok:hover{ filter:brightness(1.3); }
-  .kod-box .btn-anuluj{ background: rgba(255,255,255,0.25); color:#fff; }
-  .kod-box .btn-anuluj:hover{ filter:brightness(1.15); }
-  .kod-box .kod-error{ font-size:11.5px; color:#ffd6d6; font-weight:600; margin-top:-6px; margin-bottom:10px; min-height:14px; }
+  .kod-box .btn-ok{
+    background:linear-gradient(135deg,var(--pink),var(--purple));
+    color:#fff; box-shadow:3px 3px 0 var(--line);
+  }
+  .kod-box .btn-ok:hover{ transform:translateY(-2px); }
+  .kod-box .btn-anuluj{ background:#fff; color:var(--ink); }
+  .kod-box .btn-anuluj:hover{ background:var(--yellow); }
+  .kod-box .kod-error{ font-size:12px; color:#e51400; font-weight:700; margin-top:-6px; margin-bottom:10px; min-height:14px; }
 
-  /* lightbox */
   #lightbox{
     display:none; position:fixed; inset:0; z-index:1000;
-    background: rgba(0,0,0,0.92);
+    background:rgba(43,22,66,0.88);
     align-items:center; justify-content:center;
+    backdrop-filter:blur(6px);
   }
-  #lightbox img{ max-width:88%; max-height:78%; border-radius:0; border:none; }
+  #lightbox img{
+    max-width:88%; max-height:78%;
+    border-radius:16px;
+    border:4px solid #fff;
+    box-shadow:0 0 30px rgba(255,95,168,0.4);
+  }
 
   @media (max-width:768px){
-    .topbar{ padding: 16px 18px 0; flex-direction:column; align-items:stretch; }
-    .logo{ font-size:24px; padding-bottom:10px; }
-    .nav-pills{ overflow-x:auto; }
-    .nav-link{ padding:8px 12px 12px; font-size:13.5px; white-space:nowrap; }
-    .page-wrap{ padding: 20px 16px 0; }
-    .bento{ grid-template-columns: repeat(2,1fr); grid-auto-rows:130px; }
-    .tile-g4, .tile-g8{ grid-column: span 2; }
-    .tile-g4{ grid-row: span 2; }
-    .page-content h2{ font-size:28px; }
+    .topbar{ border-radius:28px; padding:12px 16px; flex-direction:column; align-items:stretch; top:10px; }
+    .logo{ font-size:22px; justify-content:center; }
+    .nav-pills{ overflow-x:auto; justify-content:center; }
+    .nav-link{ padding:8px 12px; font-size:13px; white-space:nowrap; }
+    .page-wrap{ padding:20px 14px 0; }
+    .bento{ grid-template-columns:repeat(2,1fr); grid-auto-rows:130px; gap:12px; }
+    .tile-g4,.tile-g8{ grid-column:span 2; }
+    .tile-g4{ grid-row:span 2; }
+    .page-content{ padding:22px 18px 28px; border-radius:24px 24px 24px 8px; }
+    .page-content h2{ font-size:26px; }
+    .polaroid{ width:calc(50% - 10px); min-width:150px; }
   }
 
   @media (max-width:480px){
-    .bento{ grid-template-columns: 1fr; grid-auto-rows:150px; }
-    .tile-g2,.tile-g3,.tile-g4,.tile-g5,.tile-g6,.tile-g7,.tile-g8{ grid-column: span 1; grid-row: span 1; }
-    .tile-g4{ min-height:170px; }
+    .bento{ grid-template-columns:1fr; grid-auto-rows:140px; }
+    .tile-g2,.tile-g3,.tile-g4,.tile-g5,.tile-g6,.tile-g7,.tile-g8{ grid-column:span 1; grid-row:span 1; }
+    .tile-g4{ min-height:160px; }
     .tile .label{ font-size:16px; }
-    .members-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
-    .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); }
+    .sparkle{ display:none; }
+    .members-grid{ grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); }
+    .polaroid{ width:100%; }
+    .polaroid img,.lock-overlay{ height:180px; }
+    .polaroid[data-blokada="y"] .lock-overlay{ height:180px; }
   }
 
-  @media (prefers-reduced-motion: reduce){
+  @media (prefers-reduced-motion:reduce){
+    .sparkle{ animation:none; }
     .page{ animation:none; }
-    .tile, .member-card, .polaroid{ transition:none; }
+    .tile,.member-card,.polaroid{ transition:none; }
   }
 </style>
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
 
-  <div id="kod-modal">
+  <div class="sparkle s1">✨</div>
+  <div class="sparkle s2">⭐</div>
+  <div class="sparkle s3">💫</div>
+  <div class="sparkle s4">✨</div>
+  <div class="sparkle s5">🌟</div>
+
+  <div id="kod-modal" onclick="zamknijKodModal()">
     <div class="kod-box" onclick="event.stopPropagation()">
-      <h3>zablokowane</h3>
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> zablokowane</h3>
       <p>Wpisz kod, żeby zobaczyć to zdjęcie.</p>
       <input type="text" id="kod-input" maxlength="4" inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter') sprawdzKod()">
       <div class="kod-error" id="kod-error"></div>
@@ -348,11 +401,11 @@
   <div class="topbar" id="topbar">
     <div class="logo">genzie hub</div>
     <div class="nav-pills" id="navPills">
-      <div class="nav-link active" onclick="switchPage(this, 'home')">start</div>
-      <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')">członkowie</div>
-      <div class="nav-link" onclick="switchPage(this, 'zdjecia')">zdjęcia</div>
-      <div class="nav-link" onclick="switchPage(this, 'spotkania')">spotkania</div>
-      <div class="nav-link" onclick="switchPage(this, 'informacje')">informacje</div>
+      <div class="nav-link active" onclick="switchPage(this, 'home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>start</div>
+      <div class="nav-link" onclick="switchPage(this, 'kim-jestesmy')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 3.1-6 7-6"/><path d="M14 20c0-2.2 1.8-4 4-4"/></svg>członkowie</div>
+      <div class="nav-link" onclick="switchPage(this, 'zdjecia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor" stroke="none"/><path d="M21 15l-5-5L6 19"/></svg>zdjęcia</div>
+      <div class="nav-link" onclick="switchPage(this, 'spotkania')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>spotkania</div>
+      <div class="nav-link" onclick="switchPage(this, 'informacje')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>informacje</div>
     </div>
   </div>
 
@@ -362,38 +415,38 @@
       <div class="bento">
 
         <div class="tile tile-g2" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3" fill="currentColor"/><circle cx="17" cy="9" r="2.4" fill="currentColor" opacity="0.55"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 14.5c2.5.3 4.5 2.4 4.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></div>
           <div class="label">Lista obecności</div>
         </div>
 
         <div class="tile tile-g3" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="0" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="6.5" y="13" width="3" height="3" fill="currentColor"/><rect x="12" y="13" width="3" height="3" fill="currentColor" opacity="0.6"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><rect x="7" y="13" width="3" height="3" rx="0.5" fill="currentColor" stroke="none"/><rect x="14" y="13" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" opacity="0.6"/></svg></div>
           <div class="label">Terminarz</div>
         </div>
 
         <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g4" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.8 7.2V22l3.5-1.9c.9.2 1.8.4 2.7.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2z" fill="currentColor"/><path d="M6.7 13.6l3.7-3.9 2.4 2.3 3.9-3.9-3.9 5.7-2.4-2.3-3.7 4.1z" fill="#2D89EF"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.13 2 11.25c0 2.87 1.44 5.43 3.69 7.07V22l3.36-1.84c.9.25 1.85.38 2.84.38 5.52 0 10-4.13 10-9.25S17.52 2 12 2zm1.1 12.23l-2.7-2.88-5.28 2.88 5.81-6.17 2.77 2.88 5.2-2.88-5.8 6.17z"/></svg></div>
           <div class="label">Messenger Chat</div>
           <div class="sub">ostatnia wiadomość: przed chwilą...</div>
         </a>
 
         <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g5" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="0" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
           <div class="label">Instagram</div>
         </a>
 
         <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-g6" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 3c.4 2 1.9 3.4 3.9 3.6v2.7a6.4 6.4 0 0 1-3.9-1.3v6.6a5 5 0 1 1-4.3-4.9v2.8a2.3 2.3 0 1 0 1.6 2.2V3h2.7z" fill="#ffffff"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.1 4.1 0 0 1-1-.48z"/></svg></div>
           <div class="label">TikTok</div>
         </a>
 
         <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="tile tile-g7" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M6.8 9.3c3.5-.9 7.4-.6 10.4 1.1" stroke="#00A300" stroke-width="1.5" stroke-linecap="round"/><path d="M7.4 12.6c2.9-.7 6.2-.5 8.8.9" stroke="#00A300" stroke-width="1.4" stroke-linecap="round"/><path d="M7.9 15.7c2.4-.5 5-.3 7 .9" stroke="#00A300" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 14.36c-.2.33-.63.43-.96.23-2.65-1.62-5.98-1.99-9.9-1.09-.38.09-.76-.15-.85-.53-.09-.38.15-.76.53-.85 4.28-.97 7.98-.55 10.93 1.25.33.2.43.63.25.99zm1.2-2.67c-.25.4-.78.53-1.18.28-3.03-1.86-7.65-2.4-11.23-1.31-.45.14-.93-.12-1.07-.57-.14-.45.12-.93.57-1.07 4.08-1.24 9.23-.64 12.77 1.5.4.25.53.78.14 1.17zm.1-2.8C14.03 8.45 8.16 8.25 5.08 9.08c-.54.16-1.11-.15-1.27-.69-.16-.54.15-1.11.69-1.27 3.55-1.08 10.1-.84 14.04 1.77.49.3.64.94.34 1.43-.3.49-.94.64-1.43.34z"/></svg></div>
           <div class="label">Playlista</div>
         </a>
 
         <div class="tile tile-g8" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke="currentColor" stroke-width="2"/></svg></div>
+          <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor" stroke="none"/><path d="M21 15l-5-5L6 19"/></svg></div>
           <div class="label">Galeria</div>
         </div>
 
@@ -405,32 +458,32 @@
       <p>Lista osób z Messengera.</p>
       <div class="members-grid">
         <div class="member-card">
-          <img src="osoba1.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba1.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Martyna</h3>
           <p>Rzetelny administrator</p>
         </div>
         <div class="member-card">
-          <img src="osoba2.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba2.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Błażej</h3>
           <p>Fajny Emogej</p>
         </div>
         <div class="member-card">
-          <img src="osoba3.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba3.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Antosia</h3>
           <p>Działaczka partii komunistycznej</p>
         </div>
         <div class="member-card">
-          <img src="osoba4.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba4.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Adaś</h3>
           <p>Won do piekła</p>
         </div>
         <div class="member-card">
-          <img src="osoba5.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba5.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Macica</h3>
           <p>Lubi mężczyzn</p>
         </div>
         <div class="member-card">
-          <img src="osoba6.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.15%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
+          <img src="osoba6.jpg" alt="Członek" draggable="false" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%236df0c2%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20fill%3D%22%232b1642%22%20font-size%3D%2240%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E'">
           <h3>Kaska</h3>
           <p>lubi nieogolone pachy</p>
         </div>
@@ -441,78 +494,78 @@
       <h2>galeria zdjęć</h2>
       <p>Najlepsze momenty i fotki ekipy.</p>
 
-<div class="gallery-grid" id="gallery">
-  <div class="polaroid" data-cat="1" data-blokada="n">
-    <img src="galeria1.jpg" alt="Zdjęcie 1" draggable="false" onclick="openLightbox(0, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Koniec spotkania</span>
-  </div>
-  <div class="polaroid" data-cat="1" data-blokada="y">
-    <img src="galeria2.jpg" alt="Zdjęcie 2" draggable="false" onclick="openLightbox(1, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
-  </div>
-  <div class="polaroid" data-cat="1" data-blokada="n">
-    <img src="galeria3.jpg" alt="Zdjęcie 3" draggable="false" onclick="openLightbox(2, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Kfc w Złotych Tarasach</span>
-  </div>
-  <div class="polaroid" data-cat="1" data-blokada="y">
-    <img src="galeria4.jpg" alt="Zdjęcie 4" draggable="false" onclick="openLightbox(3, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek wyjeżdża do Łoniaków</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria5.jpg" alt="Zdjęcie 5" draggable="false" onclick="openLightbox(4, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek i Adaś</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria6.jpg" alt="Zdjęcie 6" draggable="false" onclick="openLightbox(5, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Tajemniczy podryw</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria7.jpg" alt="Zdjęcie 7" draggable="false" onclick="openLightbox(6, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek się powiesił</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria8.jpg" alt="Zdjęcie 8" draggable="false" onclick="openLightbox(7, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Błażej scza</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria9.jpg" alt="Zdjęcie 9" draggable="false" onclick="openLightbox(8, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Stopy Maćka</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria10.jpg" alt="Zdjęcie 10" draggable="false" onclick="openLightbox(9, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">S8</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria11.jpg" alt="Zdjęcie 11" draggable="false" onclick="openLightbox(10, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek z Antosią</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="y">
-    <img src="galeria12.jpg" alt="Zdjęcie 12" draggable="false" onclick="openLightbox(11, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Maciek z sexshopem</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria13.jpg" alt="Zdjęcie 13" draggable="false" onclick="openLightbox(12, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Rozmowy w tramwaju</span>
-  </div>
-  <div class="polaroid" data-cat="2" data-blokada="n">
-    <img src="galeria14.jpg" alt="Zdjęcie 14" draggable="false" onclick="openLightbox(13, this.parentElement)">
-    <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" stroke="#fff" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="2"/></svg></div><span>zablokowane</span></div>
-    <span class="tag">Butelki kałcyjne</span>
-  </div>
-</div>
+      <div class="gallery-grid" id="gallery">
+        <div class="polaroid" data-cat="1" data-blokada="n">
+          <img src="galeria1.jpg" alt="Zdjęcie 1" draggable="false" onclick="openLightbox(0, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Koniec spotkania</span>
+        </div>
+        <div class="polaroid" data-cat="1" data-blokada="y">
+          <img src="galeria2.jpg" alt="Zdjęcie 2" draggable="false" onclick="openLightbox(1, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Zdjęcie w sklepie w jakimś chińskim sklepie</span>
+        </div>
+        <div class="polaroid" data-cat="1" data-blokada="n">
+          <img src="galeria3.jpg" alt="Zdjęcie 3" draggable="false" onclick="openLightbox(2, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Kfc w Złotych Tarasach</span>
+        </div>
+        <div class="polaroid" data-cat="1" data-blokada="y">
+          <img src="galeria4.jpg" alt="Zdjęcie 4" draggable="false" onclick="openLightbox(3, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Maciek wyjeżdża do Łoniaków</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="n">
+          <img src="galeria5.jpg" alt="Zdjęcie 5" draggable="false" onclick="openLightbox(4, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Maciek i Adaś</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="y">
+          <img src="galeria6.jpg" alt="Zdjęcie 6" draggable="false" onclick="openLightbox(5, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Tajemniczy podryw</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="y">
+          <img src="galeria7.jpg" alt="Zdjęcie 7" draggable="false" onclick="openLightbox(6, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Maciek się powiesił</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="n">
+          <img src="galeria8.jpg" alt="Zdjęcie 8" draggable="false" onclick="openLightbox(7, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Błażej scza</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="y">
+          <img src="galeria9.jpg" alt="Zdjęcie 9" draggable="false" onclick="openLightbox(8, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Stopy Maćka</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="n">
+          <img src="galeria10.jpg" alt="Zdjęcie 10" draggable="false" onclick="openLightbox(9, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">S8</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="y">
+          <img src="galeria11.jpg" alt="Zdjęcie 11" draggable="false" onclick="openLightbox(10, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Maciek z Antosią</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="y">
+          <img src="galeria12.jpg" alt="Zdjęcie 12" draggable="false" onclick="openLightbox(11, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Maciek z sexshopem</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="n">
+          <img src="galeria13.jpg" alt="Zdjęcie 13" draggable="false" onclick="openLightbox(12, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Rozmowy w tramwaju</span>
+        </div>
+        <div class="polaroid" data-cat="2" data-blokada="n">
+          <img src="galeria14.jpg" alt="Zdjęcie 14" draggable="false" onclick="openLightbox(13, this.parentElement)">
+          <div class="lock-overlay"><div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span>zablokowane</span></div>
+          <span class="tag">Butelki kałcyjne</span>
+        </div>
+      </div>
     </div>
 
     <div id="spotkania" class="page page-content">
@@ -538,7 +591,6 @@
       document.getElementById(pageId).classList.add('active');
     }
 
-    // ---- Pasek na górze: znika przy przewijaniu strony ----
     const topbar = document.getElementById('topbar');
     const SCROLL_THRESHOLD = 40;
 
@@ -557,7 +609,6 @@
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
 
-    // ---- Blokada zdjęć kodem ----
     const KOD_BLOKADY = '4556';
     const kodModal = document.getElementById('kod-modal');
     const kodInput = document.getElementById('kod-input');
@@ -599,20 +650,16 @@
     }
     function closeLightbox() { lb.style.display = 'none'; }
 
-    // ---- Dodatkowa blokada pobierania zdjęć ----
-    // Blokada menu kontekstowego (prawy przycisk myszy) na wszystkich obrazkach
     document.querySelectorAll('img').forEach(img => {
       img.setAttribute('draggable', 'false');
       img.addEventListener('contextmenu', e => e.preventDefault());
       img.addEventListener('dragstart', e => e.preventDefault());
     });
 
-    // Blokada globalna menu kontekstowego (zabezpieczenie na wypadek dynamicznie dodanych obrazków)
     document.addEventListener('contextmenu', function(e){
       if (e.target.tagName === 'IMG') e.preventDefault();
     });
 
-    // Blokada skrótu Ctrl+S (zapis strony) i Ctrl+U (podgląd źródła) jako dodatkowe utrudnienie
     document.addEventListener('keydown', function(e){
       if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
         e.preventDefault();
