@@ -7,20 +7,24 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
 
-  /* ============ WINDOWS PHONE METRO PALETTE ============ */
+  /* ============ METRO TILE PALETTE ============ */
   :root{
-    --bg: #ffffff;
-    --bg-2: #f4f4f4;
-    --ink: #101010;
-    --ink-inv: #ffffff;
-    --muted: #6f6f6f;
+    --bg: #101010;
+    --bg-2: #1a1a1a;
+    --ink: #ffffff;
+    --muted: #9c9c9c;
 
-    --wp-lime: #8cc63f;
-    --wp-lime-dark: #6ea832;
-    --wp-lime-darker: #56861f;
-    --wp-black: #101010;
+    --cobalt: #2D89EF;
+    --emerald: #00A300;
+    --magenta: #D80073;
+    --violet: #6A00FF;
+    --amber: #F09609;
+    --teal: #00ABA9;
+    --crimson: #E51400;
+    --lime: #A4C400;
+    --steel: #647687;
 
-    --gap: 4px;
+    --gap: 3px;
   }
 
   *{ box-sizing:border-box; }
@@ -28,7 +32,7 @@
 
   body{
     font-family:'Segoe UI', 'Segoe UI Light', Arial, sans-serif;
-    font-weight:300;
+    font-weight:400;
     color: var(--ink);
     background: var(--bg);
     min-height:100vh;
@@ -47,22 +51,16 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    -webkit-touch-callout: none;
+    -webkit-touch-callout: none; /* blokuje menu "zapisz zdjęcie" na iOS przy długim przytrzymaniu */
     pointer-events: auto;
-  }
-
-  /* ---------- STATUS BAR (imitacja WP8) ---------- */
-  .statusbar{
-    display:flex; justify-content:flex-end; align-items:center;
-    padding: 10px 20px 4px;
-    font-size:20px; font-weight:400; color: var(--ink);
   }
 
   /* ---------- TOP BAR / PIVOT ---------- */
   .topbar{
     position:sticky; top:0; z-index:50;
     background: var(--bg);
-    padding: 4px 20px 0;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 22px 34px 0;
     display:flex; align-items:flex-end; justify-content:space-between;
     gap:24px;
     flex-wrap:wrap;
@@ -80,48 +78,61 @@
   .logo{
     font-family:'Segoe UI Light','Segoe UI', sans-serif;
     font-weight:200;
-    font-size:36px;
-    letter-spacing:0px;
+    font-size:30px;
+    letter-spacing:0.5px;
     color: var(--ink);
     display:flex; align-items:baseline; gap:8px;
     white-space:nowrap;
-    padding-bottom:10px;
+    padding-bottom:14px;
     text-transform:lowercase;
   }
+  .logo::before{
+    content:"";
+    display:inline-block;
+    width:14px; height:14px;
+    background: var(--magenta);
+    margin-right:2px;
+  }
 
-  .nav-pills{ display:flex; gap:0; flex-wrap:wrap; overflow-x:auto; }
+  .nav-pills{ display:flex; gap:0; flex-wrap:wrap; }
 
   .nav-link{
     cursor:pointer;
-    font-family:'Segoe UI Light', sans-serif;
-    font-weight:300;
-    font-size:22px;
+    font-family:'Segoe UI', sans-serif;
+    font-weight:600;
+    font-size:16px;
     color: var(--muted);
-    padding: 6px 16px 10px 0;
+    padding: 10px 18px 16px;
     border:none;
     background: transparent;
     transition: color .15s ease;
     user-select:none;
-    text-transform:lowercase;
-    letter-spacing:0.2px;
-    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    position:relative;
   }
+  .nav-link:hover{ color:#d8d8d8; }
   .nav-link.active{
     color: var(--ink);
-    font-weight:600;
+  }
+  .nav-link.active::after{
+    content:"";
+    position:absolute; left:18px; right:18px; bottom:0;
+    height:3px;
+    background: var(--magenta);
   }
 
   /* ---------- PAGE WRAP ---------- */
-  .page-wrap{ max-width:520px; margin:0 auto; position:relative; z-index:1; padding: 14px 12px 0; }
+  .page-wrap{ max-width:1180px; margin:0 auto; position:relative; z-index:1; padding: 28px 30px 0; }
   .page{ display:none; animation: pop .3s ease; }
   .page.active{ display:block; }
   @keyframes pop{ from{ opacity:0; } to{ opacity:1; } }
 
-  /* ---------- METRO TILE GRID (styl Windows Phone 8) ---------- */
+  /* ---------- METRO TILE GRID ---------- */
   .bento{
     display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 178px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 180px;
     grid-auto-flow: dense;
     gap: var(--gap);
   }
@@ -131,136 +142,90 @@
     border-radius: 0;
     border: none;
     box-shadow: none;
-    padding: 16px;
+    padding: 20px;
     display:flex; flex-direction:column; justify-content:flex-end;
     color: #fff;
     text-decoration:none;
     cursor:pointer;
     transition: transform .12s ease, filter .12s ease;
     overflow:hidden;
-    background: var(--wp-lime);
   }
   .tile:active{ transform: scale(.97); }
-  .tile:hover{ filter: brightness(1.06); }
+  .tile:hover{ filter: brightness(1.08); }
 
-  /* pełna szerokość - kafelek "weather" na górze */
-  .tile-weather{
-    grid-column: span 2;
-    grid-row: span 1;
-    background: linear-gradient(135deg, #dfe9ef 0%, #f3d9a4 60%, #f6e6c2 100%);
-    color: var(--ink);
-    justify-content:flex-start;
-    padding-top:14px;
-  }
-  .tile-weather .wp-brand{ font-size:34px; font-weight:400; margin-bottom:6px; }
-  .tile-weather .wp-temp{ font-size:44px; font-weight:300; line-height:1; }
-  .tile-weather .wp-sub{ font-size:15px; font-weight:400; margin-top:2px; }
-  .tile-weather .wp-city{ font-size:22px; font-weight:600; margin-top:auto; }
-  .tile-arrow{
-    position:absolute; right:14px; top:14px;
-    width:34px; height:34px; border-radius:50%;
-    border:2px solid var(--ink); display:flex; align-items:center; justify-content:center;
-  }
-
-  .tile-g2{ grid-column: span 1; background: var(--wp-lime); }
-  .tile-g3{ grid-column: span 1; background: var(--wp-lime); }
-  .tile-g4{ grid-column: span 1; grid-row: span 1; background: var(--wp-lime-dark); }
-  .tile-g5{ grid-column: span 1; grid-row: span 1; background: var(--wp-lime); }
-  .tile-g6{ grid-column: span 1; background: var(--wp-lime-dark); }
-  .tile-g7{ grid-column: span 1; background: var(--wp-lime); }
-  .tile-g8{ grid-column: span 1; background: var(--wp-lime-dark); }
+  .tile-g2{ grid-column: span 1; background: var(--emerald); }
+  .tile-g3{ grid-column: span 1; background: var(--amber); }
+  .tile-g4{ grid-column: span 2; grid-row: span 2; background: var(--cobalt); }
+  .tile-g5{ grid-column: span 1; grid-row: span 2; background: var(--magenta); }
+  .tile-g6{ grid-column: span 1; background: #050505; border: 1px solid #2a2a2a; }
+  .tile-g7{ grid-column: span 1; background: var(--emerald); }
+  .tile-g8{ grid-column: span 2; background: var(--violet); }
 
   .tile .icon{ margin-bottom:auto; line-height:0; opacity:0.95; }
-  .tile .icon svg{ width:38px; height:38px; display:block; }
-  .tile .label{ font-family:'Segoe UI Semilight','Segoe UI', sans-serif; font-weight:400; font-size:19px; line-height:1.15; letter-spacing:0.2px; }
-  .tile .sub{ font-size:11px; font-weight:400; opacity:0.85; margin-top:2px; }
-
-  /* kafelek z siatką zdjęć w tle (np. "People") */
-  .tile-photogrid{
-    display:grid; grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(2,1fr);
-    gap:2px; padding:0; justify-content:stretch; align-content:stretch; position:relative;
-  }
-  .tile-photogrid img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .tile-photogrid .label{
-    position:absolute; left:12px; bottom:10px; z-index:2;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .tile-photogrid::after{
-    content:""; position:absolute; inset:0;
-    background: linear-gradient(to top, rgba(0,0,0,0.45), transparent 55%);
-  }
-
-  /* kafelek "Me" ze zdjęciem profilowym */
-  .tile-me{
-    background: var(--wp-lime);
-    padding:0;
-    position:relative;
-  }
-  .tile-me .me-top{ padding:16px 16px 8px; }
-  .tile-me .me-top .label{ font-size:30px; font-weight:300; }
-  .tile-me img{
-    width:100%; height:62%; object-fit:cover; display:block;
-    filter:grayscale(100%);
-    position:absolute; bottom:0; left:0;
-  }
+  .tile .icon svg{ width:42px; height:42px; display:block; }
+  .tile .label{ font-family:'Segoe UI Semilight','Segoe UI', sans-serif; font-weight:600; font-size:21px; line-height:1.2; letter-spacing:0.2px; }
+  .tile .sub{ font-size:11.5px; font-weight:400; opacity:0.85; margin-top:3px; }
 
   /* ---------- PAGE CONTENT CARD ---------- */
   .page-content{
-    max-width:520px;
+    max-width:1180px;
     background: transparent;
     border: none;
     border-radius: 0;
     box-shadow: none;
-    padding: 10px 4px 42px;
+    padding: 6px 4px 42px;
   }
   .page-content h2{
     font-family:'Segoe UI Light','Segoe UI', sans-serif;
-    font-weight:200; font-size:34px; margin:0 0 4px 0;
-    color: var(--ink);
+    font-weight:200; font-size:38px; margin:0 0 4px 0;
+    color: #fff;
     text-transform:lowercase;
   }
-  .page-content > p{ color: var(--muted); font-weight:400; margin:0 0 22px 0; font-size:14px; }
+  .page-content > p{ color: var(--muted); font-weight:400; margin:0 0 26px 0; font-size:14px; }
   .page-content ul{ line-height:2; font-weight:400; }
-  .page-content li strong{ color: var(--wp-lime-darker); }
+  .page-content li strong{ color: var(--magenta); }
 
   /* members */
-  .members-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap: var(--gap); }
+  .members-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: var(--gap); }
   .member-card{
-    background: var(--wp-lime);
+    background: var(--bg-2);
     border: none;
     border-radius: 0;
     padding: 22px 14px;
     text-align:center;
     transition: filter .12s ease;
-    color:#fff;
   }
-  .member-card:nth-child(even){ background: var(--wp-lime-dark); }
-  .member-card:hover{ filter: brightness(1.08); }
+  .member-card:nth-child(6n+1){ background: var(--cobalt); }
+  .member-card:nth-child(6n+2){ background: var(--emerald); }
+  .member-card:nth-child(6n+3){ background: var(--magenta); }
+  .member-card:nth-child(6n+4){ background: var(--amber); }
+  .member-card:nth-child(6n+5){ background: var(--violet); }
+  .member-card:nth-child(6n+6){ background: var(--teal); }
+  .member-card:hover{ filter: brightness(1.1); }
   .member-card img{
-    width:80px; height:80px; border-radius:0; object-fit:cover;
-    border: none; margin-bottom:12px; background: rgba(255,255,255,0.25);
+    width:88px; height:88px; border-radius:0; object-fit:cover;
+    border: none; margin-bottom:14px; background: rgba(255,255,255,0.15);
   }
   .member-card h3{ font-family:'Segoe UI', sans-serif; font-weight:600; margin:0 0 4px 0; font-size:16px; color:#fff; text-transform:uppercase; letter-spacing:0.3px; }
-  .member-card p{ margin:0; font-size:12px; color: rgba(255,255,255,0.9); font-weight:400; }
+  .member-card p{ margin:0; font-size:12px; color: rgba(255,255,255,0.8); font-weight:400; }
 
-  /* gallery - metro tile style */
-  .gallery-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap: var(--gap); padding-top:4px; }
+  /* gallery - metro tile style, no polaroid tilt */
+  .gallery-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: var(--gap); padding-top:4px; }
   .polaroid{
-    background: var(--wp-lime);
+    background: var(--bg-2);
     border:none; border-radius:0;
     padding:0; box-shadow:none;
     cursor:pointer; transition: filter .12s ease, opacity .2s ease;
     position:relative;
   }
-  .polaroid:nth-child(even){ background: var(--wp-lime-dark); }
-  .polaroid:hover{ filter:brightness(1.08); }
-  .polaroid img{ width:100%; height:220px; object-fit:cover; display:block; }
+  .polaroid:hover{ filter:brightness(1.1); }
+  .polaroid img{ width:100%; height:280px; object-fit:cover; display:block; background: var(--steel); }
   .polaroid .tag{
     display:block;
-    padding: 10px 12px 12px;
-    font-family:'Segoe UI', sans-serif; font-weight:400; font-size:13px;
-    color: #fff; text-transform:lowercase; letter-spacing:0.2px;
-    background: rgba(0,0,0,0.25);
+    padding: 12px 14px 14px;
+    font-family:'Segoe UI', sans-serif; font-weight:600; font-size:14px;
+    color: rgba(255,255,255,0.9); text-transform:lowercase; letter-spacing:0.2px;
+    background: rgba(0,0,0,0.6);
   }
   .polaroid.hidden{ display:none; }
 
@@ -269,7 +234,7 @@
   .polaroid[data-blokada="y"].odblokowane img{ filter:none; }
   .lock-overlay{
     display:none;
-    position:absolute; top:0; left:0; right:0; height:220px;
+    position:absolute; top:0; left:0; right:0; height:280px;
     flex-direction:column; align-items:center; justify-content:center;
     gap:6px; pointer-events:none;
     font-family:'Segoe UI', sans-serif; font-weight:600; color:#fff;
@@ -277,8 +242,8 @@
   }
   .polaroid[data-blokada="y"]:not(.odblokowane) .lock-overlay{ display:flex; }
   .lock-overlay .lock-icon{
-    width:38px; height:38px; border-radius:0;
-    background: rgba(0,0,0,0.35); border:none;
+    width:40px; height:40px; border-radius:0;
+    background: var(--magenta); border:none;
     box-shadow:none;
     display:flex; align-items:center; justify-content:center;
   }
@@ -288,11 +253,11 @@
   /* modal z kodem */
   #kod-modal{
     display:none; position:fixed; inset:0; z-index:1100;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.85);
     align-items:center; justify-content:center;
   }
   .kod-box{
-    background: var(--wp-lime);
+    background: var(--cobalt);
     border: none;
     border-radius: 0;
     box-shadow: none;
@@ -304,7 +269,7 @@
     font-family:'Segoe UI', sans-serif; font-weight:600; font-size:19px; margin:0 0 4px 0;
     color: #fff; text-transform:lowercase;
   }
-  .kod-box p{ margin:0 0 16px 0; font-size:12.5px; color: rgba(255,255,255,0.9); font-weight:400; }
+  .kod-box p{ margin:0 0 16px 0; font-size:12.5px; color: rgba(255,255,255,0.85); font-weight:400; }
   .kod-box input{
     width:100%; text-align:center; letter-spacing:4px;
     font-family:'Segoe UI', sans-serif; font-weight:600; font-size:18px;
@@ -320,11 +285,11 @@
     transition: filter .12s ease;
     text-transform:lowercase;
   }
-  .kod-box .btn-ok{ background: var(--wp-black); color:#fff; box-shadow:none; }
+  .kod-box .btn-ok{ background: #050505; color:#fff; box-shadow:none; }
   .kod-box .btn-ok:hover{ filter:brightness(1.3); }
-  .kod-box .btn-anuluj{ background: rgba(255,255,255,0.3); color:#fff; }
+  .kod-box .btn-anuluj{ background: rgba(255,255,255,0.25); color:#fff; }
   .kod-box .btn-anuluj:hover{ filter:brightness(1.15); }
-  .kod-box .kod-error{ font-size:11.5px; color:#fff3cd; font-weight:600; margin-top:-6px; margin-bottom:10px; min-height:14px; }
+  .kod-box .kod-error{ font-size:11.5px; color:#ffd6d6; font-weight:600; margin-top:-6px; margin-bottom:10px; min-height:14px; }
 
   /* lightbox */
   #lightbox{
@@ -335,11 +300,24 @@
   #lightbox img{ max-width:88%; max-height:78%; border-radius:0; border:none; }
 
   @media (max-width:768px){
-    .topbar{ padding: 4px 14px 0; flex-direction:column; align-items:stretch; }
-    .logo{ font-size:28px; padding-bottom:8px; }
+    .topbar{ padding: 16px 18px 0; flex-direction:column; align-items:stretch; }
+    .logo{ font-size:24px; padding-bottom:10px; }
     .nav-pills{ overflow-x:auto; }
-    .nav-link{ padding:6px 12px 10px 0; font-size:18px; white-space:nowrap; }
-    .page-wrap{ padding: 12px 10px 0; }
+    .nav-link{ padding:8px 12px 12px; font-size:13.5px; white-space:nowrap; }
+    .page-wrap{ padding: 20px 16px 0; }
+    .bento{ grid-template-columns: repeat(2,1fr); grid-auto-rows:130px; }
+    .tile-g4, .tile-g8{ grid-column: span 2; }
+    .tile-g4{ grid-row: span 2; }
+    .page-content h2{ font-size:28px; }
+  }
+
+  @media (max-width:480px){
+    .bento{ grid-template-columns: 1fr; grid-auto-rows:150px; }
+    .tile-g2,.tile-g3,.tile-g4,.tile-g5,.tile-g6,.tile-g7,.tile-g8{ grid-column: span 1; grid-row: span 1; }
+    .tile-g4{ min-height:170px; }
+    .tile .label{ font-size:16px; }
+    .members-grid{ grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+    .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -349,8 +327,6 @@
 </style>
 </head>
 <body oncontextmenu="return false" ondragstart="return false">
-
-  <div class="statusbar">4:07</div>
 
   <div id="kod-modal">
     <div class="kod-box" onclick="event.stopPropagation()">
@@ -385,46 +361,23 @@
     <div id="home" class="page active">
       <div class="bento">
 
-        <div class="tile tile-weather">
-          <div class="tile-arrow">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="wp-brand">genzie</div>
-          <div class="wp-temp">14°</div>
-          <div class="wp-sub">19° / 14°</div>
-          <div class="wp-city">Buffalo</div>
+        <div class="tile tile-g2" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3" fill="currentColor"/><circle cx="17" cy="9" r="2.4" fill="currentColor" opacity="0.55"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 14.5c2.5.3 4.5 2.4 4.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/></svg></div>
+          <div class="label">Lista obecności</div>
         </div>
 
-        <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g2" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.6 10.2c0-4.5 3.8-7.5 7.9-7.5S22 6 22 10.2c0 4.2-3.4 7.5-7.5 7.5-.8 0-1.6-.1-2.3-.4L8.8 19v-3.2c-1.4-1.2-2.2-3.2-2.2-5.6z" fill="currentColor"/></svg></div>
-          <div class="label">T-Mobile</div>
-        </a>
-
-        <div class="tile tile-g3 tile-photogrid" onclick="switchPage(document.querySelectorAll('.nav-link')[1], 'kim-jestesmy')">
-          <div class="label" style="position:absolute;left:12px;bottom:10px;z-index:2;text-shadow:0 1px 4px rgba(0,0,0,.6);">People</div>
+        <div class="tile tile-g3" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="0" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="6.5" y="13" width="3" height="3" fill="currentColor"/><rect x="12" y="13" width="3" height="3" fill="currentColor" opacity="0.6"/></svg></div>
+          <div class="label">Terminarz</div>
         </div>
 
-        <a href="#" class="tile tile-g4" onclick="return false;">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16v14H8l-4 4V4z" fill="currentColor"/><circle cx="9" cy="11" r="1" fill="var(--wp-lime-dark)"/><circle cx="12" cy="11" r="1" fill="var(--wp-lime-dark)"/><circle cx="15" cy="11" r="1" fill="var(--wp-lime-dark)"/></svg></div>
-          <div class="label">Messaging</div>
+        <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g4" target="_blank" rel="noopener">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.1 2 11.2c0 2.9 1.5 5.5 3.8 7.2V22l3.5-1.9c.9.2 1.8.4 2.7.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2z" fill="currentColor"/><path d="M6.7 13.6l3.7-3.9 2.4 2.3 3.9-3.9-3.9 5.7-2.4-2.3-3.7 4.1z" fill="#2D89EF"/></svg></div>
+          <div class="label">Messenger Chat</div>
+          <div class="sub">ostatnia wiadomość: przed chwilą...</div>
         </a>
 
-        <div class="tile tile-g5 tile-me">
-          <div class="me-top"><div class="label">Me</div></div>
-        </div>
-
-        <a href="#" class="tile tile-g6" onclick="return false;">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="0" stroke="currentColor" stroke-width="2"/><path d="M3 6l9 7 9-7" stroke="currentColor" stroke-width="2"/></svg></div>
-          <div class="label">XBOX<br>LIVE</div>
-          <div class="sub">Games</div>
-        </a>
-
-        <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="tile tile-g8" target="_blank" rel="noopener">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17V7l14-3v10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6" cy="17" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="14" r="2.4" stroke="currentColor" stroke-width="2"/></svg></div>
-          <div class="label">Music+Videos</div>
-        </a>
-
-        <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g7" target="_blank" rel="noopener">
+        <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g5" target="_blank" rel="noopener">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="0" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></div>
           <div class="label">Instagram</div>
         </a>
@@ -434,12 +387,12 @@
           <div class="label">TikTok</div>
         </a>
 
-        <div class="tile tile-g4" onclick="switchPage(document.querySelectorAll('.nav-link')[3], 'spotkania')">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="0" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <div class="label">Terminarz</div>
-        </div>
+        <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="tile tile-g7" target="_blank" rel="noopener">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M6.8 9.3c3.5-.9 7.4-.6 10.4 1.1" stroke="#00A300" stroke-width="1.5" stroke-linecap="round"/><path d="M7.4 12.6c2.9-.7 6.2-.5 8.8.9" stroke="#00A300" stroke-width="1.4" stroke-linecap="round"/><path d="M7.9 15.7c2.4-.5 5-.3 7 .9" stroke="#00A300" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <div class="label">Playlista</div>
+        </a>
 
-        <div class="tile tile-g2" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
+        <div class="tile tile-g8" onclick="switchPage(document.querySelectorAll('.nav-link')[2], 'zdjecia')">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke="currentColor" stroke-width="2"/></svg></div>
           <div class="label">Galeria</div>
         </div>
@@ -647,16 +600,19 @@
     function closeLightbox() { lb.style.display = 'none'; }
 
     // ---- Dodatkowa blokada pobierania zdjęć ----
+    // Blokada menu kontekstowego (prawy przycisk myszy) na wszystkich obrazkach
     document.querySelectorAll('img').forEach(img => {
       img.setAttribute('draggable', 'false');
       img.addEventListener('contextmenu', e => e.preventDefault());
       img.addEventListener('dragstart', e => e.preventDefault());
     });
 
+    // Blokada globalna menu kontekstowego (zabezpieczenie na wypadek dynamicznie dodanych obrazków)
     document.addEventListener('contextmenu', function(e){
       if (e.target.tagName === 'IMG') e.preventDefault();
     });
 
+    // Blokada skrótu Ctrl+S (zapis strony) i Ctrl+U (podgląd źródła) jako dodatkowe utrudnienie
     document.addEventListener('keydown', function(e){
       if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
         e.preventDefault();
