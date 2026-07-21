@@ -171,6 +171,7 @@ img{
 .tile-g6{ grid-column:span 1; background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); border-color: rgba(255,255,255,0.15); color:#fff; }
 .tile-g7{ grid-column:span 1; background: linear-gradient(135deg, #0d1f1a 0%, #1a2e2d 100%); border-color: rgba(0,255,163,0.3); }
 .tile-g8{ grid-column:span 2; background: linear-gradient(135deg, #2d1b4e 0%, #1a0a3e 100%); border-color: rgba(176,38,255,0.4); color:#fff; }
+.tile-g9{ grid-column:span 2; background: linear-gradient(135deg, #0d1f1a 0%, #1a2e2d 100%); border-color: rgba(0,255,163,0.4); }
 
 .tile .icon-wrap{
   margin-bottom:auto;
