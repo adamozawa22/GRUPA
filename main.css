@@ -143,34 +143,79 @@ h2{
 .bento{
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 .tile{
   position: relative;
   grid-column: span 3;
-  background: var(--surface);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
   border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px;
+  border-radius: 16px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 120px;
+  gap: 12px;
+  min-height: 130px;
   cursor: pointer;
-  transition: border-color .15s ease, transform .15s ease;
+  overflow: hidden;
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
-.tile:hover{ border-color: var(--accent); transform: translateY(-2px); }
-.tile .icon-wrap{ width: 22px; height: 22px; color: var(--accent); }
+.tile::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120px 80px at 15% 0%, rgba(255,77,126,.16), transparent 70%);
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+.tile:hover{
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px -12px rgba(255,77,126,.45);
+}
+.tile:hover::before{ opacity: 1; }
+.tile:active{ transform: translateY(-1px) scale(.99); }
+
+.tile .icon-wrap{
+  width: 40px;
+  height: 40px;
+  padding: 9px;
+  border-radius: 12px;
+  background: rgba(255,77,126,.12);
+  color: var(--accent);
+  box-sizing: border-box;
+}
 .tile .icon-wrap svg{ width: 100%; height: 100%; }
-.tile .label{ font-weight: 600; font-size: 14px; }
+.tile .label{ font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
 .tile .sub{ font-size: 12px; color: var(--muted); }
 
-.tile-g9{ grid-column: span 6; }
-.tile-g4, .tile-g5, .tile-g6, .tile-g7{ grid-column: span 2; }
+/* akcenty kolorystyczne per platforma, żeby kafelki nie były identyczne */
+.tile-g4 .icon-wrap{ background: rgba(43,87,151,.18); color: #6ea8ff; }
+.tile-g5 .icon-wrap{
+  background: linear-gradient(135deg, rgba(131,58,180,.2), rgba(253,29,29,.2));
+  color: #ff6fa3;
+}
+.tile-g6 .icon-wrap{ background: rgba(255,255,255,.12); color: #f2f2f0; }
+.tile-g7 .icon-wrap{ background: rgba(34,197,94,.16); color: #4ade80; }
+.tile-g8 .icon-wrap{ background: rgba(255,184,77,.16); color: #ffb84d; }
+
+.tile-g4, .tile-g5, .tile-g6{ grid-column: span 2; }
+.tile-g7, .tile-g8{ grid-column: span 3; }
 
 @media (max-width: 720px){
-  .bento{ grid-template-columns: repeat(2, 1fr); }
-  .tile{ grid-column: span 2 !important; }
+  .bento{ grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .tile{ grid-column: span 2 !important; min-height: 110px; padding: 18px; }
+  .tile-g4, .tile-g5, .tile-g6{ grid-column: span 1 !important; }
+}
+
+@media (max-width: 480px){
+  .bento{ grid-template-columns: 1fr; gap: 10px; }
+  .tile{ grid-column: span 1 !important; min-height: auto; padding: 16px; flex-direction: row; align-items: center; }
+  .tile-g4, .tile-g5, .tile-g6{ grid-column: span 1 !important; }
+  .tile .icon-wrap{ width: 34px; height: 34px; padding: 7px; flex-shrink: 0; }
+  .tile .label{ font-size: 14px; }
+  .tile .sub{ display: none; }
 }
 
 /* ---------- members ---------- */
@@ -463,3 +508,42 @@ h2{
 
 /* ---------- misc ---------- */
 .sparkle{ display: none; } /* removed for a lighter, calmer page */
+
+/* ---------- responsywność ogólna ---------- */
+@media (max-width: 720px){
+  .page-wrap{ padding: 32px 16px 72px; }
+
+  .topbar{
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .topbar.collapsed{ padding: 8px 16px; }
+
+  .nav-pills{
+    order: 3;
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .nav-pills::-webkit-scrollbar{ display: none; }
+  .nav-link{ flex-shrink: 0; white-space: nowrap; }
+
+  .logo{ order: 1; }
+  .auth-pill{ order: 2; margin-left: auto; }
+
+  .members-grid{ grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .gallery-grid{ grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+
+  .kod-box, .login-box{ max-width: 92vw; padding: 20px; }
+}
+
+@media (max-width: 420px){
+  h2{ font-size: 19px; }
+  .members-grid{ grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+}
