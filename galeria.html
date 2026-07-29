@@ -38,11 +38,11 @@
 
   <div class="page-wrap">
 
-    <div id="zdjecia" class="page page-content active">
+    <div id="zdjecia" class="page page-content active gated-page">
       <h2>galeria zdjęć 📸✨</h2>
       <p>Najlepsze momenty i fotki ekipy 📸✨</p>
 
-      <div id="gallery-real-content">
+      <div id="gated-real-content">
         <div class="cat-filters" id="catFilters">
           <div class="cat-btn active" data-cat="all" onclick="filtrujKategorie(this, 'all')">wszystkie</div>
           <div class="cat-btn" data-cat="1" onclick="filtrujKategorie(this, '1')">1 spotkanie</div>
@@ -120,8 +120,16 @@
     let oczekujacyPolaroid = null;
     let oczekujacyIdx = null;
 
+    // Gdy ktoś jest zalogowany, blokady kodem znikają same — bez pytania o kod
+    window.onAuthUpdate = function () {
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        document.querySelectorAll('.polaroid[data-blokada="y"]').forEach(p => p.classList.add('odblokowane'));
+      }
+    };
+
     function openLightbox(idx, polaroidEl) {
-      if (polaroidEl && polaroidEl.dataset.blokada === 'y' && !polaroidEl.classList.contains('odblokowane')) {
+      const zalogowany = typeof currentUser !== 'undefined' && !!currentUser;
+      if (polaroidEl && polaroidEl.dataset.blokada === 'y' && !polaroidEl.classList.contains('odblokowane') && !zalogowany) {
         oczekujacyPolaroid = polaroidEl;
         oczekujacyIdx = idx;
         kodError.textContent = '';

@@ -63,15 +63,21 @@ async function doLogin() {
   }
   currentUser = data.user;
   closeLoginModal();
-  renderAuthUI();
-  applyGalleryGate();
+  afterAuthChange();
 }
 
 async function doLogout() {
   await _sb.auth.signOut();
   currentUser = null;
+  afterAuthChange();
+}
+
+/* Wywoływane po każdej zmianie stanu logowania: odświeża pigułkę,
+   blokady stron i (jeśli podstrona to definiuje) własny hak onAuthUpdate() */
+function afterAuthChange() {
   renderAuthUI();
-  applyGalleryGate();
+  applyContentGate();
+  if (typeof window.onAuthUpdate === 'function') window.onAuthUpdate();
 }
 
 /* ---------- topbar: pigułka logowania ---------- */
@@ -82,8 +88,12 @@ function renderAuthUI() {
     const name =
       currentUser.user_metadata?.name ||
       currentUser.email.split('@')[0];
+    const avatar = currentUser.user_metadata?.avatar_url;
+    const avatarHtml = avatar
+      ? `<img class="pfp" src="${avatar}" alt="">`
+      : '';
     slot.className = 'auth-pill logged-in';
-    slot.innerHTML = `<span class="who">${name}</span><span class="logout-x" onclick="doLogout()">wyloguj</span>`;
+    slot.innerHTML = `${avatarHtml}<span class="who">${name}</span><span class="logout-x" onclick="doLogout()">wyloguj</span>`;
   } else {
     slot.className = 'auth-pill';
     slot.textContent = 'zaloguj się';
@@ -91,31 +101,29 @@ function renderAuthUI() {
   }
 }
 
-/* ---------- blokada galerii dla niezalogowanych ---------- */
-function applyGalleryGate() {
-  const gallerySection = document.getElementById('zdjecia');
-  if (!gallerySection) return; // nie jesteśmy na stronie galerii
+/* ---------- blokada stron dla niezalogowanych (galeria + członkowie) ---------- */
+function applyContentGate() {
+  document.querySelectorAll('.gated-page').forEach((section) => {
+    const realContent = section.querySelector('#gated-real-content');
+    let lockScreen = section.querySelector('.gallery-lock-screen');
 
-  let lockScreen = document.getElementById('gallery-lock-screen');
-  const realContent = document.getElementById('gallery-real-content');
-
-  if (!currentUser) {
-    if (realContent) realContent.style.display = 'none';
-    if (!lockScreen) {
-      lockScreen = document.createElement('div');
-      lockScreen.id = 'gallery-lock-screen';
-      lockScreen.className = 'gallery-lock-screen';
-      lockScreen.innerHTML = `
-        <div class="lock-icon">${LOCK_ICON_SVG}</div>
-        <div>Galeria jest tylko dla zalogowanych.</div>
-        <button onclick="openLoginModal()">zaloguj się</button>`;
-      gallerySection.appendChild(lockScreen);
+    if (!currentUser) {
+      if (realContent) realContent.style.display = 'none';
+      if (!lockScreen) {
+        lockScreen = document.createElement('div');
+        lockScreen.className = 'gallery-lock-screen';
+        lockScreen.innerHTML = `
+          <div class="lock-icon">${LOCK_ICON_SVG}</div>
+          <div>Ta strona jest tylko dla zalogowanych.</div>
+          <button onclick="openLoginModal()">zaloguj się</button>`;
+        section.appendChild(lockScreen);
+      }
+      lockScreen.style.display = 'block';
+    } else {
+      if (lockScreen) lockScreen.style.display = 'none';
+      if (realContent) realContent.style.display = '';
     }
-    lockScreen.style.display = 'block';
-  } else {
-    if (lockScreen) lockScreen.style.display = 'none';
-    if (realContent) realContent.style.display = '';
-  }
+  });
 }
 
 /* ---------- start ---------- */
@@ -123,13 +131,11 @@ async function initAuth() {
   buildLoginModal();
   const { data } = await _sb.auth.getSession();
   currentUser = data.session ? data.session.user : null;
-  renderAuthUI();
-  applyGalleryGate();
+  afterAuthChange();
 
   _sb.auth.onAuthStateChange((_event, session) => {
     currentUser = session ? session.user : null;
-    renderAuthUI();
-    applyGalleryGate();
+    afterAuthChange();
   });
 }
 

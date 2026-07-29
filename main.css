@@ -107,6 +107,13 @@ ul{ padding-left: 1.2em; }
   color: var(--muted);
 }
 .auth-pill.logged-in .who{ color: var(--text); }
+.auth-pill .pfp{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
 .auth-pill .logout-x{
   color: var(--muted);
   font-weight: 500;
@@ -189,6 +196,13 @@ h2{
 }
 .member-card h3{ margin: 0 0 4px; font-size: 14px; }
 .member-card p{ margin: 0; font-size: 12px; color: var(--muted); }
+.member-card .meeting-count{
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+}
+.member-card .meeting-count strong{ color: var(--accent); }
 
 /* ---------- gallery ---------- */
 .cat-filters{
