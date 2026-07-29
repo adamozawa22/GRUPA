@@ -204,6 +204,89 @@ h2{
 }
 .member-card .meeting-count strong{ color: var(--accent); }
 
+/* ---- rangi wg liczby spotkań: coraz fajniej i coraz dziwniej ---- */
+.member-card{ transition: border-color .25s ease, box-shadow .25s ease, transform .2s ease; }
+.member-card .badge{
+  display: inline-block;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+/* tier 1 — 1-2 spotkania: ledwo zauważalne */
+.member-card.tier-1{ border-color: #3a3a40; }
+.member-card.tier-1 .badge{ border-color: var(--accent); color: var(--accent); }
+
+/* tier 2 — 3-5: wyraźny akcent + poświata */
+.member-card.tier-2{
+  border-color: var(--accent);
+  box-shadow: 0 0 14px -5px rgba(255,77,126,.5);
+}
+.member-card.tier-2 .badge{
+  background: var(--accent); color: #0a0a0b; border-color: var(--accent); font-weight: 700;
+}
+
+/* tier 3 — 6-9: gradientowa ramka */
+.member-card.tier-3{
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(135deg, var(--accent), #ffb84d) border-box;
+  box-shadow: 0 0 20px -6px rgba(255,77,126,.6);
+}
+.member-card.tier-3 .badge{
+  background: linear-gradient(135deg, var(--accent), #ffb84d);
+  color: #0a0a0b; font-weight: 700; border: none;
+}
+
+/* tier 4 — 10-14: pulsujący glow, kilka kolorów */
+.member-card.tier-4{
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(135deg, #ff4d7e, #7c5cff, #4dd0ff) border-box;
+  animation: tier4-pulse 3s ease-in-out infinite;
+}
+@keyframes tier4-pulse{
+  0%, 100% { box-shadow: 0 0 22px -6px rgba(124,92,255,.65); }
+  50%      { box-shadow: 0 0 32px -4px rgba(255,77,126,.75); }
+}
+.member-card.tier-4 .badge{
+  background: linear-gradient(135deg, #ff4d7e, #7c5cff, #4dd0ff);
+  color: #0a0a0b; font-weight: 800; border: none;
+}
+
+/* tier 5 — 15+: pełny chaos, animowany gradient, hover-wobble */
+.member-card.tier-5{
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(115deg, #ff4d7e, #ffe14d, #4dd0ff, #7c5cff, #ff4d7e) border-box;
+  background-size: 100% 100%, 300% 300%;
+  animation: tier5-shift 5s linear infinite;
+  box-shadow: 0 0 36px -4px rgba(255,77,126,.8);
+}
+@keyframes tier5-shift{
+  0%   { background-position: 0 0, 0% 50%; }
+  50%  { background-position: 0 0, 100% 50%; }
+  100% { background-position: 0 0, 0% 50%; }
+}
+.member-card.tier-5:hover{ transform: rotate(-1deg) scale(1.02); }
+.member-card.tier-5 .badge{
+  background: linear-gradient(115deg, #ff4d7e, #ffe14d, #4dd0ff, #7c5cff);
+  background-size: 300% 300%;
+  animation: tier5-shift 5s linear infinite;
+  color: #0a0a0b; font-weight: 800; border: none;
+}
+.member-card.tier-5 h3::after{ content: " 👑"; }
+
+@media (prefers-reduced-motion: reduce){
+  .member-card.tier-4, .member-card.tier-5, .member-card.tier-5 .badge{ animation: none; }
+}
+
 /* ---------- gallery ---------- */
 .cat-filters{
   display: flex;

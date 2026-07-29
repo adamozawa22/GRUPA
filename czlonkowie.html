@@ -100,6 +100,35 @@
     window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
     updateTopbarOnScroll();
 
+    // ---- rangi zależne od liczby spotkań: im więcej, tym dziwniej ----
+    const RANGI = [
+      { min: 0,  klasa: 'tier-0', tytul: null },
+      { min: 1,  klasa: 'tier-1', tytul: 'bywalec 🌱' },
+      { min: 3,  klasa: 'tier-2', tytul: 'stały bywalec ✨' },
+      { min: 6,  klasa: 'tier-3', tytul: 'weteran 🔥' },
+      { min: 10, klasa: 'tier-4', tytul: 'legenda grupy 👑' },
+      { min: 15, klasa: 'tier-5', tytul: 'istota ponadwymiarowa 👽' },
+    ];
+
+    function ustalRange(liczba) {
+      let wynik = RANGI[0];
+      for (const r of RANGI) if (liczba >= r.min) wynik = r;
+      return wynik;
+    }
+
+    document.querySelectorAll('.member-card').forEach(card => {
+      const strong = card.querySelector('.meeting-count strong');
+      const liczba = strong ? (parseInt(strong.textContent, 10) || 0) : 0;
+      const ranga = ustalRange(liczba);
+      card.classList.add(ranga.klasa);
+      if (ranga.tytul) {
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = ranga.tytul;
+        card.querySelector('h3').insertAdjacentElement('beforebegin', badge);
+      }
+    });
+
     document.querySelectorAll('img').forEach(img => {
       img.setAttribute('draggable', 'false');
       img.addEventListener('contextmenu', e => e.preventDefault());
