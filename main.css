@@ -332,6 +332,39 @@ h2{
   .member-card.tier-4, .member-card.tier-5, .member-card.tier-5 .badge{ animation: none; }
 }
 
+/* ---------- spinner ładowania zdjęć ---------- */
+.img-spin-wrap{
+  position: relative;
+  display: block;
+}
+img.img-fading{
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+img.img-fading.img-loaded{ opacity: 1; }
+.img-spin{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border-radius: inherit;
+}
+.img-spin::after{
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: img-spin-rotate .8s linear infinite;
+}
+@keyframes img-spin-rotate{ to{ transform: rotate(360deg); } }
+.member-card .img-spin-wrap{ border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+.member-card .img-spin-wrap img{ margin-bottom: 0; }
+.polaroid .img-spin-wrap{ border-radius: inherit; overflow: hidden; }
+
 /* ---------- gallery ---------- */
 .cat-filters{
   display: flex;
@@ -421,6 +454,83 @@ h2{
   font-size: 13px;
 }
 .gallery-lock-screen button:hover{ background: var(--accent); color: #0a0a0b; }
+
+/* ---------- spotkania / rsvp ---------- */
+.meetings-list{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 460px;
+}
+.rsvp-card{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.rsvp-head h3{
+  margin: 0 0 2px;
+  font-size: 16px;
+}
+.rsvp-head p{
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.rsvp-choice{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.rsvp-btn{
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.rsvp-btn.selected.tak{ background: var(--accent); border-color: var(--accent); color: #0a0a0b; }
+.rsvp-btn.selected.nie{ background: var(--surface-2); border-color: var(--muted); color: var(--text); }
+.rsvp-time-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.rsvp-time-row input[type="time"]{
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+.rsvp-save{
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.rsvp-save:hover{ background: var(--accent); color: #0a0a0b; }
+.rsvp-save:disabled{ opacity: .5; cursor: default; }
+.rsvp-status{
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 16px;
+}
+.rsvp-status.ok{ color: var(--accent); }
 
 /* ---------- modals (kod + login) ---------- */
 #kod-modal, #login-modal{

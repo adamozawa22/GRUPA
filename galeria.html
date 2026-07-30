@@ -108,6 +108,29 @@
     }
     renderGallery();
 
+    // ---- kółko ładowania na zdjęciach, dopóki się nie wczytają ----
+    function dodajSpinnery(root) {
+      (root || document).querySelectorAll('img:not([data-spinner-done])').forEach(img => {
+        img.setAttribute('data-spinner-done', '1');
+        if (img.complete && img.naturalWidth > 0) return;
+        const wrap = document.createElement('span');
+        wrap.className = 'img-spin-wrap';
+        img.parentNode.insertBefore(wrap, img);
+        const spin = document.createElement('span');
+        spin.className = 'img-spin';
+        wrap.appendChild(spin);
+        wrap.appendChild(img);
+        img.classList.add('img-fading');
+        function gotowe(){
+          spin.remove();
+          img.classList.add('img-loaded');
+        }
+        img.addEventListener('load', gotowe, { once: true });
+        img.addEventListener('error', gotowe, { once: true });
+      });
+    }
+    dodajSpinnery();
+
     let currentIdx = 0;
     const images = document.querySelectorAll('#gallery img');
     const lb = document.getElementById('lightbox');

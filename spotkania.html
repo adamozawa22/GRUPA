@@ -38,12 +38,13 @@
 
   <div class="page-wrap">
 
-    <div id="spotkania" class="page page-content active">
+    <div id="spotkania" class="page page-content active gated-page">
       <h2>spotkania 🗓️💕</h2>
-      <p>Terminarz najbliższych spotkań ekipy 💖</p>
-      <ul>
-        <li><strong>Poniedziałek</strong> — godzina 13:00</li>
-      </ul>
+      <p>Zapisz się, czy będziesz na spotkaniu i o której 💖</p>
+
+      <div id="gated-real-content">
+        <div class="meetings-list" id="meetingsList"></div>
+      </div>
     </div>
 
   </div>
@@ -77,6 +78,113 @@
         e.preventDefault();
       }
     });
+
+    /* ===== lista spotkań — żeby dodać kolejne, dopisz nowy obiekt tutaj ===== */
+    const SPOTKANIA = [
+      { id: 'poniedzialek-13', dzien: 'Poniedziałek', domyslna_godzina: '13:00' },
+    ];
+
+    function renderMeetings() {
+      const list = document.getElementById('meetingsList');
+      if (!list) return;
+      list.innerHTML = SPOTKANIA.map(m => `
+        <div class="rsvp-card" data-meeting="${m.id}">
+          <div class="rsvp-head">
+            <h3>${m.dzien}</h3>
+            <p>proponowana godzina: ${m.domyslna_godzina}</p>
+          </div>
+          <div class="rsvp-choice">
+            <button type="button" class="rsvp-btn tak" data-val="tak" onclick="wybierzOdpowiedz(this, 'tak')">będę ✅</button>
+            <button type="button" class="rsvp-btn nie" data-val="nie" onclick="wybierzOdpowiedz(this, 'nie')">nie będę ❌</button>
+          </div>
+          <div class="rsvp-time-row" style="display:none">
+            <label for="czas-${m.id}">o której?</label>
+            <input type="time" id="czas-${m.id}" class="rsvp-time" value="${m.domyslna_godzina}">
+          </div>
+          <button type="button" class="rsvp-save" onclick="zapiszOdpowiedz('${m.id}')">zapisz</button>
+          <div class="rsvp-status" id="status-${m.id}"></div>
+        </div>
+      `).join('');
+    }
+    renderMeetings();
+
+    function wybierzOdpowiedz(btn, val) {
+      const card = btn.closest('.rsvp-card');
+      card.querySelectorAll('.rsvp-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      card.dataset.wybor = val;
+      card.querySelector('.rsvp-time-row').style.display = (val === 'tak') ? 'flex' : 'none';
+    }
+
+    async function zapiszOdpowiedz(meetingId) {
+      if (typeof currentUser === 'undefined' || !currentUser) {
+        openLoginModal();
+        return;
+      }
+      const card = document.querySelector(`.rsvp-card[data-meeting="${meetingId}"]`);
+      const status = document.getElementById(`status-${meetingId}`);
+      const wybor = card.dataset.wybor;
+      if (!wybor) {
+        status.textContent = 'Zaznacz najpierw czy będziesz.';
+        status.classList.remove('ok');
+        return;
+      }
+      const godzina = wybor === 'tak' ? document.getElementById(`czas-${meetingId}`).value : null;
+
+      status.textContent = 'zapisywanie...';
+      status.classList.remove('ok');
+
+      const { error } = await _sb.from('spotkania_rsvp').upsert({
+        user_id: currentUser.id,
+        meeting_id: meetingId,
+        bedzie: wybor === 'tak',
+        godzina: godzina,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,meeting_id' });
+
+      if (error) {
+        status.textContent = 'Błąd zapisu, spróbuj ponownie.';
+        status.classList.remove('ok');
+        return;
+      }
+      status.textContent = wybor === 'tak'
+        ? `zapisano ✅ — będziesz o ${godzina}`
+        : 'zapisano — nie będziesz';
+      status.classList.add('ok');
+    }
+
+    async function wczytajOdpowiedzi() {
+      if (typeof currentUser === 'undefined' || !currentUser) return;
+      const { data, error } = await _sb
+        .from('spotkania_rsvp')
+        .select('*')
+        .eq('user_id', currentUser.id);
+      if (error || !data) return;
+
+      data.forEach(row => {
+        const card = document.querySelector(`.rsvp-card[data-meeting="${row.meeting_id}"]`);
+        if (!card) return;
+        const val = row.bedzie ? 'tak' : 'nie';
+        const btn = card.querySelector(`.rsvp-btn[data-val="${val}"]`);
+        if (btn) wybierzOdpowiedz(btn, val);
+        if (row.bedzie && row.godzina) {
+          const timeInput = card.querySelector('.rsvp-time');
+          if (timeInput) timeInput.value = row.godzina.slice(0, 5);
+        }
+        const status = document.getElementById(`status-${row.meeting_id}`);
+        if (status) {
+          status.textContent = row.bedzie
+            ? `zapisano ✅ — będziesz o ${row.godzina ? row.godzina.slice(0,5) : '?'}`
+            : 'zapisano — nie będziesz';
+          status.classList.add('ok');
+        }
+      });
+    }
+
+    // wywoływane przez auth.js po każdej zmianie stanu logowania
+    window.onAuthUpdate = function () {
+      wczytajOdpowiedzi();
+    };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
