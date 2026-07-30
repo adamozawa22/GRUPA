@@ -128,6 +128,17 @@
       return wynik;
     }
 
+    // ---- sortowanie: najwięcej spotkań na początku, najmniej na końcu ----
+    const membersGrid = document.querySelector('.members-grid');
+    if (membersGrid) {
+      const posortowaneKarty = Array.from(membersGrid.querySelectorAll('.member-card')).sort((a, b) => {
+        const la = parseInt(a.querySelector('.meeting-count strong')?.textContent, 10) || 0;
+        const lb = parseInt(b.querySelector('.meeting-count strong')?.textContent, 10) || 0;
+        return lb - la; // malejąco
+      });
+      posortowaneKarty.forEach(card => membersGrid.appendChild(card));
+    }
+
     document.querySelectorAll('.member-card').forEach(card => {
       const strong = card.querySelector('.meeting-count strong');
       const liczba = strong ? (parseInt(strong.textContent, 10) || 0) : 0;

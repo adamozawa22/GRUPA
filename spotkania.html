@@ -103,6 +103,7 @@
           </div>
           <button type="button" class="rsvp-save" onclick="zapiszOdpowiedz('${m.id}')">zapisz</button>
           <div class="rsvp-status" id="status-${m.id}"></div>
+          <div class="rsvp-attendees" id="attendees-${m.id}"><div class="attendees-brak">wczytywanie...</div></div>
         </div>
       `).join('');
     }
@@ -139,6 +140,7 @@
         meeting_id: meetingId,
         bedzie: wybor === 'tak',
         godzina: godzina,
+        imie: pobierzNazweUzytkownika(currentUser),
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id,meeting_id' });
 
@@ -151,39 +153,84 @@
         ? `zapisano ✅ — będziesz o ${godzina}`
         : 'zapisano — nie będziesz';
       status.classList.add('ok');
+
+      // odśwież listę widoczną dla wszystkich
+      wczytajWszystkieOdpowiedzi();
     }
 
-    async function wczytajOdpowiedzi() {
+    function pobierzNazweUzytkownika(u) {
+      return u.user_metadata?.name || (u.email ? u.email.split('@')[0] : 'ktoś');
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    // pobiera odpowiedzi WSZYSTKICH zalogowanych osób (nie tylko swoje) i renderuje
+    // listę "kto będzie / kto nie będzie" pod każdym spotkaniem, plus ustawia
+    // własny wybór na górze karty
+    async function wczytajWszystkieOdpowiedzi() {
       if (typeof currentUser === 'undefined' || !currentUser) return;
+
       const { data, error } = await _sb
         .from('spotkania_rsvp')
-        .select('*')
-        .eq('user_id', currentUser.id);
+        .select('*');
       if (error || !data) return;
 
+      const wgSpotkania = {};
       data.forEach(row => {
-        const card = document.querySelector(`.rsvp-card[data-meeting="${row.meeting_id}"]`);
-        if (!card) return;
-        const val = row.bedzie ? 'tak' : 'nie';
-        const btn = card.querySelector(`.rsvp-btn[data-val="${val}"]`);
-        if (btn) wybierzOdpowiedz(btn, val);
-        if (row.bedzie && row.godzina) {
-          const timeInput = card.querySelector('.rsvp-time');
-          if (timeInput) timeInput.value = row.godzina.slice(0, 5);
+        (wgSpotkania[row.meeting_id] = wgSpotkania[row.meeting_id] || []).push(row);
+      });
+
+      SPOTKANIA.forEach(m => {
+        const wiersze = wgSpotkania[m.id] || [];
+        const box = document.getElementById(`attendees-${m.id}`);
+        if (box) {
+          const beda = wiersze.filter(r => r.bedzie);
+          const nieBeda = wiersze.filter(r => !r.bedzie);
+          let html = '';
+          if (beda.length) {
+            html += `<div class="attendees-tytul">będą (${beda.length}):</div><ul class="attendees-lista">` +
+              beda.map(r => `<li>${escHtml(r.imie || 'ktoś')}${r.godzina ? ' — o ' + escHtml(r.godzina.slice(0,5)) : ''}</li>`).join('') +
+              `</ul>`;
+          }
+          if (nieBeda.length) {
+            html += `<div class="attendees-tytul nie">nie będą (${nieBeda.length}):</div><ul class="attendees-lista nie">` +
+              nieBeda.map(r => `<li>${escHtml(r.imie || 'ktoś')}</li>`).join('') +
+              `</ul>`;
+          }
+          box.innerHTML = html || '<div class="attendees-brak">jeszcze nikt się nie zapisał</div>';
         }
-        const status = document.getElementById(`status-${row.meeting_id}`);
-        if (status) {
-          status.textContent = row.bedzie
-            ? `zapisano ✅ — będziesz o ${row.godzina ? row.godzina.slice(0,5) : '?'}`
-            : 'zapisano — nie będziesz';
-          status.classList.add('ok');
+
+        // ustaw własny wybór na karcie
+        const wlasny = wiersze.find(r => r.user_id === currentUser.id);
+        if (wlasny) {
+          const card = document.querySelector(`.rsvp-card[data-meeting="${m.id}"]`);
+          if (card) {
+            const val = wlasny.bedzie ? 'tak' : 'nie';
+            const btn = card.querySelector(`.rsvp-btn[data-val="${val}"]`);
+            if (btn) wybierzOdpowiedz(btn, val);
+            if (wlasny.bedzie && wlasny.godzina) {
+              const timeInput = card.querySelector('.rsvp-time');
+              if (timeInput) timeInput.value = wlasny.godzina.slice(0, 5);
+            }
+            const status = document.getElementById(`status-${m.id}`);
+            if (status) {
+              status.textContent = wlasny.bedzie
+                ? `zapisano ✅ — będziesz o ${wlasny.godzina ? wlasny.godzina.slice(0,5) : '?'}`
+                : 'zapisano — nie będziesz';
+              status.classList.add('ok');
+            }
+          }
         }
       });
     }
 
     // wywoływane przez auth.js po każdej zmianie stanu logowania
     window.onAuthUpdate = function () {
-      wczytajOdpowiedzi();
+      wczytajWszystkieOdpowiedzi();
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
