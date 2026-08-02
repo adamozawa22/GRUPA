@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genzie Hub</title>
+<link rel="stylesheet" href="main.css">
+</head>
+<body oncontextmenu="return false" ondragstart="return false">
+  <div id="kod-modal" onclick="zamknijKodModal()">
+    <div class="kod-box" onclick="event.stopPropagation()">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> zablokowane</h3>
+      <p>Wpisz kod, żeby zobaczyć to zdjęcie.</p>
+      <input type="text" id="kod-input" maxlength="4" inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter') sprawdzKod()">
+      <div class="kod-error" id="kod-error"></div>
+      <div class="kod-btns">
+        <button class="btn-anuluj" onclick="zamknijKodModal()">anuluj</button>
+        <button class="btn-ok" onclick="sprawdzKod()">odblokuj</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()" oncontextmenu="return false" draggable="false">
+  </div>
+
+  <div class="topbar" id="topbar">
+    <div class="logo"><span class="logo-mark">fpf</span><span class="logo-name">genzie hub</span></div>
+    <div class="nav-pills" id="navPills">
+      <a href="index.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>start</a>
+      <a href="czlonkowie.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 3.1-6 7-6"/><path d="M14 20c0-2.2 1.8-4 4-4"/></svg>członkowie</a>
+      <a href="galeria.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor" stroke="none"/><path d="M21 15l-5-5L6 19"/></svg>zdjęcia</a>
+      <a href="spotkania.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>spotkania</a>
+      <a href="informacje.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>informacje</a>
+    </div>
+    <span id="auth-pill" class="auth-pill">zaloguj się</span>
+  </div>
+
+  <div class="page-wrap">
+
+    <div id="home" class="page active">
+      <div class="dash">
+
+        <!-- 1) hero / pasek statusu -->
+        <div class="hero-strip" id="heroStrip">
+          <div class="hero-avatar" id="heroAvatar">👋</div>
+          <div class="hero-text">
+            <div class="hero-title" id="heroTitle">Cześć! 👋</div>
+            <div class="hero-sub" id="heroSub">Zaloguj się, żeby zobaczyć kto przychodzi na spotkania i odblokować galerię.</div>
+          </div>
+          <span class="hero-cta" id="heroCta" onclick="if (typeof openLoginModal==='function') openLoginModal()">zaloguj się</span>
+        </div>
+
+        <!-- 2) karta najbliższego spotkania -->
+        <div class="meeting-card">
+          <div class="meeting-card-head">
+            <div>
+              <div class="mc-eyebrow">najbliższe spotkanie</div>
+              <h3 id="mcDzien">—</h3>
+              <div class="mc-when" id="mcWhen">wczytywanie…</div>
+            </div>
+            <div class="mc-countdown" id="mcCountdown">
+              <span class="mc-count-num" id="mcDays">–</span>
+              <span class="mc-count-label">dni</span>
+            </div>
+          </div>
+
+          <div class="mc-avatars" id="mcAvatars">
+            <span class="mc-avatars-empty">jeszcze nikt się nie zapisał</span>
+          </div>
+
+          <div class="mc-actions">
+            <button type="button" class="rsvp-btn tak" id="mcBtnTak" onclick="szybkiRsvp('tak')">będę ✅</button>
+            <button type="button" class="rsvp-btn nie" id="mcBtnNie" onclick="szybkiRsvp('nie')">nie będę ❌</button>
+            <a href="spotkania.html" class="mc-more">wszystkie spotkania →</a>
+          </div>
+          <div class="mc-status" id="mcStatus"></div>
+        </div>
+
+        <!-- 4) ostatnio dodane zdjęcia -->
+        <div class="section-block">
+          <div class="section-head">
+            <h3>ostatnio dodane zdjęcia 📸</h3>
+            <a href="galeria.html" class="section-more">cała galeria →</a>
+          </div>
+          <div class="recent-photos" id="recentPhotos"></div>
+        </div>
+
+        <!-- 5) skróty social media -->
+        <div class="social-row">
+          <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="social-pill sp-messenger" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.13 2 11.25c0 2.87 1.44 5.43 3.69 7.07V22l3.36-1.84c.9.25 1.85.38 2.84.38 5.52 0 10-4.13 10-9.25S17.52 2 12 2zm1.1 12.23l-2.7-2.88-5.28 2.88 5.81-6.17 2.77 2.88 5.2-2.88-5.8 6.17z"/></svg>
+            <span>Messenger</span>
+          </a>
+          <a href="https://www.instagram.com/melanz.onlinemess/" class="social-pill sp-instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            <span>Instagram</span>
+          </a>
+          <a href="https://www.tiktok.com/@twoj_profil" class="social-pill sp-tiktok" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.1 4.1 0 0 1-1-.48z"/></svg>
+            <span>TikTok</span>
+          </a>
+          <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="social-pill sp-spotify" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 14.36c-.2.33-.63.43-.96.23-2.65-1.62-5.98-1.99-9.9-1.09-.38.09-.76-.15-.85-.53-.09-.38.15-.76.53-.85 4.28-.97 7.98-.55 10.93 1.25.33.2.43.63.25.99zm1.2-2.67c-.25.4-.78.53-1.18.28-3.03-1.86-7.65-2.4-11.23-1.31-.45.14-.93-.12-1.07-.57-.14-.45.12-.93.57-1.07 4.08-1.24 9.23-.64 12.77 1.5.4.25.53.78.14 1.17zm.1-2.8C14.03 8.45 8.16 8.25 5.08 9.08c-.54.16-1.11-.15-1.27-.69-.16-.54.15-1.11.69-1.27 3.55-1.08 10.1-.84 14.04 1.77.49.3.64.94.34 1.43-.3.49-.94.64-1.43.34z"/></svg>
+            <span>Spotify</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const topbar = document.getElementById('topbar');
+    const SCROLL_THRESHOLD = 40;
+
+    function updateTopbarOnScroll(){
+      if (window.scrollY > SCROLL_THRESHOLD) {
+        topbar.classList.add('collapsed');
+      } else {
+        topbar.classList.remove('collapsed');
+      }
+    }
+    window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
+    updateTopbarOnScroll();
+
+    document.querySelectorAll('img').forEach(img => {
+      img.setAttribute('draggable', 'false');
+      img.addEventListener('contextmenu', e => e.preventDefault());
+      img.addEventListener('dragstart', e => e.preventDefault());
+    });
+
+    document.addEventListener('contextmenu', function(e){
+      if (e.target.tagName === 'IMG') e.preventDefault();
+    });
+
+    document.addEventListener('keydown', function(e){
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+      }
+    });
+
+    /* ===================== DASHBOARD ===================== */
+
+    /* -- to samo spotkanie co w spotkania.html — dopisz kolejne tutaj i tam -- */
+    const SPOTKANIA = [
+      { id: 'poniedzialek-13', dzien: 'Poniedziałek', domyslna_godzina: '13:00', dzien_tyg: 1 },
+    ];
+
+    /* -- rangi, jak w czlonkowie.html, do powitania po zalogowaniu -- */
+    const RANGI = [
+      { min: 0,  tytul: null },
+      { min: 1,  tytul: 'bywalec 🌱' },
+      { min: 3,  tytul: 'stały bywalec ✨' },
+      { min: 6,  tytul: 'weteran 🔥' },
+      { min: 10, tytul: 'legenda grupy 👑' },
+      { min: 15, tytul: 'istota ponadwymiarowa 👽' },
+    ];
+
+    /* -- niewielki wycinek najnowszych zdjęć (te same pliki co w galeria.html) -- */
+    const OSTATNIE_ZDJECIA = [
+      { src: 'galeria18.jpg', tag: 'UWU', blokada: true },
+      { src: 'galeria19.jpg', tag: 'podciąganie', blokada: true },
+      { src: 'galeria20.jpg', tag: 'Słodka para', blokada: false },
+      { src: 'galeria21.jpg', tag: 'Co ona słucha', blokada: false },
+    ];
+
+    const lockIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+
+    function renderRecentPhotos() {
+      const wrap = document.getElementById('recentPhotos');
+      if (!wrap) return;
+      wrap.innerHTML = OSTATNIE_ZDJECIA.map(z => `
+        <a href="galeria.html" class="recent-photo">
+          <img src="${z.src}" alt="${z.tag}" draggable="false">
+          ${z.blokada ? `<div class="recent-photo-lock">${lockIconSvg}</div>` : ''}
+          <span class="recent-photo-tag">${z.tag}</span>
+        </a>
+      `).join('');
+    }
+    renderRecentPhotos();
+
+    /* -- najbliższy termin dla dnia tygodnia + godziny -- */
+    function nastepnyTermin(dzienTyg, godzinaStr) {
+      const [h, m] = godzinaStr.split(':').map(Number);
+      const teraz = new Date();
+      const wynik = new Date();
+      wynik.setHours(h, m, 0, 0);
+      let dodajDni = (dzienTyg - teraz.getDay() + 7) % 7;
+      if (dodajDni === 0 && wynik <= teraz) dodajDni = 7;
+      wynik.setDate(teraz.getDate() + dodajDni);
+      return wynik;
+    }
+
+    function formatujOdliczanie(target) {
+      const diffMs = target - new Date();
+      if (diffMs <= 0) return { dni: 0, etykieta: 'już dziś!' };
+      const dni = Math.floor(diffMs / 86400000);
+      const godz = Math.floor((diffMs % 86400000) / 3600000);
+      if (dni === 0) return { dni: godz, etykieta: 'godz.' };
+      return { dni, etykieta: dni === 1 ? 'dzień' : 'dni' };
+    }
+
+    const najblizsze = SPOTKANIA[0];
+    let terminDaty = null;
+
+    function renderMeetingCard() {
+      if (!najblizsze) return;
+      terminDaty = nastepnyTermin(najblizsze.dzien_tyg, najblizsze.domyslna_godzina);
+      document.getElementById('mcDzien').textContent = najblizsze.dzien;
+      document.getElementById('mcWhen').textContent =
+        terminDaty.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long' }) + ' • ' + najblizsze.domyslna_godzina;
+      const odl = formatujOdliczanie(terminDaty);
+      document.getElementById('mcDays').textContent = odl.dni;
+      document.querySelector('#mcCountdown .mc-count-label').textContent = odl.etykieta;
+    }
+    renderMeetingCard();
+
+    function escHtmlHome(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function pobierzNazweHome(u) {
+      return u.user_metadata?.name || (u.email ? u.email.split('@')[0] : 'ktoś');
+    }
+
+    async function wczytajAvataryZebrania() {
+      const box = document.getElementById('mcAvatars');
+      if (!najblizsze || typeof _sb === 'undefined') return;
+      const { data, error } = await _sb.from('spotkania_rsvp').select('*').eq('meeting_id', najblizsze.id);
+      if (error || !data) return;
+      const beda = data.filter(r => r.bedzie);
+      if (!beda.length) {
+        box.innerHTML = '<span class="mc-avatars-empty">jeszcze nikt się nie zapisał</span>';
+        return;
+      }
+      box.innerHTML = beda.slice(0, 8).map(r => {
+        const imie = pobierzNazweHome({ user_metadata: { name: r.imie } });
+        return `<span class="mc-avatar" title="${escHtmlHome(imie)}">${escHtmlHome(imie.slice(0, 1).toUpperCase())}</span>`;
+      }).join('') + (beda.length > 8 ? `<span class="mc-avatar mc-avatar-more">+${beda.length - 8}</span>` : '');
+
+      // czy zalogowany użytkownik już odpowiedział?
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        const wlasny = data.find(r => r.user_id === currentUser.id);
+        const status = document.getElementById('mcStatus');
+        if (wlasny) {
+          status.textContent = wlasny.bedzie ? 'zapisano ✅ — będziesz' : 'zapisano — nie będziesz';
+          document.getElementById('mcBtnTak').classList.toggle('selected', wlasny.bedzie);
+          document.getElementById('mcBtnNie').classList.toggle('selected', !wlasny.bedzie);
+        }
+      }
+    }
+
+    async function szybkiRsvp(wybor) {
+      if (typeof currentUser === 'undefined' || !currentUser) {
+        if (typeof openLoginModal === 'function') openLoginModal();
+        return;
+      }
+      const status = document.getElementById('mcStatus');
+      status.textContent = 'zapisywanie…';
+      const { error } = await _sb.from('spotkania_rsvp').upsert({
+        user_id: currentUser.id,
+        meeting_id: najblizsze.id,
+        bedzie: wybor === 'tak',
+        godzina: wybor === 'tak' ? najblizsze.domyslna_godzina : null,
+        imie: pobierzNazweHome(currentUser),
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,meeting_id' });
+      if (error) {
+        status.textContent = 'Błąd zapisu, spróbuj ponownie.';
+        return;
+      }
+      status.textContent = wybor === 'tak' ? 'zapisano ✅ — będziesz' : 'zapisano — nie będziesz';
+      document.getElementById('mcBtnTak').classList.toggle('selected', wybor === 'tak');
+      document.getElementById('mcBtnNie').classList.toggle('selected', wybor === 'nie');
+      wczytajAvataryZebrania();
+    }
+
+    function ustalRangeHome(liczba) {
+      let wynik = RANGI[0];
+      for (const r of RANGI) if (liczba >= r.min) wynik = r;
+      return wynik;
+    }
+
+    function renderHero() {
+      const title = document.getElementById('heroTitle');
+      const sub = document.getElementById('heroSub');
+      const cta = document.getElementById('heroCta');
+      const avatar = document.getElementById('heroAvatar');
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        const imie = pobierzNazweHome(currentUser);
+        title.textContent = `Cześć, ${imie} 👋`;
+        sub.textContent = 'Miło Cię widzieć — sprawdź kto jeszcze będzie na najbliższym spotkaniu.';
+        avatar.textContent = imie.slice(0, 1).toUpperCase();
+        cta.style.display = 'none';
+      } else {
+        title.textContent = 'Cześć! 👋';
+        sub.textContent = 'Zaloguj się, żeby zobaczyć kto przychodzi na spotkania i odblokować galerię.';
+        avatar.textContent = '👋';
+        cta.style.display = '';
+      }
+    }
+
+    window.onAuthUpdate = function () {
+      renderHero();
+      wczytajAvataryZebrania();
+    };
+    renderHero();
+    wczytajAvataryZebrania();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
