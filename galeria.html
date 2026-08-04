@@ -6,19 +6,7 @@
 <title>Galeria — Genzie Hub</title>
 <link rel="stylesheet" href="main.css">
 </head>
-<body oncontextmenu="return false" ondragstart="return false">
-  <div id="kod-modal" onclick="zamknijKodModal()">
-    <div class="kod-box" onclick="event.stopPropagation()">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> zablokowane</h3>
-      <p>Wpisz kod, żeby zobaczyć to zdjęcie.</p>
-      <input type="text" id="kod-input" maxlength="4" inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter') sprawdzKod()">
-      <div class="kod-error" id="kod-error"></div>
-      <div class="kod-btns">
-        <button class="btn-anuluj" onclick="zamknijKodModal()">anuluj</button>
-        <button class="btn-ok" onclick="sprawdzKod()">odblokuj</button>
-      </div>
-    </div>
-  </div>
+
 
   <div id="lightbox" onclick="closeLightbox()">
     <img id="lightbox-img" src="" onclick="event.stopPropagation()" oncontextmenu="return false" draggable="false">
