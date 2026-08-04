@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genzie Hub — strona w naprawie</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2e3b2e;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(140, 189, 140, 0.12), transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(43, 87, 151, 0.15), transparent 45%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .wrap {
+            max-width: 720px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .gear {
+            font-size: 56px;
+            display: inline-block;
+            margin-bottom: 10px;
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 44px;
+            margin: 0 0 8px 0;
+            letter-spacing: 1px;
+        }
+
+        h1 b { font-weight: 700; }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.75;
+            margin: 0 0 40px 0;
+            line-height: 1.5;
+        }
+
+        .bar-track {
+            height: 6px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 45px auto;
+            background: rgba(255,255,255,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 40%;
+            background: #8cbd8c;
+            animation: loading 1.8s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0%   { left: -40%; }
+            100% { left: 100%; }
+        }
+
+        .tiles {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tile {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.15s, outline 0.15s;
+            outline: 0 solid transparent;
+        }
+
+        .tile:hover {
+            transform: scale(1.04);
+            outline: 3px solid rgba(255,255,255,0.5);
+        }
+
+        .tile .icon { font-size: 30px; margin-bottom: auto; }
+        .tile .label { font-size: 15px; font-weight: 600; }
+
+        .bg-messenger { background-color: #2b5797; }
+        .bg-instagram { background: linear-gradient(135deg, #833AB4, #C13584, #E1306C, #FD1D1D); }
+        .bg-tiktok { background-color: #101010; }
+
+        .footer-note {
+            margin-top: 45px;
+            font-size: 13px;
+            opacity: 0.4;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 32px; }
+            .tile { width: 120px; height: 120px; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="gear">⚙️</div>
+        <h1>genzie <b>hub</b></h1>
+        <p class="subtitle">Robie aplikacje więc strona narazie wyłoczona kontakt do mnie poniżej<br>ig fn_221155 albo discord elagawin :3 jak barzdzo chcecie wejsc kliknijcie w kafelek o nazwie test:</p>
+
+        <div class="bar-track"><div class="bar-fill"></div></div>
+
+        <div class="tiles">
+            <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile bg-messenger" target="_blank" rel="noopener">
+                <div class="icon">💬</div>
+                <div class="label">Messenger</div>
+            </a>
+            <a href="https://www.instagram.com/melanz.onlinemess/" class="tile bg-instagram" target="_blank" rel="noopener">
+                <div class="icon">📷</div>
+                <div class="label">Instagram</div>
+            </a>
+            <a href="https://grupagenzie.netlify.app/test" class="tile bg-tiktok" target="_blank" rel="noopener">
+                <div class="icon">🎵</div>
+                <div class="label">test</div>
+            </a>
+        </div>
+
+        <p class="footer-note">© genzie hub — trwają prace konserwacyjne</p>
+    </div>
+</body>
+</html>
