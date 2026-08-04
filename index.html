@@ -51,39 +51,47 @@
           <span class="hero-cta" id="heroCta" onclick="if (typeof openLoginModal==='function') openLoginModal()">zaloguj się</span>
         </div>
 
-        <!-- 2) karta najbliższego spotkania -->
-        <div class="meeting-card">
-          <div class="meeting-card-head">
-            <div>
-              <div class="mc-eyebrow">najbliższe spotkanie</div>
-              <h3 id="mcDzien">—</h3>
-              <div class="mc-when" id="mcWhen">wczytywanie…</div>
+        <!-- 2)+4) treść wymagająca logowania: spotkanie + zdjęcia -->
+        <div class="gated-page">
+          <div id="gated-real-content">
+
+            <!-- 2) karta najbliższego spotkania -->
+            <div class="meeting-card">
+              <div class="meeting-card-head">
+                <div>
+                  <div class="mc-eyebrow">najbliższe spotkanie</div>
+                  <h3 id="mcDzien">—</h3>
+                  <div class="mc-when" id="mcWhen">wczytywanie…</div>
+                </div>
+                <div class="mc-countdown" id="mcCountdown">
+                  <span class="mc-count-num" id="mcDays">–</span>
+                  <span class="mc-count-label">dni</span>
+                </div>
+              </div>
+
+              <div class="mc-avatars" id="mcAvatars">
+                <span class="mc-avatars-empty">jeszcze nikt się nie zapisał</span>
+              </div>
+
+              <div class="mc-actions">
+                <button type="button" class="rsvp-btn tak" id="mcBtnTak" onclick="szybkiRsvp('tak')">będę ✅</button>
+                <button type="button" class="rsvp-btn nie" id="mcBtnNie" onclick="szybkiRsvp('nie')">nie będę ❌</button>
+                <a href="spotkania.html" class="mc-more">wszystkie spotkania →</a>
+              </div>
+              <div class="mc-status" id="mcStatus"></div>
+              <div class="mc-confetti" id="mcConfetti"></div>
             </div>
-            <div class="mc-countdown" id="mcCountdown">
-              <span class="mc-count-num" id="mcDays">–</span>
-              <span class="mc-count-label">dni</span>
+
+            <!-- 4) ostatnio dodane zdjęcia -->
+            <div class="section-block">
+              <div class="section-head">
+                <h3>ostatnio dodane zdjęcia 📸</h3>
+                <a href="galeria.html" class="section-more">cała galeria →</a>
+              </div>
+              <div class="recent-photos" id="recentPhotos"></div>
             </div>
-          </div>
 
-          <div class="mc-avatars" id="mcAvatars">
-            <span class="mc-avatars-empty">jeszcze nikt się nie zapisał</span>
           </div>
-
-          <div class="mc-actions">
-            <button type="button" class="rsvp-btn tak" id="mcBtnTak" onclick="szybkiRsvp('tak')">będę ✅</button>
-            <button type="button" class="rsvp-btn nie" id="mcBtnNie" onclick="szybkiRsvp('nie')">nie będę ❌</button>
-            <a href="spotkania.html" class="mc-more">wszystkie spotkania →</a>
-          </div>
-          <div class="mc-status" id="mcStatus"></div>
-        </div>
-
-        <!-- 4) ostatnio dodane zdjęcia -->
-        <div class="section-block">
-          <div class="section-head">
-            <h3>ostatnio dodane zdjęcia 📸</h3>
-            <a href="galeria.html" class="section-more">cała galeria →</a>
-          </div>
-          <div class="recent-photos" id="recentPhotos"></div>
         </div>
 
         <!-- 5) skróty social media -->
@@ -182,6 +190,23 @@
     renderRecentPhotos();
 
     /* -- najbliższy termin dla dnia tygodnia + godziny -- */
+    function odpalKonfetti() {
+      const box = document.getElementById('mcConfetti');
+      if (!box) return;
+      const emotki = ['🎉', '✨', '💖', '🌸', '🎊'];
+      box.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        const s = document.createElement('span');
+        s.className = 'confetti-piece';
+        s.textContent = emotki[Math.floor(Math.random() * emotki.length)];
+        s.style.left = (Math.random() * 100) + '%';
+        s.style.animationDelay = (Math.random() * 0.25) + 's';
+        box.appendChild(s);
+      }
+      setTimeout(() => { box.innerHTML = ''; }, 1300);
+    }
+
+
     function nastepnyTermin(dzienTyg, godzinaStr) {
       const [h, m] = godzinaStr.split(':').map(Number);
       const teraz = new Date();
@@ -276,6 +301,7 @@
       status.textContent = wybor === 'tak' ? 'zapisano ✅ — będziesz' : 'zapisano — nie będziesz';
       document.getElementById('mcBtnTak').classList.toggle('selected', wybor === 'tak');
       document.getElementById('mcBtnNie').classList.toggle('selected', wybor === 'nie');
+      if (wybor === 'tak') odpalKonfetti();
       wczytajAvataryZebrania();
     }
 
