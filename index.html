@@ -1,238 +1,688 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotkania — Genzie Hub</title>
-<link rel="stylesheet" href="main.css">
-</head>
-<body oncontextmenu="return false" ondragstart="return false">
-  <div id="kod-modal" onclick="zamknijKodModal()">
-    <div class="kod-box" onclick="event.stopPropagation()">
-      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> zablokowane</h3>
-      <p>Wpisz kod, żeby zobaczyć to zdjęcie.</p>
-      <input type="text" id="kod-input" maxlength="4" inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter') sprawdzKod()">
-      <div class="kod-error" id="kod-error"></div>
-      <div class="kod-btns">
-        <button class="btn-anuluj" onclick="zamknijKodModal()">anuluj</button>
-        <button class="btn-ok" onclick="sprawdzKod()">odblokuj</button>
-      </div>
-    </div>
-  </div>
+/* =========================================================
+   GENZIE HUB — "Rejestr" (minimal) theme
+   Zasada: biały papier, jedna cienka linia, mono-etykiety,
+   zero cieni/gradientów/zaokrągleń. Jeden akcent koloru,
+   używany wyłącznie do stanów (aktywne / zablokowane / błąd).
+   ========================================================= */
 
-  <div id="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" src="" onclick="event.stopPropagation()" oncontextmenu="return false" draggable="false">
-  </div>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-  <div class="topbar" id="topbar">
-    <div class="logo"><span class="logo-mark">fpf</span><span class="logo-name">genzie hub</span></div>
-    <div class="nav-pills" id="navPills">
-      <a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>start</a>
-      <a href="galeria.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor" stroke="none"/><path d="M21 15l-5-5L6 19"/></svg>zdjęcia</a>
-      <a href="informacje.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>informacje</a>
-    </div>
-    <span id="auth-pill" class="auth-pill">zaloguj się</span>
-  </div>
+:root{
+  --bg: #050505;
+  --panel: #101010;
+  --ink: #f2f0ec;
+  --muted: #7a7873;
+  --line: #232320;
+  --accent: #ff3d1f;
+  --radius: 0px;
+}
 
-  <div class="page-wrap">
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
 
-    <div id="spotkania" class="page page-content active gated-page">
-      <h2>spotkania 🗓️💕</h2>
-      <p>Zapisz się, czy będziesz na spotkaniu i o której 💖</p>
+body{
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
 
-      <div id="gated-real-content">
-        <div class="meetings-list" id="meetingsList"></div>
-      </div>
-    </div>
+::selection{ background: var(--ink); color: var(--bg); }
 
-  </div>
+a{ color: inherit; }
 
-  <script>
-    const topbar = document.getElementById('topbar');
-    const SCROLL_THRESHOLD = 40;
+/* ================= TOPBAR ================= */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 22px 32px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  transition: padding .2s ease;
+}
+.topbar.collapsed{ padding: 13px 32px; }
 
-    function updateTopbarOnScroll(){
-      if (window.scrollY > SCROLL_THRESHOLD) {
-        topbar.classList.add('collapsed');
-      } else {
-        topbar.classList.remove('collapsed');
-      }
-    }
-    window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
-    updateTopbarOnScroll();
+.logo{
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.logo-mark{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border: 1px solid var(--ink);
+  letter-spacing: .04em;
+}
+.logo-name{ text-transform: lowercase; }
 
-    document.querySelectorAll('img').forEach(img => {
-      img.setAttribute('draggable', 'false');
-      img.addEventListener('contextmenu', e => e.preventDefault());
-      img.addEventListener('dragstart', e => e.preventDefault());
-    });
+.nav-pills{
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex: 1;
+  overflow-x: auto;
+}
+.nav-link{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  text-transform: lowercase;
+  letter-spacing: .01em;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color .12s ease, border-color .12s ease;
+}
+.nav-link svg{ width: 15px; height: 15px; flex-shrink: 0; }
+.nav-link:hover{ color: var(--ink); }
+.nav-link.active{ color: var(--ink); border-bottom-color: var(--ink); }
 
-    document.addEventListener('contextmenu', function(e){
-      if (e.target.tagName === 'IMG') e.preventDefault();
-    });
+.auth-pill{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .01em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 7px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color .12s ease, color .12s ease;
+}
+.auth-pill:hover{ border-color: var(--ink); color: var(--ink); }
+.auth-pill.logged-in{ color: var(--ink); border-color: var(--ink); cursor: default; }
+.auth-pill .pfp{
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.auth-pill .who{ font-weight: 600; }
+.auth-pill .logout-x{
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.auth-pill .logout-x:hover{ color: var(--accent); }
 
-    document.addEventListener('keydown', function(e){
-      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
-        e.preventDefault();
-      }
-    });
+/* ================= LAYOUT ================= */
+.page-wrap{
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.page{ display: none; }
+.page.active{ display: block; }
+.page-content{ display: none; }
+.page-content.active{ display: block; }
 
-    /* ===== lista spotkań — żeby dodać kolejne, dopisz nowy obiekt tutaj ===== */
-    const SPOTKANIA = [
-      { id: 'poniedzialek-13', dzien: 'Poniedziałek', domyslna_godzina: '13:00' },
-    ];
+.page-wrap h2{
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin: 48px 0 6px;
+}
+.page-wrap > p{
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 36px;
+}
 
-    function renderMeetings() {
-      const list = document.getElementById('meetingsList');
-      if (!list) return;
-      list.innerHTML = SPOTKANIA.map(m => `
-        <div class="rsvp-card" data-meeting="${m.id}">
-          <div class="rsvp-head">
-            <h3>${m.dzien}</h3>
-            <p>proponowana godzina: ${m.domyslna_godzina}</p>
-          </div>
-          <div class="rsvp-choice">
-            <button type="button" class="rsvp-btn tak" data-val="tak" onclick="wybierzOdpowiedz(this, 'tak')">będę ✅</button>
-            <button type="button" class="rsvp-btn nie" data-val="nie" onclick="wybierzOdpowiedz(this, 'nie')">nie będę ❌</button>
-          </div>
-          <div class="rsvp-time-row" style="display:none">
-            <label for="czas-${m.id}">o której?</label>
-            <input type="time" id="czas-${m.id}" class="rsvp-time" value="${m.domyslna_godzina}">
-          </div>
-          <button type="button" class="rsvp-save" onclick="zapiszOdpowiedz('${m.id}')">zapisz</button>
-          <div class="rsvp-status" id="status-${m.id}"></div>
-          <div class="rsvp-attendees" id="attendees-${m.id}"><div class="attendees-brak">wczytywanie...</div></div>
-        </div>
-      `).join('');
-    }
-    renderMeetings();
+#spotkania{
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+#spotkania h2, #spotkania > p{ margin-left: 0; }
 
-    function wybierzOdpowiedz(btn, val) {
-      const card = btn.closest('.rsvp-card');
-      card.querySelectorAll('.rsvp-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      card.dataset.wybor = val;
-      card.querySelector('.rsvp-time-row').style.display = (val === 'tak') ? 'flex' : 'none';
-    }
+/* ================= HOMEPAGE: BENTO MOSAIC ================= */
+.bento{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 128px;
+  grid-auto-flow: dense;
+  gap: 14px;
+  margin: 40px 0 60px;
+}
+.tile{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.tile::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(160px 120px at 85% -10%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+.tile:hover{
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: 0 14px 30px -12px rgba(0,0,0,.55);
+}
+.tile:hover::after{ opacity: 1; }
+.tile:hover .icon-wrap{ border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.tile .icon-wrap{
+  width: 34px; height: 34px;
+  margin-bottom: auto;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+  transition: border-color .18s ease, color .18s ease, background-color .18s ease;
+}
+.tile .icon-wrap svg{ width: 16px; height: 16px; }
+.tile .label{
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  position: relative;
+}
+.tile .sub{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--muted);
+  position: relative;
+}
 
-    async function zapiszOdpowiedz(meetingId) {
-      if (typeof currentUser === 'undefined' || !currentUser) {
-        openLoginModal();
-        return;
-      }
-      const card = document.querySelector(`.rsvp-card[data-meeting="${meetingId}"]`);
-      const status = document.getElementById(`status-${meetingId}`);
-      const wybor = card.dataset.wybor;
-      if (!wybor) {
-        status.textContent = 'Zaznacz najpierw czy będziesz.';
-        status.classList.remove('ok');
-        return;
-      }
-      const godzina = wybor === 'tak' ? document.getElementById(`czas-${meetingId}`).value : null;
+/* mozaika: różne rozmiary kafelków */
+.tile-g8{ grid-column: span 1; grid-row: span 1; }
+.tile-g4{ grid-column: span 2; }
+.tile-g7{ grid-column: span 2; }
+.tile-g5{ grid-column: span 1; }
+.tile-g6{ grid-column: span 1; }
+.tile-g2{ grid-column: span 2; }
 
-      status.textContent = 'zapisywanie...';
-      status.classList.remove('ok');
 
-      const { error } = await _sb.from('spotkania_rsvp').upsert({
-        user_id: currentUser.id,
-        meeting_id: meetingId,
-        bedzie: wybor === 'tak',
-        godzina: godzina,
-        imie: pobierzNazweUzytkownika(currentUser),
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id,meeting_id' });
 
-      if (error) {
-        status.textContent = 'Błąd zapisu, spróbuj ponownie.';
-        status.classList.remove('ok');
-        return;
-      }
-      status.textContent = wybor === 'tak'
-        ? `zapisano ✅ — będziesz o ${godzina}`
-        : 'zapisano — nie będziesz';
-      status.classList.add('ok');
+/* ================= GATED LOCK SCREEN ================= */
+.gallery-lock-screen{
+  display: none;
+  border: 1px dashed var(--line);
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 10px;
+}
+.gallery-lock-screen .lock-icon{
+  width: 30px; height: 30px;
+  margin: 0 auto 14px;
+  color: var(--ink);
+}
+.gallery-lock-screen .lock-icon svg{ width: 100%; height: 100%; }
+.gallery-lock-screen button{
+  margin-top: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 9px 16px;
+  cursor: pointer;
+}
+.gallery-lock-screen button:hover{ background: var(--accent); border-color: var(--accent); }
 
-      // odśwież listę widoczną dla wszystkich
-      wczytajWszystkieOdpowiedzi();
-    }
+/* ================= GALERIA ================= */
+.cat-filters{
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line);
+  width: fit-content;
+  margin-bottom: 28px;
+}
+.cat-btn{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  text-transform: lowercase;
+  padding: 8px 14px;
+  color: var(--muted);
+  cursor: pointer;
+  border-right: 1px solid var(--line);
+  transition: color .12s ease, background-color .12s ease;
+}
+.cat-btn:last-child{ border-right: none; }
+.cat-btn:hover{ color: var(--ink); }
+.cat-btn.active{ background: var(--ink); color: var(--bg); }
 
-    function pobierzNazweUzytkownika(u) {
-      return u.user_metadata?.name || (u.email ? u.email.split('@')[0] : 'ktoś');
-    }
+.gallery-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 60px;
+}
+.polaroid{
+  position: relative;
+  background: var(--panel);
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.polaroid.hidden{ display: none; }
+.polaroid img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  filter: grayscale(.15);
+  transition: filter .2s ease, transform .3s ease;
+}
+.polaroid:hover img{ filter: grayscale(0); transform: scale(1.02); }
+.polaroid .tag{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 6px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0,0,0,.65), transparent);
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
+}
+.polaroid:hover .tag{ opacity: 1; }
 
-    function escHtml(s) {
-      return String(s).replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[c]));
-    }
+.polaroid .lock-overlay{
+  display: none;
+  position: absolute; inset: 0;
+  background: rgba(18,18,18,.92);
+  color: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: .05em;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+.polaroid .lock-overlay .lock-icon{ width: 20px; height: 20px; }
+.polaroid .lock-overlay .lock-icon svg{ width: 100%; height: 100%; }
+.polaroid[data-blokada="y"] .lock-overlay{ display: flex; }
+.polaroid[data-blokada="y"].odblokowane .lock-overlay{ display: none; }
 
-    // pobiera odpowiedzi WSZYSTKICH zalogowanych osób (nie tylko swoje) i renderuje
-    // listę "kto będzie / kto nie będzie" pod każdym spotkaniem, plus ustawia
-    // własny wybór na górze karty
-    async function wczytajWszystkieOdpowiedzi() {
-      if (typeof currentUser === 'undefined' || !currentUser) return;
+/* ================= SPOTKANIA / RSVP ================= */
+.meetings-list{
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 60px;
+}
+.rsvp-card{
+  background: var(--panel);
+  padding: 26px 24px;
+}
+.rsvp-head h3{
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+.rsvp-head p{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+.rsvp-choice{
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line);
+  width: fit-content;
+  margin-bottom: 14px;
+}
+.rsvp-btn{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 10px 18px;
+  background: var(--panel);
+  border: none;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color .12s ease, color .12s ease;
+}
+.rsvp-btn:last-child{ border-right: none; }
+.rsvp-btn:hover{ background: var(--bg); }
+.rsvp-btn.selected.tak{ background: var(--ink); color: var(--bg); }
+.rsvp-btn.selected.nie{ background: var(--accent); color: #fff; }
 
-      const { data, error } = await _sb
-        .from('spotkania_rsvp')
-        .select('*');
-      if (error || !data) return;
+.rsvp-time-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+.rsvp-time{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 7px 10px;
+  color: var(--ink);
+}
 
-      const wgSpotkania = {};
-      data.forEach(row => {
-        (wgSpotkania[row.meeting_id] = wgSpotkania[row.meeting_id] || []).push(row);
-      });
+.rsvp-save{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+  padding: 9px 18px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.rsvp-save:hover{ background: var(--accent); border-color: var(--accent); }
 
-      SPOTKANIA.forEach(m => {
-        const wiersze = wgSpotkania[m.id] || [];
-        const box = document.getElementById(`attendees-${m.id}`);
-        if (box) {
-          const beda = wiersze.filter(r => r.bedzie);
-          const nieBeda = wiersze.filter(r => !r.bedzie);
-          let html = '';
-          if (beda.length) {
-            html += `<div class="attendees-tytul">będą (${beda.length}):</div><ul class="attendees-lista">` +
-              beda.map(r => `<li>${escHtml(r.imie || 'ktoś')}${r.godzina ? ' — o ' + escHtml(r.godzina.slice(0,5)) : ''}</li>`).join('') +
-              `</ul>`;
-          }
-          if (nieBeda.length) {
-            html += `<div class="attendees-tytul nie">nie będą (${nieBeda.length}):</div><ul class="attendees-lista nie">` +
-              nieBeda.map(r => `<li>${escHtml(r.imie || 'ktoś')}</li>`).join('') +
-              `</ul>`;
-          }
-          box.innerHTML = html || '<div class="attendees-brak">jeszcze nikt się nie zapisał</div>';
-        }
+.rsvp-status{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent);
+  min-height: 16px;
+  margin-bottom: 18px;
+}
+.rsvp-status.ok{ color: var(--muted); }
 
-        // ustaw własny wybór na karcie
-        const wlasny = wiersze.find(r => r.user_id === currentUser.id);
-        if (wlasny) {
-          const card = document.querySelector(`.rsvp-card[data-meeting="${m.id}"]`);
-          if (card) {
-            const val = wlasny.bedzie ? 'tak' : 'nie';
-            const btn = card.querySelector(`.rsvp-btn[data-val="${val}"]`);
-            if (btn) wybierzOdpowiedz(btn, val);
-            if (wlasny.bedzie && wlasny.godzina) {
-              const timeInput = card.querySelector('.rsvp-time');
-              if (timeInput) timeInput.value = wlasny.godzina.slice(0, 5);
-            }
-            const status = document.getElementById(`status-${m.id}`);
-            if (status) {
-              status.textContent = wlasny.bedzie
-                ? `zapisano ✅ — będziesz o ${wlasny.godzina ? wlasny.godzina.slice(0,5) : '?'}`
-                : 'zapisano — nie będziesz';
-              status.classList.add('ok');
-            }
-          }
-        }
-      });
-    }
+.rsvp-attendees{
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.attendees-tytul{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  text-transform: lowercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.attendees-tytul.nie{ margin-top: 12px; }
+.attendees-lista{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.attendees-lista li{
+  font-size: 12.5px;
+  border: 1px solid var(--line);
+  padding: 4px 9px;
+}
+.attendees-lista.nie li{ color: var(--muted); text-decoration: line-through; }
+.attendees-brak{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--muted);
+}
 
-    // wywoływane przez auth.js po każdej zmianie stanu logowania
-    window.onAuthUpdate = function () {
-      wczytajWszystkieOdpowiedzi();
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="auth.js"></script>
-</body>
-</html>
+/* ================= CZŁONKOWIE ================= */
+.members-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 60px;
+}
+.member-card{
+  background: var(--panel);
+  padding: 22px 16px;
+  text-align: center;
+  transition: background-color .15s ease;
+}
+.member-card:hover{ background: #171715; }
+.member-card img{
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  margin-bottom: 12px;
+  background: var(--bg);
+  filter: grayscale(.2);
+}
+.member-card h3{
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 3px;
+}
+.member-card p{ margin: 0; font-size: 12px; color: var(--muted); }
+.member-card .meeting-count{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  margin-top: 10px;
+  color: var(--muted);
+}
+.member-card .meeting-count strong{ color: var(--ink); }
+
+.badge{
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  text-transform: lowercase;
+  letter-spacing: .04em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 2px 7px;
+  margin-bottom: 8px;
+}
+
+.member-card.tier-4 img, .member-card.tier-5 img{ border-color: var(--accent); }
+.member-card.tier-5{ background: #140b09; }
+
+/* ================= LOGIN MODAL ================= */
+#login-modal{
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(18,18,18,.55);
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.login-box{
+  background: var(--panel);
+  border: 1px solid var(--ink);
+  padding: 32px;
+  width: 100%;
+  max-width: 340px;
+}
+.login-box h3{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+.login-box h3 svg{ width: 16px; height: 16px; }
+.login-box p{
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+.login-box input{
+  width: 100%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 11px 12px;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.login-box input:focus{ outline: none; border-color: var(--ink); }
+.login-error{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent);
+  min-height: 14px;
+  margin-bottom: 8px;
+}
+.login-btns{
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.login-btns button{
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 10px;
+  border: 1px solid var(--ink);
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+.login-btns button.btn-primary{ background: var(--ink); color: var(--bg); }
+.login-btns button:hover{ background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ================= KOD MODAL (blokada zdjęcia) ================= */
+#kod-modal{
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(18,18,18,.55);
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.kod-box{
+  background: var(--panel);
+  border: 1px solid var(--ink);
+  padding: 32px;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+.kod-box h3{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+.kod-box h3 svg{ width: 15px; height: 15px; }
+.kod-box p{ font-size: 12.5px; color: var(--muted); margin: 0 0 18px; }
+.kod-box input{
+  width: 100%;
+  text-align: center;
+  letter-spacing: .5em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 12px;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.kod-box input:focus{ outline: none; border-color: var(--ink); }
+.kod-error{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--accent);
+  min-height: 14px;
+  margin-bottom: 8px;
+}
+.kod-btns{ display: flex; gap: 8px; }
+.kod-btns button{
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 10px;
+  border: 1px solid var(--ink);
+  background: var(--panel);
+  cursor: pointer;
+}
+.kod-btns .btn-ok{ background: var(--ink); color: var(--bg); }
+.kod-btns button:hover{ background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ================= LIGHTBOX ================= */
+#lightbox{
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(18,18,18,.94);
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+#lightbox img{
+  max-width: 88%; max-height: 84%;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+/* ================= IMG SPINNER ================= */
+.img-spin-wrap{ position: relative; display: contents; }
+.img-spin{
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px; height: 18px;
+  border: 2px solid var(--line);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+.img-fading{ opacity: 0; transition: opacity .25s ease; }
+.img-fading.img-loaded{ opacity: 1; }
+
+/* ================= RESPONSYWNOŚĆ ================= */
+@media (max-width: 720px){
+  .topbar{ padding: 16px 20px; gap: 16px; flex-wrap: wrap; }
+  .page-wrap{ padding: 0 20px; }
+  .page-wrap h2{ font-size: 23px; margin-top: 36px; }
+  .nav-pills{ order: 3; width: 100%; gap: 14px; }
+  .nav-link{ font-size: 11.5px; }
+}
+
+@media (max-width: 480px){
+  .rsvp-card{ padding: 20px 16px; }
+  .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+  .bento{ grid-template-columns: repeat(2, 1fr); grid-auto-rows: 110px; }
+  .tile-g4, .tile-g7{ grid-column: span 2; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
