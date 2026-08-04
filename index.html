@@ -27,56 +27,64 @@
   </div>
 
   <div class="topbar" id="topbar">
-    <div class="logo">genzie hub</div>
+    <div class="logo"><span class="logo-mark">fpf</span><span class="logo-name">genzie hub</span></div>
     <div class="nav-pills" id="navPills">
       <a href="index.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>start</a>
       <a href="galeria.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor" stroke="none"/><path d="M21 15l-5-5L6 19"/></svg>zdjęcia</a>
-      <a href="spotkania.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>spotkania</a>
       <a href="informacje.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>informacje</a>
     </div>
+    <span id="auth-pill" class="auth-pill">zaloguj się</span>
   </div>
 
   <div class="page-wrap">
 
     <div id="home" class="page active">
-      <h2>start</h2>
-      <p>Skróty do wszystkiego, co ważne 📌</p>
+
       <div class="bento">
 
-        <div class="tile" onclick="location.href='spotkania.html'">
+        <a href="#spotkania" class="tile tile-g3">
           <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><rect x="7" y="13" width="3" height="3" rx="0.5" fill="currentColor" stroke="none"/><rect x="14" y="13" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" opacity="0.6"/></svg></div>
           <div class="label">Terminarz</div>
-          <div class="sub">spotkania / rsvp</div>
-        </div>
+          <div class="sub">zapisz się na spotkanie ↓</div>
+        </a>
 
-        <div class="tile" onclick="location.href='galeria.html'">
+        <div class="tile tile-g8" onclick="location.href='galeria.html'">
           <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor" stroke="none"/><path d="M21 15l-5-5L6 19"/></svg></div>
           <div class="label">Galeria</div>
           <div class="sub">zdjęcia ekipy</div>
         </div>
 
-        <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile" target="_blank" rel="noopener">
+        <a href="https://m.me/ch/Abb21Rb8aHAkdBBQ/" class="tile tile-g4" target="_blank" rel="noopener">
           <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.13 2 11.25c0 2.87 1.44 5.43 3.69 7.07V22l3.36-1.84c.9.25 1.85.38 2.84.38 5.52 0 10-4.13 10-9.25S17.52 2 12 2zm1.1 12.23l-2.7-2.88-5.28 2.88 5.81-6.17 2.77 2.88 5.2-2.88-5.8 6.17z"/></svg></div>
           <div class="label">Messenger</div>
           <div class="sub">czat grupowy</div>
         </a>
 
-        <a href="https://www.instagram.com/melanz.onlinemess/" class="tile" target="_blank" rel="noopener">
+        <a href="https://www.instagram.com/melanz.onlinemess/" class="tile tile-g5" target="_blank" rel="noopener">
           <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
           <div class="label">Instagram</div>
         </a>
 
-        <a href="https://www.tiktok.com/@twoj_profil" class="tile" target="_blank" rel="noopener">
+        <a href="https://www.tiktok.com/@twoj_profil" class="tile tile-g6" target="_blank" rel="noopener">
           <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.1 4.1 0 0 1-1-.48z"/></svg></div>
           <div class="label">TikTok</div>
         </a>
 
-        <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="tile" target="_blank" rel="noopener">
+        <a href="https://open.spotify.com/playlist/2c4rWe7pjBNW4i90zA9kKf?si=oivRRHdiR6mq97AVoqEXIw&utm_source=native-share-menu&pi=RNneEc4jTz-oo" class="tile tile-g7" target="_blank" rel="noopener">
           <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 14.36c-.2.33-.63.43-.96.23-2.65-1.62-5.98-1.99-9.9-1.09-.38.09-.76-.15-.85-.53-.09-.38.15-.76.53-.85 4.28-.97 7.98-.55 10.93 1.25.33.2.43.63.25.99zm1.2-2.67c-.25.4-.78.53-1.18.28-3.03-1.86-7.65-2.4-11.23-1.31-.45.14-.93-.12-1.07-.57-.14-.45.12-.93.57-1.07 4.08-1.24 9.23-.64 12.77 1.5.4.25.53.78.14 1.17zm.1-2.8C14.03 8.45 8.16 8.25 5.08 9.08c-.54.16-1.11-.15-1.27-.69-.16-.54.15-1.11.69-1.27 3.55-1.08 10.1-.84 14.04 1.77.49.3.64.94.34 1.43-.3.49-.94.64-1.43.34z"/></svg></div>
           <div class="label">Playlista</div>
         </a>
 
       </div>
+
+      <div id="spotkania" class="gated-page">
+        <h2>spotkania 🗓️</h2>
+        <p>Zapisz się, czy będziesz na spotkaniu i o której</p>
+        <div id="gated-real-content">
+          <div class="meetings-list" id="meetingsList"></div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -110,6 +118,158 @@
         e.preventDefault();
       }
     });
+
+    /* ===== lista spotkań — żeby dodać kolejne, dopisz nowy obiekt tutaj ===== */
+    const SPOTKANIA = [
+      { id: 'poniedzialek-13', dzien: 'Poniedziałek', domyslna_godzina: '13:00' },
+    ];
+
+    function renderMeetings() {
+      const list = document.getElementById('meetingsList');
+      if (!list) return;
+      list.innerHTML = SPOTKANIA.map(m => `
+        <div class="rsvp-card" data-meeting="${m.id}">
+          <div class="rsvp-head">
+            <h3>${m.dzien}</h3>
+            <p>proponowana godzina: ${m.domyslna_godzina}</p>
+          </div>
+          <div class="rsvp-choice">
+            <button type="button" class="rsvp-btn tak" data-val="tak" onclick="wybierzOdpowiedz(this, 'tak')">będę ✅</button>
+            <button type="button" class="rsvp-btn nie" data-val="nie" onclick="wybierzOdpowiedz(this, 'nie')">nie będę ❌</button>
+          </div>
+          <div class="rsvp-time-row" style="display:none">
+            <label for="czas-${m.id}">o której?</label>
+            <input type="time" id="czas-${m.id}" class="rsvp-time" value="${m.domyslna_godzina}">
+          </div>
+          <button type="button" class="rsvp-save" onclick="zapiszOdpowiedz('${m.id}')">zapisz</button>
+          <div class="rsvp-status" id="status-${m.id}"></div>
+          <div class="rsvp-attendees" id="attendees-${m.id}"><div class="attendees-brak">wczytywanie...</div></div>
+        </div>
+      `).join('');
+    }
+    renderMeetings();
+
+    function wybierzOdpowiedz(btn, val) {
+      const card = btn.closest('.rsvp-card');
+      card.querySelectorAll('.rsvp-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      card.dataset.wybor = val;
+      card.querySelector('.rsvp-time-row').style.display = (val === 'tak') ? 'flex' : 'none';
+    }
+
+    async function zapiszOdpowiedz(meetingId) {
+      if (typeof currentUser === 'undefined' || !currentUser) {
+        openLoginModal();
+        return;
+      }
+      const card = document.querySelector(`.rsvp-card[data-meeting="${meetingId}"]`);
+      const status = document.getElementById(`status-${meetingId}`);
+      const wybor = card.dataset.wybor;
+      if (!wybor) {
+        status.textContent = 'Zaznacz najpierw czy będziesz.';
+        status.classList.remove('ok');
+        return;
+      }
+      const godzina = wybor === 'tak' ? document.getElementById(`czas-${meetingId}`).value : null;
+
+      status.textContent = 'zapisywanie...';
+      status.classList.remove('ok');
+
+      const { error } = await _sb.from('spotkania_rsvp').upsert({
+        user_id: currentUser.id,
+        meeting_id: meetingId,
+        bedzie: wybor === 'tak',
+        godzina: godzina,
+        imie: pobierzNazweUzytkownika(currentUser),
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,meeting_id' });
+
+      if (error) {
+        status.textContent = 'Błąd zapisu, spróbuj ponownie.';
+        status.classList.remove('ok');
+        return;
+      }
+      status.textContent = wybor === 'tak'
+        ? `zapisano ✅ — będziesz o ${godzina}`
+        : 'zapisano — nie będziesz';
+      status.classList.add('ok');
+
+      wczytajWszystkieOdpowiedzi();
+    }
+
+    function pobierzNazweUzytkownika(u) {
+      return u.user_metadata?.name || (u.email ? u.email.split('@')[0] : 'ktoś');
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    async function wczytajWszystkieOdpowiedzi() {
+      if (typeof currentUser === 'undefined' || !currentUser) return;
+
+      const { data, error } = await _sb
+        .from('spotkania_rsvp')
+        .select('*');
+      if (error || !data) return;
+
+      const wgSpotkania = {};
+      data.forEach(row => {
+        (wgSpotkania[row.meeting_id] = wgSpotkania[row.meeting_id] || []).push(row);
+      });
+
+      SPOTKANIA.forEach(m => {
+        const wiersze = wgSpotkania[m.id] || [];
+        const box = document.getElementById(`attendees-${m.id}`);
+        if (box) {
+          const beda = wiersze.filter(r => r.bedzie);
+          const nieBeda = wiersze.filter(r => !r.bedzie);
+          let html = '';
+          if (beda.length) {
+            html += `<div class="attendees-tytul">będą (${beda.length}):</div><ul class="attendees-lista">` +
+              beda.map(r => `<li>${escHtml(r.imie || 'ktoś')}${r.godzina ? ' — o ' + escHtml(r.godzina.slice(0,5)) : ''}</li>`).join('') +
+              `</ul>`;
+          }
+          if (nieBeda.length) {
+            html += `<div class="attendees-tytul nie">nie będą (${nieBeda.length}):</div><ul class="attendees-lista nie">` +
+              nieBeda.map(r => `<li>${escHtml(r.imie || 'ktoś')}</li>`).join('') +
+              `</ul>`;
+          }
+          box.innerHTML = html || '<div class="attendees-brak">jeszcze nikt się nie zapisał</div>';
+        }
+
+        const wlasny = wiersze.find(r => r.user_id === currentUser.id);
+        if (wlasny) {
+          const card = document.querySelector(`.rsvp-card[data-meeting="${m.id}"]`);
+          if (card) {
+            const val = wlasny.bedzie ? 'tak' : 'nie';
+            const btn = card.querySelector(`.rsvp-btn[data-val="${val}"]`);
+            if (btn) wybierzOdpowiedz(btn, val);
+            if (wlasny.bedzie && wlasny.godzina) {
+              const timeInput = card.querySelector('.rsvp-time');
+              if (timeInput) timeInput.value = wlasny.godzina.slice(0, 5);
+            }
+            const status = document.getElementById(`status-${m.id}`);
+            if (status) {
+              status.textContent = wlasny.bedzie
+                ? `zapisano ✅ — będziesz o ${wlasny.godzina ? wlasny.godzina.slice(0,5) : '?'}`
+                : 'zapisano — nie będziesz';
+              status.classList.add('ok');
+            }
+          }
+        }
+      });
+    }
+
+    // wywoływane przez auth.js po każdej zmianie stanu logowania
+    window.onAuthUpdate = function () {
+      wczytajWszystkieOdpowiedzi();
+    };
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
 </body>
 </html>
