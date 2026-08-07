@@ -33,7 +33,11 @@
       <a href="informacje.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="1" fill="currentColor" stroke="none"/></svg>informacje</a>
     </div>
     <span id="auth-pill" class="auth-pill">zaloguj się</span>
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu" aria-expanded="false" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <div class="nav-backdrop" id="navBackdrop" onclick="closeNav()"></div>
 
   <div class="page-wrap">
 
@@ -57,6 +61,32 @@
     }
     window.addEventListener('scroll', updateTopbarOnScroll, { passive: true });
     updateTopbarOnScroll();
+
+    /* ---------- hamburger (mobile nav) ---------- */
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navPills = document.getElementById('navPills');
+    const navBackdrop = document.getElementById('navBackdrop');
+
+    function openNav() {
+      navPills.classList.add('open');
+      navBackdrop.classList.add('active');
+      hamburgerBtn.classList.add('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNav() {
+      navPills.classList.remove('open');
+      navBackdrop.classList.remove('active');
+      hamburgerBtn.classList.remove('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    function toggleNav() {
+      if (navPills.classList.contains('open')) closeNav();
+      else openNav();
+    }
+    navPills.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', closeNav));
+    window.addEventListener('resize', () => { if (window.innerWidth > 720) closeNav(); });
 
     document.querySelectorAll('img').forEach(img => {
       img.setAttribute('draggable', 'false');
