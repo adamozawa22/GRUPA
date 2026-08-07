@@ -341,7 +341,7 @@ img{ max-width: 100%; height: auto; }
 
 .gallery-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
