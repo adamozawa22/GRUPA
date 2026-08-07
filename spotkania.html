@@ -76,14 +76,24 @@
       navBackdrop.classList.add('active');
       hamburgerBtn.classList.add('active');
       hamburgerBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
+      const scrollY = window.scrollY;
+      document.body.dataset.scrollY = scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
     }
     function closeNav() {
       navPills.classList.remove('open');
       navBackdrop.classList.remove('active');
       hamburgerBtn.classList.remove('active');
       hamburgerBtn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      window.scrollTo(0, scrollY);
     }
     function toggleNav() {
       if (navPills.classList.contains('open')) closeNav();
