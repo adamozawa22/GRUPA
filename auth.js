@@ -73,11 +73,18 @@ async function doLogout() {
 }
 
 /* Wywoływane po każdej zmianie stanu logowania: odświeża pigułkę,
-   blokady stron i (jeśli podstrona to definiuje) własny hak onAuthUpdate() */
+   blokady stron i (jeśli podstrona to definiuje) własny hak onAuthUpdate().
+   Każdy krok jest odpalany osobno w try/catch, żeby błąd w jednym
+   (np. w renderAuthUI) NIGDY nie zablokował odblokowania treści
+   w applyContentGate — to był realny bug: jeśli renderAuthUI rzucał
+   wyjątek, applyContentGate w ogóle się nie wykonywał i strona
+   zostawała zablokowana mimo zalogowania. */
 function afterAuthChange() {
-  renderAuthUI();
-  applyContentGate();
-  if (typeof window.onAuthUpdate === 'function') window.onAuthUpdate();
+  try { renderAuthUI(); } catch (e) { console.error('renderAuthUI error:', e); }
+  try { applyContentGate(); } catch (e) { console.error('applyContentGate error:', e); }
+  try {
+    if (typeof window.onAuthUpdate === 'function') window.onAuthUpdate();
+  } catch (e) { console.error('onAuthUpdate error:', e); }
 }
 
 /* ---------- topbar: pigułka logowania ---------- */
@@ -106,6 +113,11 @@ function applyContentGate() {
   document.querySelectorAll('.gated-page').forEach((section) => {
     const realContent = section.querySelector('#gated-real-content');
     let lockScreen = section.querySelector('.gallery-lock-screen');
+    const loading = section.querySelector('.gated-loading');
+
+    // spinner "sprawdzanie dostępu..." ma się pokazywać tylko, zanim
+    // wiadomo czy user jest zalogowany — jak już wiemy, chowamy go
+    if (loading) loading.style.display = 'none';
 
     if (!currentUser) {
       if (realContent) realContent.style.display = 'none';
@@ -129,8 +141,14 @@ function applyContentGate() {
 /* ---------- start ---------- */
 async function initAuth() {
   buildLoginModal();
-  const { data } = await _sb.auth.getSession();
-  currentUser = data.session ? data.session.user : null;
+  try {
+    const { data, error } = await _sb.auth.getSession();
+    if (error) console.error('getSession error:', error);
+    currentUser = data && data.session ? data.session.user : null;
+  } catch (e) {
+    console.error('initAuth getSession failed:', e);
+    currentUser = null;
+  }
   afterAuthChange();
 
   _sb.auth.onAuthStateChange((_event, session) => {
