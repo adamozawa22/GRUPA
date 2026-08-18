@@ -101,9 +101,12 @@ function renderAuthUI() {
   }
 }
 
-/* ---------- blokada stron dla niezalogowanych (galeria + członkowie) ---------- */
+/* ---------- blokada stron dla niezalogowanych (galeria + członkowie + spotkania) ---------- */
 function applyContentGate() {
   document.querySelectorAll('.gated-page').forEach((section) => {
+    const loading = section.querySelector('.gated-loading');
+    if (loading) loading.style.display = 'none';
+
     const realContent = section.querySelector('#gated-real-content');
     let lockScreen = section.querySelector('.gallery-lock-screen');
 
@@ -129,8 +132,14 @@ function applyContentGate() {
 /* ---------- start ---------- */
 async function initAuth() {
   buildLoginModal();
-  const { data } = await _sb.auth.getSession();
-  currentUser = data.session ? data.session.user : null;
+  try {
+    const { data } = await _sb.auth.getSession();
+    currentUser = data.session ? data.session.user : null;
+  } catch (e) {
+    // brak sieci / błąd Supabase — traktujemy jak niezalogowanego,
+    // żeby strona nie została na zawsze z ekranem "sprawdzanie dostępu…"
+    currentUser = null;
+  }
   afterAuthChange();
 
   _sb.auth.onAuthStateChange((_event, session) => {

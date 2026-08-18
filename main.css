@@ -375,6 +375,29 @@ a{ color: inherit; }
 
 .tile-g8 .label{ font-size: 16px; }
 
+/* ================= GATED CONTENT — domyślnie ukryte, dopóki nie znamy stanu logowania ================= */
+#gated-real-content{ display: none; }
+
+.gated-loading{
+  background: var(--paper);
+  border-radius: var(--radius);
+  padding: 46px 22px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 8px;
+  font-family: var(--sysfont);
+  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 6px 14px -8px rgba(20,20,25,.35);
+}
+.gated-loading .spin{
+  width: 22px; height: 22px;
+  margin: 0 auto 14px;
+  border: 2px solid var(--row-line);
+  border-top-color: var(--blue-2);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
 /* ================= GATED LOCK SCREEN ================= */
 .gallery-lock-screen{
   display: none;
